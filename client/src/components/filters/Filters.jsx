@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import FilterProductsContext from "../../context/Filterproducts";
+import FilterProductsContext from "../../context/FilterProducts";
 
 function Filters() {
   const brands = ["Nike", "Adidas", "Puma", "Reebok"];
