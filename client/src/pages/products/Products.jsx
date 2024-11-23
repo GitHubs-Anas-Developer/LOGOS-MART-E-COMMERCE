@@ -6,7 +6,7 @@ import CartContext from "../../context/Cart";
 import FavoriteContext from "../../context/Favorite";
 import Filters from "../../components/filters/Filters";
 import { IoFilterSharp } from "react-icons/io5";
-import FilterProductsContext from "../../context/Filterproducts";
+import FilterProductsContext from "../../context/FilterProducts";
 function Products() {
   const { fetchProducts } = useContext(ProductsContext);
   const { addToCart } = useContext(CartContext);
