@@ -7,7 +7,6 @@ export const FilterProductsContextProvider = ({ children }) => {
   const [filterProducts, setFilterProducts] = useState([]);
 
   const fetchFilterProducts = async (rating, priceRange, sortOption) => {
-    console.log("rating", rating);
 
     try {
       const response = await axios.get(

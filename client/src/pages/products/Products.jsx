@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import CartContext from "../../context/Cart";
 import FavoriteContext from "../../context/Favorite";
 import Filters from "../../components/filters/Filters";
-import FilterProductsContext from "../../context/Filterproducts";
 import { IoFilterSharp } from "react-icons/io5";
+import FilterProductsContext from "../../context/Filterproducts";
 function Products() {
   const { fetchProducts } = useContext(ProductsContext);
   const { addToCart } = useContext(CartContext);
@@ -22,7 +22,7 @@ function Products() {
       setLoading(false);
     };
     fetchData();
-  }, [fetchProducts]);
+  }, []);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("en-IN", {
