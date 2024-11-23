@@ -7,7 +7,7 @@ import { SlHeart } from "react-icons/sl";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Search from "../search/Search";
-import UserContext from "../../context/user";
+import UserContext from "../../context/User";
 import { AuthContext } from "../../context/Auth";
 import CartContext from "../../context/Cart";
 import FavoriteContext from "../../context/Favorite";
