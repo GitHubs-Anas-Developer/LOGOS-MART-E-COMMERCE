@@ -5,7 +5,7 @@ import { RiProductHuntLine } from "react-icons/ri";
 import { BiCategoryAlt } from "react-icons/bi";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaRegHeart, FaRegUserCircle } from "react-icons/fa";
-import UserContext from "../../context/user";
+import UserContext from "../../context/User";
 
 function BottomNavigation() {
   const location = useLocation();
