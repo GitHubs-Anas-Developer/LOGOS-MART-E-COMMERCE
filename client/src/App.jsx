@@ -12,13 +12,13 @@ import ProductDetails from "./pages/productDetails/ProductDetails";
 import MyProfile from "./pages/myprofile/MyProfile";
 import Cart from "./pages/cart/Cart";
 import Favorites from "./pages/favorites/Favorites";
-import SubsubcategoryProducts from "./pages/subsubcategoryProducts/subsubcategoryProducts";
+import SubsubcategoryProducts from "./pages/subsubcategoryProducts/SubsubcategoryProducts";
 import AddressForm from "./pages/shippingAddress/AddressForm";
 import Payment from "./pages/payment/Payment";
 import OnlinePayment from "./pages/onlinePayment/OnlinePayment";
 import OrderSuccess from "./pages/orderSuccess/OrderSuccess";
 import MyOrder from "./pages/myOrders/MyOrder";
-import MyOrderDetails from "./pages/myOrderDetails/myOrderDetails";
+import MyOrderDetails from "./pages/myOrderDetails/MyOrderDetails";
 import BottomNavigation from "./components/bottomNavigation/BottomNavigation";
 import Categories from "./pages/categories/Categories";
 
