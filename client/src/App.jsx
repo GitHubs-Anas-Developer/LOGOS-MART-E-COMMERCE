@@ -7,7 +7,7 @@ import Signup from "./pages/auth/signup/Signup";
 import Home from "./pages/home/Home";
 import Login from "./pages/auth/login/Login";
 import ProtectedRoute from "../src/pages/auth/ProtectedRoute"; // Adjust path as needed
-import Products from "./pages/products/products";
+import Products from "./pages/products/Products";
 import ProductDetails from "./pages/productDetails/ProductDetails";
 import MyProfile from "./pages/myprofile/MyProfile";
 import Cart from "./pages/cart/Cart";
