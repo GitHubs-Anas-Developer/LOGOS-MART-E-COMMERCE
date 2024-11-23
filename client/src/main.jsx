@@ -12,7 +12,7 @@ import { ProductsContextProvider } from "./context/Products.jsx";
 import { OfferContextProvider } from "./context/Offer.jsx";
 import { CartContextProvider } from "./context/Cart.jsx";
 import { FavoriteContextProvider } from "./context/Favorite.jsx";
-import { FilterProductsContextProvider } from "./context/Filterproducts.jsx";
+import { FilterProductsContextProvider } from "./context/FilterProducts.jsx";
 import { AddressContextProvider } from "./context/Address.jsx";
 import { OrderContextProvider } from "./context/Orders.jsx";
 
