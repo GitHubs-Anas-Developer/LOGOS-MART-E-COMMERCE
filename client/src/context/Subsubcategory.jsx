@@ -11,7 +11,7 @@ export const SubsubcategoryContextProvider = ({ children }) => {
   const fetchSubsubcategories = async (subcategoryId) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/subcategory/${subcategoryId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/subcategory/${subcategoryId}`
       );
       setSubsubcategory(response.data.subSubcategories);
     } catch (error) {

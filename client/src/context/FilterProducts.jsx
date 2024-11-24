@@ -10,7 +10,7 @@ export const FilterProductsContextProvider = ({ children }) => {
 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/filter/products`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/filter/products`,
         {
           params: {
             rating,

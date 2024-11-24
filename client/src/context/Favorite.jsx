@@ -16,7 +16,7 @@ export const FavoriteContextProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/add/favorite/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/add/favorite/${userId}`,
         { productId }
       );
       setFavoritesCount(favorites.length + 1);
@@ -35,7 +35,7 @@ export const FavoriteContextProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/favorites/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/favorites/${userId}`
       );
       setFavorites(response.data.favorites);
       setFavoritesCount(response.data.favorites.length);
@@ -52,7 +52,7 @@ export const FavoriteContextProvider = ({ children }) => {
     try {
       setLoading(true);
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/delete/favorite/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/delete/favorite/${userId}`,
         {
           data: { productId },
         }
@@ -76,7 +76,7 @@ export const FavoriteContextProvider = ({ children }) => {
     try {
       setLoading(true);
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/delete/all/favorite/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/delete/all/favorite/${userId}`
       );
 
       // Clear all favorites and update the count

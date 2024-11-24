@@ -11,7 +11,7 @@ export const CategoryContextProvider = ({ children }) => {
   const fetchCategory = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/getallcategory`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/getallcategory`
       );
       setCategories(response.data.categories); // Set categories state with the fetched data
     } catch (error) {

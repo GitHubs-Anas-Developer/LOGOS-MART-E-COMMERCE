@@ -18,7 +18,7 @@ export const OrderContextProvider = ({ children }) => {
     setError(null); // Reset error before fetching
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/orders/list/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/orders/list/${userId}`
       );
       setOrderList(response.data.orders);
     } catch (err) {
@@ -33,7 +33,7 @@ export const OrderContextProvider = ({ children }) => {
     setError(null); // Reset error before fetching
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/order-details/${orderId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/order-details/${orderId}`
       );
       setOrderDetails(response.data.orderDetails || null);
     } catch (err) {

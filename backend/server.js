@@ -53,10 +53,6 @@ app.use("/api/v1/", filterRoutes);
 app.use("/api/v1/", addressRoutes);
 app.use("/api/v1/", orderRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Hello from Render!");
-});
-
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {

@@ -11,7 +11,7 @@ export const ProductsContextProvider = ({ children }) => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/products`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/products`
       );
       if (response.status === 200) {
         setProducts(response.data.products);
@@ -24,7 +24,7 @@ export const ProductsContextProvider = ({ children }) => {
   const fetchSingleProductDetails = async (productId) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/product/details/${productId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/product/details/${productId}`
       );
       if (response.status === 200) {
         setProductDetails(response.data.productDetails);
@@ -37,7 +37,7 @@ export const ProductsContextProvider = ({ children }) => {
   const fetchSubsubcategoryproducts = async (subsubcategoryId) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/products/subsubcategory/${subsubcategoryId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/products/subsubcategory/${subsubcategoryId}`
       );
       SetsubsubcategoryProducts(response.data.subsubcategoryProducts);
     } catch (error) {

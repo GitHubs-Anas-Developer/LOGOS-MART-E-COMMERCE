@@ -13,7 +13,7 @@ export const UserContextProvider = ({ children }) => {
 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/auth/user/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/user/${userId}`
       );
       setUser(response.data.user); // Set user state with fetched data
     } catch (error) {

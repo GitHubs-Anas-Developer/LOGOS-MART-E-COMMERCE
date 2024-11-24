@@ -12,7 +12,7 @@ export const SubcategoryContextProvider = ({ children }) => {
   const fetchSubcategories = async (subcategoryId) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/category/subcategory/${subcategoryId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/category/subcategory/${subcategoryId}`
       );
       setSubcategories(response.data.subcategories);
       console.log("subcategories", response.data.subcategories);
@@ -27,7 +27,7 @@ export const SubcategoryContextProvider = ({ children }) => {
   const fetchSubcategoriesAll = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/subcategories/all`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/subcategories/all`
       );
       setSubcategoriesAll(response.data.subcategories);
     } catch (error) {

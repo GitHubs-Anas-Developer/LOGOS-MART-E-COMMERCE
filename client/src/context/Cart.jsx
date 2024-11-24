@@ -13,7 +13,7 @@ export const CartContextProvider = ({ children }) => {
   // Add item to cart
   const addToCart = async (productId, quantity = 1) => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/add/cart`, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/add/cart`, {
         userId,
         productId,
         quantity,
@@ -30,7 +30,7 @@ export const CartContextProvider = ({ children }) => {
   const fetchCart = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/cart/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/${userId}`
       );
       setCart(response.data.carts); // Store cart data
       setCartCount(response.data.carts.items.length); // Update cart item count
@@ -43,7 +43,7 @@ export const CartContextProvider = ({ children }) => {
   const cartDeleteOne = async (productId) => {
     try {
       const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/cart/delete/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/delete/${userId}`,
         {
           data: { productId }, // Correctly passing productId in the DELETE request body
         }

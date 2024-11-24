@@ -10,7 +10,7 @@ export const OfferContextProvider = ({ children }) => {
   const fetchDiscountedProducts = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/offer/products`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/offer/products`
       );
 
       setDiscount30to40(response.data.discount30to40);

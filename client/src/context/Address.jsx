@@ -12,7 +12,7 @@ export const AddressContextProvider = ({ children }) => {
   const newAddress = async (addressData) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/new/address/${userId}`, // Proper URL format
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/new/address/${userId}`, // Proper URL format
         addressData // Send the data directly
       );
       toast.success("Address submitted successfully!");
@@ -26,7 +26,7 @@ export const AddressContextProvider = ({ children }) => {
   const fetchAddress = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/address/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/address/${userId}`
       );
       setAddress(response.data.addresses);
     } catch (error) {

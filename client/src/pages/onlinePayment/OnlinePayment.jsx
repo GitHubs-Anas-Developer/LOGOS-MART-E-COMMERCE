@@ -49,7 +49,7 @@ function OnlinePayment({ address }) {
     try {
       // Create an order on the backend
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/create-order`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/create-order`,
         {
           productId: product._id,
           userId,
@@ -72,7 +72,7 @@ function OnlinePayment({ address }) {
         order_id: data.order.id,
         handler: async (response) => {
           try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/verify-payment`, {
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-payment`, {
               razorpayOrderId: data.order.id,
               razorpayPaymentId: response.razorpay_payment_id,
               razorpaySignature: response.razorpay_signature,
