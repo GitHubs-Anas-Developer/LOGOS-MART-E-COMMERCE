@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { AuthContext } from "./Auth";
 import { Toaster, toast } from "react-hot-toast";
 
@@ -13,18 +13,27 @@ export const FavoriteContextProvider = ({ children }) => {
 
   // Add product to favorites
   const addToFavorites = async (productId) => {
+    if (!userId) {
+      toast.error("Please log in to add products to favorites.");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/add/favorite/${userId}`,
         { productId }
       );
-      setFavoritesCount(favorites.length + 1);
-      await fetchFavorites();
+
+      const newFavorite = response.data.favorite;
+      setFavorites((prev) => [...prev, newFavorite]);
+      setFavoritesCount((prevCount) => prevCount + 1);
+      console.log("favoritesCount", favoritesCount);
+
       toast.success("Product added to favorites!");
     } catch (error) {
       console.error("Error adding to favorites:", error);
-      toast.error("Error adding product to favorites!");
+      toast.error(error.response?.data?.message || "Error adding product!");
     } finally {
       setLoading(false);
     }
@@ -32,16 +41,19 @@ export const FavoriteContextProvider = ({ children }) => {
 
   // Fetch favorites
   const fetchFavorites = async () => {
+    if (!userId) return;
+
     try {
       setLoading(true);
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/favorites/${userId}`
       );
+
       setFavorites(response.data.favorites);
       setFavoritesCount(response.data.favorites.length);
     } catch (error) {
       console.error("Error fetching favorites:", error);
-      toast.error("Error fetching favorites!");
+      toast.error(error.response?.data?.message || "Error fetching favorites!");
     } finally {
       setLoading(false);
     }
@@ -53,19 +65,17 @@ export const FavoriteContextProvider = ({ children }) => {
       setLoading(true);
       await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/delete/favorite/${userId}`,
-        {
-          data: { productId },
-        }
+        { data: { productId } }
       );
 
-      setFavorites((prevFavorites) =>
-        prevFavorites.filter((favorite) => favorite.productId._id !== productId)
+      setFavorites((prev) =>
+        prev.filter((favorite) => favorite.productId._id !== productId)
       );
-      setFavoritesCount(favorites.length - 1);
+      setFavoritesCount((prevCount) => prevCount - 1);
       toast.success("Product removed from favorites!");
     } catch (error) {
       console.error("Error deleting from favorites:", error);
-      toast.error("Error removing product from favorites!");
+      toast.error(error.response?.data?.message || "Error removing product!");
     } finally {
       setLoading(false);
     }
@@ -76,16 +86,17 @@ export const FavoriteContextProvider = ({ children }) => {
     try {
       setLoading(true);
       await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/delete/all/favorite/${userId}`
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/v1/delete/all/favorite/${userId}`
       );
 
-      // Clear all favorites and update the count
       setFavorites([]);
       setFavoritesCount(0);
       toast.success("All products removed from favorites!");
     } catch (error) {
       console.error("Error deleting all favorites:", error);
-      toast.error("Error removing all products from favorites!");
+      toast.error(error.response?.data?.message || "Error clearing favorites!");
     } finally {
       setLoading(false);
     }
@@ -93,20 +104,24 @@ export const FavoriteContextProvider = ({ children }) => {
 
   // Fetch favorites when userId is available or changes
   useEffect(() => {
-    if (userId) fetchFavorites();
+    fetchFavorites();
   }, [userId]);
 
+  // Memoized Context Value
+  const contextValue = useMemo(
+    () => ({
+      addToFavorites,
+      favorites,
+      favoritesCount,
+      loading,
+      deleteFavorite,
+      deleteAllFavorites,
+    }),
+    [favorites, favoritesCount, loading]
+  );
+
   return (
-    <FavoriteContext.Provider
-      value={{
-        addToFavorites,
-        favorites,
-        favoritesCount,
-        loading,
-        deleteFavorite,
-        deleteAllFavorites,
-      }}
-    >
+    <FavoriteContext.Provider value={contextValue}>
       {children}
       <Toaster /> {/* Toast notifications */}
     </FavoriteContext.Provider>

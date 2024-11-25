@@ -7,6 +7,8 @@ import FavoriteContext from "../../context/Favorite";
 import Filters from "../../components/filters/Filters";
 import { IoFilterSharp } from "react-icons/io5";
 import FilterProductsContext from "../../context/FilterProducts";
+import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
+import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
 function Products() {
   const { fetchProducts } = useContext(ProductsContext);
   const { addToCart } = useContext(CartContext);
@@ -146,6 +148,8 @@ function Products() {
           </main>
         </div>
       </div>
+      <WhatsAppButton />
+      <BackToTopButton />
     </div>
   );
 }

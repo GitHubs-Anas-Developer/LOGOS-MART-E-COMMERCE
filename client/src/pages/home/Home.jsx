@@ -3,6 +3,8 @@ import CategoriesBanner from "./categoryBanner/CategoriesBanner";
 import CarouselBanner from "./carouselBanner/CarouselBanner";
 import OfferContext from "../../context/Offer";
 import OfferProducts from "../../components/offer/OfferProducts";
+import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
+import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
 
 function Home() {
   const { fetchDiscountedProducts, discount30to40, discount40to50 } =
@@ -24,6 +26,8 @@ function Home() {
         discount={discount40to50}
         title="Top Deals: 40% - 50% Off"
       />
+      <WhatsAppButton />
+      <BackToTopButton />
     </div>
   );
 }

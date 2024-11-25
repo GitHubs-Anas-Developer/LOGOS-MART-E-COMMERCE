@@ -6,6 +6,8 @@ import CartContext from "../../context/Cart";
 import AddressContext from "../../context/Address";
 import { useNavigate } from "react-router-dom";
 import Payment from "../payment/Payment";
+import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
+import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -276,6 +278,8 @@ function ProductDetails() {
           </div>
         </div>
       </div>
+      <WhatsAppButton />
+      <BackToTopButton />
     </div>
   );
 }
