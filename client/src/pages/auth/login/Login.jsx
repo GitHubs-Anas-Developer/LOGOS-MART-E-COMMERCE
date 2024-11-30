@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import { AuthContext } from "../../../context/Auth";
-import api from "../../../utils/axiosInstance";
 
 function Login() {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await api.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/user/login`,
         {
           email,
