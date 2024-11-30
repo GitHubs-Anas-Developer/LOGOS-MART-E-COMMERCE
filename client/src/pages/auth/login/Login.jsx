@@ -19,13 +19,10 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await api.post(
-        `${api.defaults.baseURL}/api/v1/auth/user/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await api.post(`/api/v1/auth/user/login`, {
+        email,
+        password,
+      });
 
       console.log(response);
 
