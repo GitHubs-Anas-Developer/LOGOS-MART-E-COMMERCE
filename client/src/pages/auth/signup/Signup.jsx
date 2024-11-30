@@ -5,6 +5,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../../context/Auth";
 
 function Signup() {
+
+
+  
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(true);
