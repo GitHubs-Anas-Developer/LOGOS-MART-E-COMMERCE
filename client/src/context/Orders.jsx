@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
 import { AuthContext } from "./Auth";
+import api from "../utils/axiosInstance";
 
 const OrderContext = createContext();
 
@@ -17,7 +18,7 @@ export const OrderContextProvider = ({ children }) => {
     setLoading(true);
     setError(null); // Reset error before fetching
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/orders/list/${userId}`
       );
       setOrderList(response.data.orders);
@@ -32,7 +33,7 @@ export const OrderContextProvider = ({ children }) => {
     setLoading(true);
     setError(null); // Reset error before fetching
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/order-details/${orderId}`
       );
       setOrderDetails(response.data.orderDetails || null);

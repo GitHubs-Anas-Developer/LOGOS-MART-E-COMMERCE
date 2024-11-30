@@ -60,7 +60,6 @@ const getAddress = async (req, res) => {
 
     // Fetch addresses associated with the given userId
     const addresses = await addressModel.find({ userId });
-    console.log("addresses", addresses);
 
     if (!addresses || addresses.length === 0) {
       return res

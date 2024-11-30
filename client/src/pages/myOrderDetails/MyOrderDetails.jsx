@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import OrderContext from "../../context/Orders";
 import { useNavigate } from "react-router-dom"; // If you want to navigate after payment success
+import api from "../../utils/axiosInstance";
 
 function MyOrderDetails() {
   const { id } = useParams(); // Get the order ID from URL params
@@ -31,7 +32,7 @@ function MyOrderDetails() {
         handler: async (response) => {
           try {
             // Verify payment on your server
-            const paymentVerification = await axios.post(
+            const paymentVerification = await api.post(
               `${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-payment`,
               {
                 razorpayOrderId: orderDetails.razorpayOrderId,

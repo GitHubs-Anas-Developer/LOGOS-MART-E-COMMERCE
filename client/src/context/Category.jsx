@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, createContext } from "react";
+import api from "../utils/axiosInstance";
 
 const CategoryContext = createContext();
 
@@ -10,7 +11,7 @@ export const CategoryContextProvider = ({ children }) => {
 
   const fetchCategory = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/getallcategory`
       );
       setCategories(response.data.categories); // Set categories state with the fetched data

@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { AuthContext } from "./Auth";
 import { Toaster, toast } from "react-hot-toast";
+import api from "../utils/axiosInstance";
 
 const FavoriteContext = createContext();
 
@@ -20,7 +21,7 @@ export const FavoriteContextProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/add/favorite/${userId}`,
         { productId }
       );
@@ -45,7 +46,7 @@ export const FavoriteContextProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/favorites/${userId}`
       );
 
@@ -63,7 +64,7 @@ export const FavoriteContextProvider = ({ children }) => {
   const deleteFavorite = async (productId) => {
     try {
       setLoading(true);
-      await axios.delete(
+      await api.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/delete/favorite/${userId}`,
         { data: { productId } }
       );
@@ -85,7 +86,7 @@ export const FavoriteContextProvider = ({ children }) => {
   const deleteAllFavorites = async () => {
     try {
       setLoading(true);
-      await axios.delete(
+      await api.delete(
         `${
           import.meta.env.VITE_BACKEND_URL
         }/api/v1/delete/all/favorite/${userId}`

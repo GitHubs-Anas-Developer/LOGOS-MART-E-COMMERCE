@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
+import api from "../utils/axiosInstance";
 
 const FilterProductsContext = createContext();
 
@@ -7,9 +8,8 @@ export const FilterProductsContextProvider = ({ children }) => {
   const [filterProducts, setFilterProducts] = useState([]);
 
   const fetchFilterProducts = async (rating, priceRange, sortOption) => {
-
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/filter/products`,
         {
           params: {

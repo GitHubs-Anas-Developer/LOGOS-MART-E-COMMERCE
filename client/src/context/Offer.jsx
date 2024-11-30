@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
+import api from "../utils/axiosInstance";
 
 const OfferContext = createContext();
 
@@ -9,7 +10,7 @@ export const OfferContextProvider = ({ children }) => {
 
   const fetchDiscountedProducts = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/offer/products`
       );
 

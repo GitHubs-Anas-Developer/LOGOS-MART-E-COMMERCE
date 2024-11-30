@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import axios from "axios";
+import api from "../utils/axiosInstance";
 
 const SubsubcategoryContext = createContext();
 
@@ -10,7 +11,7 @@ export const SubsubcategoryContextProvider = ({ children }) => {
 
   const fetchSubsubcategories = async (subcategoryId) => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/subcategory/${subcategoryId}`
       );
       setSubsubcategory(response.data.subSubcategories);

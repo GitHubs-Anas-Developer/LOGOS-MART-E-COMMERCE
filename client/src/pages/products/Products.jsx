@@ -9,21 +9,17 @@ import { IoFilterSharp } from "react-icons/io5";
 import FilterProductsContext from "../../context/FilterProducts";
 import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
 import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
+
 function Products() {
-  const { fetchProducts } = useContext(ProductsContext);
+  const { fetchProducts, loadingProducts, error } = useContext(ProductsContext);
   const { addToCart } = useContext(CartContext);
-  const { addToFavorites } = useContext(FavoriteContext);
+  const { addToFavorites, favorites } = useContext(FavoriteContext);
   const { filterProducts } = useContext(FilterProductsContext);
 
-  const [loading, setLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchProducts();
-      setLoading(false);
-    };
-    fetchData();
+    fetchProducts();
   }, []);
 
   const formatPrice = (price) => {
@@ -33,6 +29,15 @@ function Products() {
       minimumFractionDigits: 0,
     }).format(price);
   };
+
+  // Check if the product is already in favorites
+  const isProductInFavorites = (productId) => {
+    return favorites.some((favorite) => favorite._id === productId);
+  };
+
+  if (error) {
+    return <p className="text-red-600 text-center">{error}</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
@@ -74,7 +79,7 @@ function Products() {
 
             {/* Product Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 ml-2">
-              {loading ? (
+              {loadingProducts ? (
                 <div className="col-span-full flex justify-center items-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
                 </div>
@@ -94,16 +99,19 @@ function Products() {
                       <img
                         src={product.colors[0].images[0]}
                         alt={product.title}
-                        className="w-full h-32 object-contain "
+                        className="w-full h-32 object-contain"
                         loading="lazy"
                       />
                       <button
                         className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
                         onClick={(e) => {
                           e.preventDefault();
-                          addToFavorites(product._id);
+                          if (!isProductInFavorites(product._id)) {
+                            addToFavorites(product._id);
+                          }
                         }}
                         aria-label="Add to Favorites"
+                        disabled={isProductInFavorites(product._id)}
                       >
                         <FaHeart size={20} />
                       </button>
@@ -119,12 +127,12 @@ function Products() {
                       </p>
 
                       {/* Pricing */}
-                      <div className="flex items-center ">
+                      <div className="flex items-center">
                         <span className="text-lg font-bold text-green-600">
                           {formatPrice(product.offerPrice)}
                         </span>
                         {product.price > product.offerPrice && (
-                          <span className="text-sm line-through  text-gray-400 ml-3">
+                          <span className="text-sm line-through text-gray-400 ml-3">
                             {formatPrice(product.price)}
                           </span>
                         )}

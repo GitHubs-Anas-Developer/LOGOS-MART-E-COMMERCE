@@ -176,7 +176,6 @@ const getSubsubcategoryProducts = async (req, res) => {
         message: "No products found for this sub-subcategory.",
       });
     }
-
     return res.status(200).json({
       success: true,
       subsubcategoryProducts: products,
@@ -189,9 +188,35 @@ const getSubsubcategoryProducts = async (req, res) => {
       .json({ message: "Server error", error: error.message });
   }
 };
+
+const getRelatedProducts = async (req, res) => {
+  try {
+    const { subsubcategoryId } = req.params;
+
+    // Fetch related products based on the subsubcategoryId
+    const relatedProducts = await Product.find({
+      subSubcategoryId: subsubcategoryId,
+    }).select("cardImage title price offerPrice discountPercentage rating"); // Select specific fields
+
+    // If no products found, return a 404 status
+    if (relatedProducts.length === 0) {
+      return res.status(404).json({ message: "No related products found." });
+    }
+
+    // Send the related products in the response
+    return res.status(200).json(relatedProducts);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   getProducts,
   getSingleProductDetails,
   getSubsubcategoryProducts,
+  getRelatedProducts,
 };

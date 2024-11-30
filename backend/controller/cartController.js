@@ -3,10 +3,9 @@ const productModel = require("../models/productModel"); // Import the Product mo
 const mongoose = require("mongoose");
 
 const addToCart = async (req, res) => {
-  const { userId, productId, quantity } = req.body;
-
+  const { productId, quantity } = req.body;
   try {
-    let cart = await cartModel.findOne({ userId });
+    let cart = await cartModel.findOne({ userId: req.user.id });
 
     // Check if product is in stock
     const product = await productModel.findById(productId);

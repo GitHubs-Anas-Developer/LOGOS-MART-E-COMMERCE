@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./Auth";
+import api from "../utils/axiosInstance";
 
 const UserContext = createContext();
 
@@ -12,7 +13,7 @@ export const UserContextProvider = ({ children }) => {
     if (!userId) return; // Return if userId is not available
 
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/user/${userId}`
       );
       setUser(response.data.user); // Set user state with fetched data

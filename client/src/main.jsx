@@ -15,6 +15,8 @@ import { FavoriteContextProvider } from "./context/Favorite.jsx";
 import { FilterProductsContextProvider } from "./context/FilterProducts.jsx";
 import { AddressContextProvider } from "./context/Address.jsx";
 import { OrderContextProvider } from "./context/Orders.jsx";
+import { RelatedProductsProvider } from "./context/RelatedProducts.jsx";
+import ProductReviewsProvider from "./context/ProductReviews.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -31,7 +33,11 @@ createRoot(document.getElementById("root")).render(
                         <FilterProductsContextProvider>
                           <AddressContextProvider>
                             <OrderContextProvider>
-                              <App />
+                              <RelatedProductsProvider>
+                                <ProductReviewsProvider>
+                                  <App />
+                                </ProductReviewsProvider>
+                              </RelatedProductsProvider>
                             </OrderContextProvider>
                           </AddressContextProvider>
                         </FilterProductsContextProvider>

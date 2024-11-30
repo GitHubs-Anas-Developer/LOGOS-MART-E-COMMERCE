@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { AuthContext } from "./Auth";
-import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import api from "../utils/axiosInstance";
 
 const AddressContext = createContext();
 
@@ -11,7 +11,7 @@ export const AddressContextProvider = ({ children }) => {
 
   const newAddress = async (addressData) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/new/address/${userId}`, // Proper URL format
         addressData // Send the data directly
       );
@@ -25,7 +25,7 @@ export const AddressContextProvider = ({ children }) => {
 
   const fetchAddress = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/address/${userId}`
       );
       setAddress(response.data.addresses);

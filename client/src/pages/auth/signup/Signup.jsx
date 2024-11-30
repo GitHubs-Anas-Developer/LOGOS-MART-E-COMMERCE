@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../../context/Auth";
+import api from "../../../utils/axiosInstance";
 
 function Signup() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/create/user`,
         {
           userName,
@@ -71,7 +72,7 @@ function Signup() {
           aria-modal="true"
         >
           <form onSubmit={handleSubmit} className="w-full px-6 md:px-0">
-            <div className="mx-auto w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+            <div className="">
               <div className="text-center mb-6">
                 <h1 className="text-2xl font-semibold text-indigo-600">
                   Create Your Account
@@ -86,7 +87,7 @@ function Signup() {
               </div>
               <div className="space-y-4">
                 <div className="form-field">
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                  <label className="block text-gray-200 text-sm font-medium mb-1">
                     Username
                   </label>
                   <input
@@ -99,7 +100,7 @@ function Signup() {
                   />
                 </div>
                 <div className="form-field">
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                  <label className="block text-gray-200 text-sm font-medium mb-1">
                     Email Address
                   </label>
                   <input
@@ -112,7 +113,7 @@ function Signup() {
                   />
                 </div>
                 <div className="form-field">
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                  <label className="block text-gray-200 text-sm font-medium mb-1">
                     Password
                   </label>
                   <input
@@ -125,7 +126,7 @@ function Signup() {
                   />
                 </div>
                 <div className="form-field">
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                  <label className="block text-gray-200 text-sm font-medium mb-1">
                     Confirm Password
                   </label>
                   <input
@@ -138,7 +139,7 @@ function Signup() {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center text-sm text-gray-600">
+                  <label className="flex items-center text-sm text-gray-200">
                     <input
                       type="checkbox"
                       className="mr-2 rounded text-indigo-500 focus:ring-indigo-400"
@@ -160,7 +161,7 @@ function Signup() {
                 >
                   Sign Up
                 </button>
-                <p className="text-center text-sm text-gray-500 mt-4">
+                <p className="text-center text-sm text-gray-200 mt-4">
                   Already have an account?{" "}
                   <Link to="/login" className="text-indigo-500 hover:underline">
                     Log in

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const addToFavorite = async (req, res) => {
   try {
+    
     const { userId } = req.params;
     const { productId } = req.body;
 

@@ -5,40 +5,50 @@ import { FaStar } from "react-icons/fa";
 import CartContext from "../../context/Cart";
 import AddressContext from "../../context/Address";
 import { useNavigate } from "react-router-dom";
-import Payment from "../payment/Payment";
-import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
-import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
+import RelatedProducts from "../../context/RelatedProducts";
+import RelatedProductsData from "../../components/relatedProducts/RelatedProductsData";
+import AddReview from "../../components/productReviews/AddReview";
+import { ProductReviewsContext } from "../../context/ProductReviews";
+import ProductReviews from "../../components/productReviews/ProductReviews";
 
 function ProductDetails() {
   const { id } = useParams();
-  const { fetchSingleProductDetails, productDetails, loading, error } =
-    useContext(ProductsContext);
+  const {
+    fetchSingleProductDetails,
+    productDetails,
+    loadingProductDetails,
+    error,
+  } = useContext(ProductsContext);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectImages, setSelectImages] = useState("");
   const { addToCart } = useContext(CartContext);
   const { fetchAddress, address } = useContext(AddressContext);
+  const { fetchRelatedProducts } = useContext(RelatedProducts);
+  const { fetchProductReviews } = useContext(ProductReviewsContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (id) {
-      fetchSingleProductDetails(id);
-    }
+    fetchSingleProductDetails(id);
+
+    fetchRelatedProducts(productDetails.subSubcategoryId);
+    fetchProductReviews(productDetails._id);
     fetchAddress();
-  }, [id]);
+  }, [id, ProductReviews]);
+console.log("productDetails",productDetails);
 
   // Handle loading state
-  if (loading) {
-    return <p>Loading product details...</p>;
+  if (loadingProductDetails) {
+    return (
+      <div className="col-span-full flex justify-center items-center mt-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+      </div>
+    );
   }
 
   // Handle error state
   if (error) {
-    return (
-      <p className="text-red-500">
-        Error loading product details: {error.message}
-      </p>
-    );
+    return <p className="text-red-500 text-center"> {error}</p>;
   }
 
   // Check if productDetails exists and colors are defined
@@ -278,8 +288,9 @@ function ProductDetails() {
           </div>
         </div>
       </div>
-      <WhatsAppButton />
-      <BackToTopButton />
+      <RelatedProductsData />
+      <ProductReviews />
+      <AddReview productId={productDetails._id} />
     </div>
   );
 }

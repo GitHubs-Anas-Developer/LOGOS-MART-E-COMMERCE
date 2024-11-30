@@ -4,8 +4,10 @@ const {
   getProducts,
   getSingleProductDetails,
   getSubsubcategoryProducts,
+  getRelatedProducts,
 } = require("../controller/productController");
 const upload = require("../middleware/Multer");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -27,6 +29,12 @@ router.get("/product/details/:productId", getSingleProductDetails);
 router.get(
   "/products/subsubcategory/:subsubcategoryId",
   getSubsubcategoryProducts
+);
+
+router.get(
+  "/products/related/:subsubcategoryId",
+  authMiddleware,
+  getRelatedProducts
 );
 
 module.exports = router;

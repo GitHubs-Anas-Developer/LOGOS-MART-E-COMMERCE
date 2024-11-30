@@ -1,10 +1,57 @@
 const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  rating: { type: Number, min: 1, max: 5, required: true },
-  comment: { type: String },
-  createdAt: { type: Date, default: Date.now },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  rating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+  title: {
+    type: String,
+    maxlength: 150, // Optional short title
+  },
+  comment: {
+    type: String,
+    maxlength: 2000, // Detailed review comment
+  },
+  images: [
+    {
+      type: String, // URL of uploaded images
+    },
+  ],
+
+  likes: {
+    type: Number,
+    default: 0, // Count of likes
+  },
+  dislikes: {
+    type: Number,
+    default: 0, // Count of dislikes
+  },
+  likedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Array of user IDs who liked the review
+    },
+  ],
+  dislikedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Array of user IDs who disliked the review
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+  },
 });
 
 const productSchema = new mongoose.Schema(
@@ -46,7 +93,6 @@ const productSchema = new mongoose.Schema(
     },
     cardImage: {
       type: String,
-      
     },
     colors: [
       {
@@ -57,9 +103,16 @@ const productSchema = new mongoose.Schema(
     ],
     reviews: [reviewSchema],
     reviewCount: { type: Number },
-    averageRating: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
+
+productSchema.methods.updateReviewStats = async function () {
+  const totalReviews = this.reviews.length;
+
+  this.reviewCount = totalReviews;
+
+  await this.save();
+};
 
 module.exports = mongoose.model("Product", productSchema);

@@ -18,6 +18,7 @@ const favoriteRoutes = require("./routes/favoriteRoutes");
 const filterRoutes = require("./routes/filterRoutes");
 const addressRoutes = require("./routes/addressRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const reviewRoutes = require("./routes/ReviewRoutes");
 
 dotenv.config();
 
@@ -26,7 +27,12 @@ const app = express();
 connectDB();
 
 // Use the cors middleware correctly by calling it as a function
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Frontend URL
+    credentials: true, // Allow cookies
+  })
+);
 
 // Use express.json() middleware for parsing JSON requests
 app.use(express.json());
@@ -52,6 +58,8 @@ app.use("/api/v1/", favoriteRoutes);
 app.use("/api/v1/", filterRoutes);
 app.use("/api/v1/", addressRoutes);
 app.use("/api/v1/", orderRoutes);
+app.use("/api/v1/", reviewRoutes);
+
 
 const PORT = process.env.PORT || 8080;
 

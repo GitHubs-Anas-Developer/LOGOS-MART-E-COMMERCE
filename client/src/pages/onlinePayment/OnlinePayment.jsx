@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/Auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
+import api from "../../utils/axiosInstance";
 
 // Utility function for cost calculation
 const calculateCosts = (basePrice, quantity, deliveryCost, taxRate = 0.1) => {
@@ -48,7 +49,7 @@ function OnlinePayment({ address }) {
 
     try {
       // Create an order on the backend
-      const { data } = await axios.post(
+      const { data } = await api.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/create-order`,
         {
           productId: product._id,
@@ -65,18 +66,21 @@ function OnlinePayment({ address }) {
 
       // Configure Razorpay
       const options = {
-        key: "rzp_test_tVu7a5I4APk2GW",
+        key: import.meta.env.RAZORPAY_KEY_ID,
         amount: data.order.amount,
         currency: "INR",
         name: product.title,
         order_id: data.order.id,
         handler: async (response) => {
           try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-payment`, {
-              razorpayOrderId: data.order.id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-            });
+            await api.post(
+              `${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-payment`,
+              {
+                razorpayOrderId: data.order.id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+              }
+            );
 
             toast.success("Payment successful!");
             navigate("/orderSuccess", { state: response.razorpay_payment_id });

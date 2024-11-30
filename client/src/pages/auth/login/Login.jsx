@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import { AuthContext } from "../../../context/Auth";
+import api from "../../../utils/axiosInstance";
 
 function Login() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/user/login`,
         {
           email,
@@ -48,9 +49,9 @@ function Login() {
       aria-modal="true"
     >
       <Toaster />
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+      <div className="">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-semibold text-blue-600">
+          <h1 className="text-2xl font-semibold text-indigo-600">
             Login to Your Account
           </h1>
           <p className="text-gray-500">
@@ -58,9 +59,9 @@ function Login() {
           </p>
           {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="w-full px-6 md:px-0">
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-1">
+            <label className="block text-gray-200 text-sm font-medium mb-1">
               Email Address
             </label>
             <input
@@ -73,7 +74,7 @@ function Login() {
             />
           </div>
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-1">
+            <label className="block text-gray-200 text-sm font-medium mb-1">
               Password
             </label>
             <input
@@ -86,7 +87,7 @@ function Login() {
             />
           </div>
           <div className="flex items-center justify-between">
-            <label className="flex items-center text-sm text-gray-600">
+            <label className="flex items-center text-sm text-gray-200">
               <input
                 type="checkbox"
                 className="mr-2 rounded text-blue-500 focus:ring-blue-400"
@@ -104,11 +105,11 @@ function Login() {
           </div>
           <button
             type="submit"
-            className="w-full py-3 mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition duration-150"
+            className="w-full py-3 mt-4 bg-indigo-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition duration-150"
           >
             Login
           </button>
-          <p className="text-center text-sm text-gray-500 mt-4">
+          <p className="text-center text-sm text-gray-200 mt-4">
             Don't have an account?{" "}
             <Link to="/signup" className="text-blue-500 hover:underline">
               Sign up

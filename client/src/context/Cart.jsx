@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./Auth";
-import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import api from "../utils/axiosInstance";
 
 const CartContext = createContext();
 
@@ -13,7 +13,7 @@ export const CartContextProvider = ({ children }) => {
   // Add item to cart
   const addToCart = async (productId, quantity = 1) => {
     try {
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/add/cart`, {
+      await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/add/cart`, {
         userId,
         productId,
         quantity,
@@ -29,7 +29,7 @@ export const CartContextProvider = ({ children }) => {
   // Fetch the current user's cart
   const fetchCart = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/${userId}`
       );
       setCart(response.data.carts); // Store cart data
@@ -42,7 +42,7 @@ export const CartContextProvider = ({ children }) => {
   // Delete a product from the cart
   const cartDeleteOne = async (productId) => {
     try {
-      const response = await axios.delete(
+      const response = await api.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/delete/${userId}`,
         {
           data: { productId }, // Correctly passing productId in the DELETE request body
