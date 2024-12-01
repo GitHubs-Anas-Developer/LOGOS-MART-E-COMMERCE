@@ -20,7 +20,7 @@ function Login() {
 
     try {
       const response = await api.post(
-        `/api/v1/auth/user/login`,
+        `${api.defaults.baseURL}/api/v1/auth/user/login`,
         {
           email,
           password,
