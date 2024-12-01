@@ -1,80 +1,50 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ProductsContext from "../../context/Products";
-import { FaStar } from "react-icons/fa";
 import CartContext from "../../context/Cart";
 import AddressContext from "../../context/Address";
-import { useNavigate } from "react-router-dom";
-import RelatedProducts from "../../context/RelatedProducts";
 import RelatedProductsData from "../../components/relatedProducts/RelatedProductsData";
 import AddReview from "../../components/productReviews/AddReview";
-import { ProductReviewsContext } from "../../context/ProductReviews";
 import ProductReviews from "../../components/productReviews/ProductReviews";
+import { FaStar } from "react-icons/fa";
+import { ProductReviewsContext } from "../../context/ProductReviews";
+import RelatedProducts from "../../context/RelatedProducts";
 
 function ProductDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const {
     fetchSingleProductDetails,
     productDetails,
     loadingProductDetails,
     error,
   } = useContext(ProductsContext);
-  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-  const [selectImages, setSelectImages] = useState("");
   const { addToCart } = useContext(CartContext);
   const { fetchAddress, address } = useContext(AddressContext);
   const { fetchRelatedProducts } = useContext(RelatedProducts);
   const { fetchProductReviews } = useContext(ProductReviewsContext);
 
-  const navigate = useNavigate();
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     fetchSingleProductDetails(id);
-
     fetchRelatedProducts(productDetails.subSubcategoryId);
     fetchProductReviews(productDetails._id);
     fetchAddress();
-  }, [id, ProductReviews]);
-console.log("productDetails",productDetails);
+  }, [id]);
 
-  // Handle loading state
-  if (loadingProductDetails) {
-    return (
-      <div className="col-span-full flex justify-center items-center mt-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  // Handle error state
-  if (error) {
-    return <p className="text-red-500 text-center"> {error}</p>;
-  }
-
-  // Check if productDetails exists and colors are defined
-  if (
-    !productDetails ||
-    !productDetails.colors ||
-    productDetails.colors.length === 0
-  ) {
-    return <p>No product details available.</p>;
-  }
-
-  const handleColorChange = (index) => {
-    setSelectedColorIndex(index);
-  };
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-IN", {
+  const handleColorChange = (index) => setSelectedColorIndex(index);
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
-      minimumFractionDigits: 0,
     }).format(price);
-  };
 
   const addtoCart = (e, productId) => {
     e.preventDefault();
-    addToCart(productId); // assuming quantity 1 for simplicity
+    addToCart(productId);
   };
 
   const buyHandler = () => {
@@ -85,151 +55,123 @@ console.log("productDetails",productDetails);
     }
   };
 
+  if (loadingProductDetails) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-center mt-4">{error}</p>;
+  }
+
+  if (!productDetails || !productDetails.colors?.length) {
+    return (
+      <p className="text-center text-gray-500">No product details available.</p>
+    );
+  }
+
+  const productImages = productDetails.colors[selectedColorIndex]?.images || [];
+
   return (
-    <div className="min-h-screen bg-gray-50 ">
-      <div className="container mx-auto p-8 bg-white rounded-xl shadow-2xl">
+    <div className="bg-gray-50 min-h-screen py-8">
+      <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-          {/* Image Section */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          {/* Left: Product Images */}
           <div className="md:col-span-5">
-            {selectImages ? (
+            <div className="relative">
               <img
-                src={selectImages}
+                src={selectedImage || productImages[0]}
                 alt={productDetails.title}
                 className="w-full h-auto object-cover rounded-lg shadow-md"
               />
-            ) : (
-              <img
-                src={productDetails.colors[selectedColorIndex].images[0]}
-                alt={productDetails.title}
-                className="w-full h-auto object-cover rounded-lg shadow-md"
-              />
-            )}
-            {/* Display selected color images */}
-            <div className="mt-4 grid grid-cols-3 gap-4">
-              {productDetails.colors[selectedColorIndex].images.map(
-                (image, imgIndex) => (
-                  <img
-                    key={imgIndex}
-                    src={image}
-                    alt={`${
-                      productDetails.colors[selectedColorIndex].colorName
-                    } - ${imgIndex + 1}`}
-                    className="w-full h-auto object-contain rounded-lg shadow-md"
-                    onClick={() => setSelectImages(image)}
-                  />
-                )
-              )}
+            </div>
+            <div className="mt-4 flex gap-4 overflow-x-auto">
+              {productImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Image ${index + 1}`}
+                  className={`h-20 w-20 rounded-md border ${
+                    selectedImage === image
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  } cursor-pointer`}
+                  onClick={() => setSelectedImage(image)}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Product Info Section */}
-          <div className="md:col-span-7 space-y-6">
-            {/* Product Title */}
-            <h1 className="text-3xl font-extrabold text-gray-900">
+          {/* Right: Product Details */}
+          <div className="md:col-span-7">
+            <h1 className="text-3xl font-bold text-gray-800">
               {productDetails.title}
             </h1>
-
-            {/* Rating */}
-            <div className="flex items-center space-x-2 text-yellow-400">
+            <div className="flex items-center space-x-2 mt-2">
               <FaStar className="text-yellow-500" />
-              <span className="text-gray-600 text-sm">
-                {productDetails.rating} / 5
-              </span>
+              <span className="text-gray-600">{productDetails.rating} / 5</span>
             </div>
-
-            {/* Price */}
-            <div className="flex items-center space-x-6 text-gray-700">
+            <div className="mt-4 flex items-center space-x-4">
               <span className="text-3xl font-semibold text-green-600">
                 {formatPrice(productDetails.offerPrice)}
               </span>
               {productDetails.discountPercentage > 0 && (
-                <>
-                  <span className="text-lg font-medium line-through text-gray-400">
-                    {formatPrice(productDetails.price)}
-                  </span>
-                  <span className="text-base font-medium text-red-500">
-                    {productDetails.discountPercentage}% off
-                  </span>
-                </>
+                <span className="text-lg text-red-500">
+                  {productDetails.discountPercentage}% off
+                </span>
               )}
             </div>
-
-            {/* Highlights */}
-            <ul className="mt-6 space-y-4 text-gray-700">
-              <li>
-                <strong className="font-medium">Storage:</strong>{" "}
-                {productDetails.storageSize}GB
-              </li>
-              <li>
-                <strong className="font-medium">Seller:</strong>{" "}
-                {productDetails.seller}
-              </li>
-              <li>
-                <strong className="font-medium">Brand:</strong>{" "}
-                {productDetails.brand}
-              </li>
-              <li>
-                <strong className="font-medium">Warranty:</strong>{" "}
-                {productDetails.warranty}
-              </li>
-              <li>
-                <strong className="font-medium">Stock:</strong>{" "}
-                {productDetails.stock > 0 ? "In stock" : "Out of stock"}
-              </li>
-            </ul>
-            {/* Delivery Information */}
-            <div className="mt-6 text-gray-700">
-              <h3 className="text-xl font-semibold">Delivery Information</h3>
-              <ul className="mt-3 space-y-2">
-                <li>
-                  <strong>Estimated Delivery Time:</strong>{" "}
-                  {productDetails.delivery.estimatedDays} days
-                </li>
-                <li>
-                  <strong>Delivery Cost:</strong>{" "}
-                  {formatPrice(productDetails.delivery.cost)}
-                </li>
-              </ul>
+            <div className="mt-4 text-gray-700">
+              <p>
+                <strong>Stock:</strong>{" "}
+                {productDetails.stock > 0 ? (
+                  <span className="text-green-600">In Stock</span>
+                ) : (
+                  <span className="text-red-500">Out of Stock</span>
+                )}
+              </p>
+              <p>
+                <strong>Seller:</strong> {productDetails.seller}
+              </p>
+              <p>
+                <strong>Warranty:</strong> {productDetails.warranty}
+              </p>
             </div>
 
-            {/* Color Selection */}
-            <div className="mt-8">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-5">
-                Choose Color
-              </h2>
-              <div className="flex space-x-4">
+            {/* Color Options */}
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-black">Choose Color</h3>
+              <div className="flex gap-4 mt-3">
                 {productDetails.colors.map((color, index) => (
-                  <div>
-                    <button
-                      key={color._id}
-                      onClick={() => handleColorChange(index)}
-                      className={`border-2 p-2 flex items-center justify-center transition duration-300 text-black rounded-lg ${
-                        selectedColorIndex === index
-                          ? "border-blue-500"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      <span className=" text-black">{color.colorName}</span>
-                    </button>
-                  </div>
+                  <button
+                    key={color._id}
+                    onClick={() => handleColorChange(index)}
+                    className={`py-2 px-4 border rounded-lg text-black ${
+                      selectedColorIndex === index
+                        ? "border-blue-500"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {color.colorName}
+                  </button>
                 ))}
               </div>
             </div>
 
-            {/* Add to Cart & Buy Now Buttons */}
-            <div className="mt-8 flex space-x-6">
+            {/* Actions */}
+            <div className="mt-6 flex gap-4">
               <button
-                className="w-full md:w-auto bg-teal-500 text-white py-3 px-8 rounded-lg shadow-md hover:bg-teal-600 transition duration-300"
-                onClick={(e) => {
-                  addtoCart(e, productDetails._id);
-                }}
+                className="flex-1 bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600 transition"
+                onClick={(e) => addtoCart(e, productDetails._id)}
               >
                 Add to Cart
               </button>
-
               <button
-                className="w-full md:w-auto bg-pink-500 text-white py-3 px-8 rounded-lg shadow-md hover:bg-pink-600 transition duration-300"
+                className="flex-1 bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition"
                 onClick={buyHandler}
               >
                 Buy Now
@@ -238,59 +180,50 @@ console.log("productDetails",productDetails);
           </div>
         </div>
 
-        {/* Product Description */}
-        <div className="mt-12 border-t pt-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-5">
-            Product Description
-          </h2>
-          <p className="text-gray-700">{productDetails.description}</p>
-        </div>
-
         {/* Specifications */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-5">
+        <div className="mt-12">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Specifications
           </h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-gray-700 border">
-              <thead>
-                <tr className="border-b">
-                  <th className="py-3 px-6 text-left font-semibold">Key</th>
-                  <th className="py-3 px-6 text-left font-semibold">Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productDetails.specifications &&
-                  Object.entries(productDetails.specifications[0]).map(
-                    ([key, value], index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="py-3 px-6 border">{key}</td>
-                        <td className="py-3 px-6 border">
-                          {typeof value === "object" ? (
-                            <ul>
-                              {Object.entries(value).map(
-                                ([subKey, subValue], subIndex) => (
-                                  <li key={subIndex}>
-                                    {`${subKey}: ${subValue}`}
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          ) : (
-                            value
+          <table className="w-full border text-left">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="py-2 px-4 text-blue-700">Key</th>
+                <th className="py-2 px-4  text-blue-700">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(productDetails.specifications[0]).map(
+                ([key, value], index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="py-2 px-4 border text-black">{key}</td>
+                    <td className="py-2 px-4 border text-black">
+                      {typeof value === "object" ? (
+                        <ul>
+                          {Object.entries(value).map(
+                            ([subKey, subValue], subIndex) => (
+                              <li key={subIndex}>
+                                {subKey}: {subValue}
+                              </li>
+                            )
                           )}
-                        </td>
-                      </tr>
-                    )
-                  )}
-              </tbody>
-            </table>
-          </div>
+                        </ul>
+                      ) : (
+                        value
+                      )}
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
         </div>
+
+        {/* Related Products and Reviews */}
+        <RelatedProductsData />
+        <ProductReviews />
+        <AddReview productId={productDetails._id} />
       </div>
-      <RelatedProductsData />
-      <ProductReviews />
-      <AddReview productId={productDetails._id} />
     </div>
   );
 }

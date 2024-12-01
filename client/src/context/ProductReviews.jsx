@@ -26,7 +26,9 @@ const ProductReviewsProvider = ({ children }) => {
 
       if (response.status === 201) {
         toast.success("Review added successfully!");
+        await fetchProductReviews()
         return { success: true, message: response.data.message };
+      
       }
     } catch (error) {
       const errorMessage =

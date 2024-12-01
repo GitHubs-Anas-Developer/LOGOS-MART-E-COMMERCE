@@ -3,17 +3,17 @@ import ProductsContext from "../../context/Products";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CartContext from "../../context/Cart";
-import FavoriteContext from "../../context/Favorite";
 import Filters from "../../components/filters/Filters";
 import { IoFilterSharp } from "react-icons/io5";
 import FilterProductsContext from "../../context/FilterProducts";
 import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
 import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
+import FavoriteContext from "../../context/Favorite";
 
 function Products() {
   const { fetchProducts, loadingProducts, error } = useContext(ProductsContext);
   const { addToCart } = useContext(CartContext);
-  const { addToFavorites, favorites } = useContext(FavoriteContext);
+  const { addToFavorites } = useContext(FavoriteContext);
   const { filterProducts } = useContext(FilterProductsContext);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -28,11 +28,6 @@ function Products() {
       currency: "INR",
       minimumFractionDigits: 0,
     }).format(price);
-  };
-
-  // Check if the product is already in favorites
-  const isProductInFavorites = (productId) => {
-    return favorites.some((favorite) => favorite._id === productId);
   };
 
   if (error) {
@@ -106,12 +101,8 @@ function Products() {
                         className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
                         onClick={(e) => {
                           e.preventDefault();
-                          if (!isProductInFavorites(product._id)) {
-                            addToFavorites(product._id);
-                          }
+                          addToFavorites(product._id);
                         }}
-                        aria-label="Add to Favorites"
-                        disabled={isProductInFavorites(product._id)}
                       >
                         <FaHeart size={20} />
                       </button>

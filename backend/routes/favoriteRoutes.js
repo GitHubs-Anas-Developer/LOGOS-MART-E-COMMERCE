@@ -5,11 +5,12 @@ const {
   deleteFavorite,
   deleteAllFavorites,
 } = require("../controller/favoriteController");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Add a product to favorites
-router.post("/add/favorite/:userId", addToFavorite);
+router.post("/add/favorite", authMiddleware, addToFavorite);
 
 // Get all favorite products for a user
 router.get("/favorites/:userId", getFavorites);

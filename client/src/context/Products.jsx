@@ -15,11 +15,17 @@ export const ProductsContextProvider = ({ children }) => {
   const [error, setError] = useState(null); // New error state
 
   const fetchProducts = async () => {
+    console.log(api.defaults.baseURL);
+   
+    
+    
     setLoadingProducts(true);
     setError(null); // Reset error state before making the request
+    
     try {
       const response = await api.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/products`
+
       );
       if (response.status === 200) {
         setProducts(response.data.products);

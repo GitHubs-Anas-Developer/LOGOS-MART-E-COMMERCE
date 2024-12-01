@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const addToCart = async (req, res) => {
   const { productId, quantity } = req.body;
+
   try {
     let cart = await cartModel.findOne({ userId: req.user.id });
 
@@ -29,7 +30,7 @@ const addToCart = async (req, res) => {
     } else {
       // No cart for user, create new cart
       cart = new cartModel({
-        userId,
+        userId: req.user.id,
         items: [{ productId, quantity }],
       });
     }
@@ -52,7 +53,7 @@ const addToCart = async (req, res) => {
 
 const getUserCart = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
 
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
@@ -80,7 +81,7 @@ const getUserCart = async (req, res) => {
 };
 const cartRemoveOne = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const { productId } = req.body; // Expect productId in the request body
 
     if (!userId || !productId) {
@@ -89,13 +90,11 @@ const cartRemoveOne = async (req, res) => {
         .json({ message: "User ID and product ID are required" });
     }
 
-    console.log(userId, productId);
-
     // Find the cart and remove the product from the items array using $pull
-    const cart = await cartModel.findOneAndDelete(
-      { userId, "items.productId": mongoose.Types.ObjectId(productId) },
+    const cart = await cartModel.findOneAndUpdate(
+      { userId, "items.productId": productId }, // Search for the productId within the items array
       {
-        $pull: { items: { productId: mongoose.Types.ObjectId(productId) } },
+        $pull: { items: { productId: productId } }, // Remove the item by productId
       },
       { new: true } // Return the updated cart
     );
@@ -112,8 +111,82 @@ const cartRemoveOne = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// Clear all items from the cart
+const cartClearAll = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // Clear all items from the user's cart
+    const cart = await cartModel.findOneAndUpdate(
+      { userId },
+      { $set: { items: [] } }, // Empty the items array
+      { new: true }
+    );
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res.status(200).json({ message: "Cart cleared successfully", cart });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const CartUpdateQuantity = async (req, res) => {
+  const { productId, quantity } = req.body;
+
+  try {
+    const userId = req.user.id;
+
+    // Validate input
+    if (!productId || quantity <= 0) {
+      return res
+        .status(400)
+        .json({ message: "Valid productId and quantity are required" });
+    }
+
+    // Find the cart for the user
+    let cart = await cartModel.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    // Find the item in the cart
+    const itemIndex = cart.items.findIndex(
+      (item) => item.productId.toString() === productId
+    );
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
+
+    // Update the quantity of the product in the cart
+    cart.items[itemIndex].quantity = quantity;
+
+    // Save the updated cart
+    await cart.save();
+
+    // Send back the updated cart
+    res.status(200).json({
+      message: "Quantity updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating cart quantity:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   addToCart,
   getUserCart,
   cartRemoveOne,
+  cartClearAll,
+  CartUpdateQuantity,
 };

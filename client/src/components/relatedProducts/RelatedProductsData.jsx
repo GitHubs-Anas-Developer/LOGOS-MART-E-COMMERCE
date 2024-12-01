@@ -15,10 +15,9 @@ function RelatedProductsData() {
   }
 
   if (error) {
-     if (error) {
-    return <p className="text-red-500 text-center"> {error}</p>;
-  }
-
+    if (error) {
+      return <p className="text-red-500 text-center"> {error}</p>;
+    }
   }
   return (
     <div className="my-12 px-6">

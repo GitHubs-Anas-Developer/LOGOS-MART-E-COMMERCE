@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 
 const addToFavorite = async (req, res) => {
   try {
-    
-    const { userId } = req.params;
+    const userId = req.user.id;
     const { productId } = req.body;
 
     const existingFavorite = await favoriteModel.findOne({ userId, productId });
@@ -60,7 +59,6 @@ const deleteFavorite = async (req, res) => {
 
     const { productId } = req.body;
 
- 
     // Remove the specified product from the user's favorites
     const deletedFavorite = await favoriteModel.findOneAndDelete({
       userId,

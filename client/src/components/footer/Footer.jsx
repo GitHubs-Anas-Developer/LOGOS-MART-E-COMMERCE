@@ -1,29 +1,33 @@
 import React from "react";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="bg-white rounded-lg shadow m-4 dark:bg-gray-800 mb-[65px]">
-      <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+    <footer className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white  shadow mt-6">
+      <div className="w-full mx-auto max-w-screen-xl p-6 flex flex-col md:flex-row md:justify-between md:items-center">
+        {/* Footer Brand & Copyright */}
+        <span className="text-sm text-center md:text-left">
           © 2023{" "}
-          <a href="https://flowbite.com/" className="hover:underline">
+          <a href="https://flowbite.com/" className="font-bold hover:underline">
             Flowbite™
           </a>
           . All Rights Reserved.
         </span>
-        <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+
+        {/* Footer Links */}
+        <ul className="flex flex-wrap items-center justify-center mt-4 md:mt-0 text-sm font-medium space-x-6">
           <li>
-            <a href="#" className="hover:underline me-4 md:me-6">
+            <a href="#" className="hover:underline">
               About
             </a>
           </li>
           <li>
-            <a href="#" className="hover:underline me-4 md:me-6">
+            <a href="#" className="hover:underline">
               Privacy Policy
             </a>
           </li>
           <li>
-            <a href="#" className="hover:underline me-4 md:me-6">
+            <a href="#" className="hover:underline">
               Licensing
             </a>
           </li>
@@ -33,6 +37,22 @@ function Footer() {
             </a>
           </li>
         </ul>
+
+        {/* Social Media Links */}
+        <div className="flex justify-center mt-4 md:mt-0 space-x-4">
+          <a href="#" className="p-2 bg-white text-blue-500 rounded-full hover:bg-blue-600 hover:text-white transition">
+            <FaFacebookF />
+          </a>
+          <a href="#" className="p-2 bg-white text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition">
+            <FaTwitter />
+          </a>
+          <a href="#" className="p-2 bg-white text-pink-500 rounded-full hover:bg-pink-600 hover:text-white transition">
+            <FaInstagram />
+          </a>
+          <a href="#" className="p-2 bg-white text-blue-700 rounded-full hover:bg-blue-800 hover:text-white transition">
+            <FaLinkedinIn />
+          </a>
+        </div>
       </div>
     </footer>
   );

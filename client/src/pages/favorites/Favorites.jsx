@@ -20,12 +20,7 @@ function Favorites() {
         <p className="text-gray-600 text-center">
           Start exploring our products and add them to your favorites!
         </p>
-        <button
-          className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
-          onClick={() => {
-            // Navigate to product list or home
-          }}
-        >
+        <button className="bg-gradient-to-r from-teal-500 to-green-500 text-white px-6 py-3 rounded-full hover:bg-gradient-to-l transition-all">
           Start Shopping
         </button>
       </div>

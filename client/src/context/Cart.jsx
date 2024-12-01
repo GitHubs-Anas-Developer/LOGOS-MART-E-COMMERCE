@@ -1,12 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { AuthContext } from "./Auth";
 import { Toaster, toast } from "react-hot-toast";
 import api from "../utils/axiosInstance";
 
 const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
-  const { userId } = useContext(AuthContext);
   const [cart, setCart] = useState([]); // State to store cart data
   const [cartCount, setCartCount] = useState(0);
 
@@ -14,7 +12,6 @@ export const CartContextProvider = ({ children }) => {
   const addToCart = async (productId, quantity = 1) => {
     try {
       await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/add/cart`, {
-        userId,
         productId,
         quantity,
       });
@@ -30,7 +27,7 @@ export const CartContextProvider = ({ children }) => {
   const fetchCart = async () => {
     try {
       const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart`
       );
       setCart(response.data.carts); // Store cart data
       setCartCount(response.data.carts.items.length); // Update cart item count
@@ -38,12 +35,30 @@ export const CartContextProvider = ({ children }) => {
       console.error("Failed to fetch cart:", error);
     }
   };
+  const updateCartQuantity = async (productId, newQuantity) => {
+    try {
+      // Make the PUT request to update the quantity
+      const response = await api.put("/api/v1/cart/update-quantity", {
+        productId,
+        quantity: newQuantity,
+      });
+
+      toast.success("Quantity updated successfully!");
+      // Optionally refresh the cart or update the cart state in your context
+      await fetchCart(); // Assuming you have a fetchCart function to refresh the cart state
+    } catch (error) {
+      toast.error("Failed to update quantity.");
+      console.error("Error updating cart quantity:", error);
+    }
+  };
 
   // Delete a product from the cart
   const cartDeleteOne = async (productId) => {
+    console.log(productId);
+
     try {
       const response = await api.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/delete/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/delete`,
         {
           data: { productId }, // Correctly passing productId in the DELETE request body
         }
@@ -55,13 +70,34 @@ export const CartContextProvider = ({ children }) => {
       console.error("Failed to delete product from cart:", error);
     }
   };
+  const cartClearAll = async () => {
+    try {
+      const response = await api.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/clear`
+      );
+      await fetchCart(); // Refresh cart data after clearing all items
+      toast.success("All products removed successfully from cart!");
+    } catch (error) {
+      toast.error("Failed to clear cart");
+      console.error("Failed to clear cart:", error);
+    }
+  };
 
   useEffect(() => {
     fetchCart(); // Fetch cart data when the component mounts or userId changes
-  }, [userId]);
+  }, []);
 
   return (
-    <CartContext.Provider value={{ addToCart, cart, cartCount, cartDeleteOne }}>
+    <CartContext.Provider
+      value={{
+        addToCart,
+        cart,
+        cartCount,
+        cartDeleteOne,
+        cartClearAll,
+        updateCartQuantity,
+      }}
+    >
       <Toaster />
       {children}
     </CartContext.Provider>

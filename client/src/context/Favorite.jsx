@@ -14,29 +14,24 @@ export const FavoriteContextProvider = ({ children }) => {
 
   // Add product to favorites
   const addToFavorites = async (productId) => {
-    if (!userId) {
-      toast.error("Please log in to add products to favorites.");
-      return;
-    }
-
     try {
-      setLoading(true);
+      // Make API call
       const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/add/favorite/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/add/favorite`,
         { productId }
       );
 
-      const newFavorite = response.data.favorite;
-      setFavorites((prev) => [...prev, newFavorite]);
-      setFavoritesCount((prevCount) => prevCount + 1);
-      console.log("favoritesCount", favoritesCount);
-
+      // Handle success
+      console.log("Response:", response);
       toast.success("Product added to favorites!");
+
+      // Optionally update state here if needed (e.g., updating UI)
     } catch (error) {
+      // Log error and show toast notification
       console.error("Error adding to favorites:", error);
-      toast.error(error.response?.data?.message || "Error adding product!");
-    } finally {
-      setLoading(false);
+      toast.error(
+        error.response?.data?.message || "Error adding product to favorites!"
+      );
     }
   };
 
