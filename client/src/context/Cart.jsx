@@ -11,7 +11,7 @@ export const CartContextProvider = ({ children }) => {
   // Add item to cart
   const addToCart = async (productId, quantity = 1) => {
     try {
-      await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/add/cart`, {
+      await api.post(`/api/v1/add/cart`, {
         productId,
         quantity,
       });
@@ -26,9 +26,7 @@ export const CartContextProvider = ({ children }) => {
   // Fetch the current user's cart
   const fetchCart = async () => {
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart`
-      );
+      const response = await api.get(`/api/v1/cart`);
       setCart(response.data.carts); // Store cart data
       setCartCount(response.data.carts.items.length); // Update cart item count
     } catch (error) {
@@ -57,12 +55,9 @@ export const CartContextProvider = ({ children }) => {
     console.log(productId);
 
     try {
-      const response = await api.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/delete`,
-        {
-          data: { productId }, // Correctly passing productId in the DELETE request body
-        }
-      );
+      const response = await api.delete(`/api/v1/cart/delete`, {
+        data: { productId }, // Correctly passing productId in the DELETE request body
+      });
       await fetchCart(); // Refresh cart data after removing item
       toast.success("Product deleted successfully from cart!");
     } catch (error) {
@@ -72,9 +67,7 @@ export const CartContextProvider = ({ children }) => {
   };
   const cartClearAll = async () => {
     try {
-      const response = await api.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/cart/clear`
-      );
+      const response = await api.delete(`/api/v1/cart/clear`);
       await fetchCart(); // Refresh cart data after clearing all items
       toast.success("All products removed successfully from cart!");
     } catch (error) {

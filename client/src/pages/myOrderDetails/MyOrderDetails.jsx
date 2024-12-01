@@ -33,7 +33,7 @@ function MyOrderDetails() {
           try {
             // Verify payment on your server
             const paymentVerification = await api.post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-payment`,
+              `/api/v1/verify-payment`,
               {
                 razorpayOrderId: orderDetails.razorpayOrderId,
                 razorpayPaymentId: response.razorpay_payment_id,

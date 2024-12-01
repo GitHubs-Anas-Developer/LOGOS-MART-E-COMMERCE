@@ -15,9 +15,7 @@ const ProductReviewsProvider = ({ children }) => {
 
     try {
       const response = await api.post(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/v1/product/reviews/${productId}`,
+        `/api/v1/product/reviews/${productId}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -26,9 +24,8 @@ const ProductReviewsProvider = ({ children }) => {
 
       if (response.status === 201) {
         toast.success("Review added successfully!");
-        await fetchProductReviews()
+        await fetchProductReviews();
         return { success: true, message: response.data.message };
-      
       }
     } catch (error) {
       const errorMessage =
@@ -43,9 +40,7 @@ const ProductReviewsProvider = ({ children }) => {
     setIsLoading(true);
     setError(null); // Reset error state before fetching
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/reviews/${productId}`
-      );
+      const response = await api.get(`/api/v1/reviews/${productId}`);
       setReviews(response.data.reviews || []);
     } catch (error) {
       const errorMessage =
@@ -59,9 +54,7 @@ const ProductReviewsProvider = ({ children }) => {
   };
   const handleLike = async (reviewId) => {
     try {
-      const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/like/${reviewId}`
-      );
+      const response = await api.post(`/api/v1/like/${reviewId}`);
 
       if (response.status === 200) {
         setReviews((prevReviews) =>
@@ -82,9 +75,7 @@ const ProductReviewsProvider = ({ children }) => {
 
   const handleDislike = async (reviewId) => {
     try {
-      const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/dislike/${reviewId}`
-      );
+      const response = await api.post(`/api/v1/dislike/${reviewId}`);
 
       if (response.status === 200) {
         setReviews((prevReviews) =>

@@ -13,9 +13,7 @@ export const UserContextProvider = ({ children }) => {
     if (!userId) return; // Return if userId is not available
 
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/user/${userId}`
-      );
+      const response = await api.get(`/api/v1/auth/user/${userId}`);
       setUser(response.data.user); // Set user state with fetched data
     } catch (error) {
       console.error("Error fetching user:", error);

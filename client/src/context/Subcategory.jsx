@@ -13,7 +13,7 @@ export const SubcategoryContextProvider = ({ children }) => {
   const fetchSubcategories = async (subcategoryId) => {
     try {
       const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/category/subcategory/${subcategoryId}`
+        `/api/v1/category/subcategory/${subcategoryId}`
       );
       setSubcategories(response.data.subcategories);
       console.log("subcategories", response.data.subcategories);
@@ -27,9 +27,7 @@ export const SubcategoryContextProvider = ({ children }) => {
 
   const fetchSubcategoriesAll = async () => {
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/subcategories/all`
-      );
+      const response = await api.get(`/api/v1/subcategories/all`);
       setSubcategoriesAll(response.data.subcategories);
     } catch (error) {
       console.error(`Error fetching Subcategories all: ${error}`);

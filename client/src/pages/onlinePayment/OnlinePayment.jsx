@@ -49,20 +49,17 @@ function OnlinePayment({ address }) {
 
     try {
       // Create an order on the backend
-      const { data } = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/create-order`,
-        {
-          productId: product._id,
-          userId,
-          amount: total,
-          addressId: address[0]?._id,
-          tax,
-          deliveryCost,
-          quantity,
-          listPrice,
-          extraDiscountPrice,
-        }
-      );
+      const { data } = await api.post(`/api/v1/create-order`, {
+        productId: product._id,
+        userId,
+        amount: total,
+        addressId: address[0]?._id,
+        tax,
+        deliveryCost,
+        quantity,
+        listPrice,
+        extraDiscountPrice,
+      });
 
       // Configure Razorpay
       const options = {
@@ -73,14 +70,11 @@ function OnlinePayment({ address }) {
         order_id: data.order.id,
         handler: async (response) => {
           try {
-            await api.post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-payment`,
-              {
-                razorpayOrderId: data.order.id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpaySignature: response.razorpay_signature,
-              }
-            );
+            await api.post(`/api/v1/verify-payment`, {
+              razorpayOrderId: data.order.id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            });
 
             toast.success("Payment successful!");
             navigate("/orderSuccess", { state: response.razorpay_payment_id });

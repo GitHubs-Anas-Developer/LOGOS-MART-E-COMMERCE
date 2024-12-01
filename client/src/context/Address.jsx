@@ -12,7 +12,7 @@ export const AddressContextProvider = ({ children }) => {
   const newAddress = async (addressData) => {
     try {
       const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/new/address/${userId}`, // Proper URL format
+        `/api/v1/new/address/${userId}`, // Proper URL format
         addressData // Send the data directly
       );
       toast.success("Address submitted successfully!");
@@ -25,9 +25,7 @@ export const AddressContextProvider = ({ children }) => {
 
   const fetchAddress = async () => {
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/address/${userId}`
-      );
+      const response = await api.get(`/api/v1/address/${userId}`);
       setAddress(response.data.addresses);
     } catch (error) {
       console.error(error);

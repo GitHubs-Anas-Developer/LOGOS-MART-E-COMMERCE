@@ -10,15 +10,13 @@ export const RelatedProductsProvider = ({ children }) => {
 
   // Function to fetch related products based on subsubcategoryId
   const fetchRelatedProducts = async (subsubcategoryId) => {
-    console.log("subsubcategoryId",subsubcategoryId);
-    
+    console.log("subsubcategoryId", subsubcategoryId);
+
     setLoadingRelatedProducts(true);
     setError(null); // Reset error before making a request
     try {
       const response = await api.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/v1/products/related/${subsubcategoryId}`
+        `/api/v1/products/related/${subsubcategoryId}`
       );
       setRelatedProducts(response.data);
       console.log("Related products fetched: ", response.data);

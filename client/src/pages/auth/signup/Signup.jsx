@@ -5,9 +5,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../../context/Auth";
 
 function Signup() {
-
-
-  
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -27,14 +24,11 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/create/user`,
-        {
-          userName,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`/api/v1/auth/create/user`, {
+        userName,
+        email,
+        password,
+      });
 
       if (response.status === 201) {
         toast.success("User registered successfully");

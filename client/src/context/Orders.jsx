@@ -33,9 +33,7 @@ export const OrderContextProvider = ({ children }) => {
     setLoading(true);
     setError(null); // Reset error before fetching
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/order-details/${orderId}`
-      );
+      const response = await api.get(`/api/v1/order-details/${orderId}`);
       setOrderDetails(response.data.orderDetails || null);
     } catch (err) {
       console.error("Error fetching order details:", err);

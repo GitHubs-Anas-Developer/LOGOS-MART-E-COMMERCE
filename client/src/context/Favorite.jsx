@@ -16,10 +16,7 @@ export const FavoriteContextProvider = ({ children }) => {
   const addToFavorites = async (productId) => {
     try {
       // Make API call
-      const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/add/favorite`,
-        { productId }
-      );
+      const response = await api.post(`/api/v1/add/favorite`, { productId });
 
       // Handle success
       console.log("Response:", response);

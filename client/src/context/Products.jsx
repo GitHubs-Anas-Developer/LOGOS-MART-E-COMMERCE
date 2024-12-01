@@ -16,17 +16,12 @@ export const ProductsContextProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     console.log(api.defaults.baseURL);
-   
-    
-    
+
     setLoadingProducts(true);
     setError(null); // Reset error state before making the request
-    
-    try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/products`
 
-      );
+    try {
+      const response = await api.get(`/api/v1/products`);
       if (response.status === 200) {
         setProducts(response.data.products);
       }
@@ -42,11 +37,7 @@ export const ProductsContextProvider = ({ children }) => {
     setLoadingProductDetails(true);
     setError(null); // Reset error state before making the request
     try {
-      const response = await api.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/v1/product/details/${productId}`
-      );
+      const response = await api.get(`/api/v1/product/details/${productId}`);
       if (response.status === 200) {
         setProductDetails(response.data.productDetails);
       }
@@ -63,9 +54,7 @@ export const ProductsContextProvider = ({ children }) => {
     setError(null); // Reset error state before making the request
     try {
       const response = await api.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/v1/products/subsubcategory/${subsubcategoryId}`
+        `/api/v1/products/subsubcategory/${subsubcategoryId}`
       );
       if (response.status === 200) {
         setSubSubcategoryProducts(response.data.subsubcategoryProducts);

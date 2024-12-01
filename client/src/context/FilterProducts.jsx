@@ -9,16 +9,13 @@ export const FilterProductsContextProvider = ({ children }) => {
 
   const fetchFilterProducts = async (rating, priceRange, sortOption) => {
     try {
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/filter/products`,
-        {
-          params: {
-            rating,
-            priceRange: priceRange.join("-"), // Convert price range to a string
-            sortOption,
-          },
-        }
-      );
+      const response = await api.get(`/api/v1/filter/products`, {
+        params: {
+          rating,
+          priceRange: priceRange.join("-"), // Convert price range to a string
+          sortOption,
+        },
+      });
 
       setFilterProducts(response.data.filterProducts); // Set fetched products to the state
       console.log(response.data);
