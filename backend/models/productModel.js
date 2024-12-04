@@ -62,7 +62,15 @@ const productSchema = new mongoose.Schema(
     price: { type: Number },
     offerPrice: { type: Number },
     discountPercentage: { type: Number },
-
+    variants: [
+      {
+        ram: { type: String }, // e.g., "8GB", "12GB"
+        storage: { type: String }, // e.g., "128GB", "256GB"
+        price: { type: Number ,}, // Price for this configuration
+        offerPrice: { type: Number }, // Discounted price, if any
+        discountPercentage: { type: Number }, // Discount percentage
+      },
+    ],
     subSubcategoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "SubSubcategory",
@@ -77,8 +85,6 @@ const productSchema = new mongoose.Schema(
     ],
 
     stock: { type: Number, required: true, min: 0 },
-    ram: { type: String },
-    storageSize: { type: String },
     warranty: { type: String },
     delivery: {
       estimatedDays: { type: Number, default: 5 },

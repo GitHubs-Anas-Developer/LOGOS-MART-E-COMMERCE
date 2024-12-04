@@ -25,6 +25,11 @@ function ProductDetails() {
   const { fetchRelatedProducts } = useContext(RelatedProducts);
   const { fetchProductReviews } = useContext(ProductReviewsContext);
 
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const handleVariantChange = (event) => {
+    setSelectedVariant(productDetails.variants[event.target.value]);
+  };
+
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState("");
 
@@ -40,6 +45,7 @@ function ProductDetails() {
     new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
+      minimumFractionDigits: 0,
     }).format(price);
 
   const addtoCart = (e, productId) => {
@@ -75,6 +81,7 @@ function ProductDetails() {
 
   const productImages = productDetails.colors[selectedColorIndex]?.images || [];
 
+  console.log("productDetails", productDetails.variants[0].offerPrice);
   return (
     <div className="bg-gray-50 min-h-screen py-8">
       <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
@@ -84,9 +91,9 @@ function ProductDetails() {
           <div className="md:col-span-5">
             <div className="relative">
               <img
-                src={selectedImage || productImages[0]}
+                src={selectedImage || productDetails.cardImage}
                 alt={productDetails.title}
-                className="w-full h-auto object-cover rounded-lg shadow-md"
+                className="w-full h-96 object-contain rounded-lg shadow-md"
               />
             </div>
             <div className="mt-4 flex gap-4 overflow-x-auto">
@@ -95,7 +102,7 @@ function ProductDetails() {
                   key={index}
                   src={image}
                   alt={`Image ${index + 1}`}
-                  className={`h-20 w-20 rounded-md border ${
+                  className={`h-20 w-auto rounded-md border ${
                     selectedImage === image
                       ? "border-blue-500"
                       : "border-gray-300"
@@ -108,7 +115,7 @@ function ProductDetails() {
 
           {/* Right: Product Details */}
           <div className="md:col-span-7">
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-2xl font-bold text-gray-800">
               {productDetails.title}
             </h1>
             <div className="flex items-center space-x-2 mt-2">
@@ -116,15 +123,44 @@ function ProductDetails() {
               <span className="text-gray-600">{productDetails.rating} / 5</span>
             </div>
             <div className="mt-4 flex items-center space-x-4">
+              {/* Price with selected variant or default price */}
               <span className="text-3xl font-semibold text-green-600">
-                {formatPrice(productDetails.offerPrice)}
+                {selectedVariant
+                  ? formatPrice(selectedVariant.offerPrice)
+                  : formatPrice(
+                      productDetails.offerPrice ||
+                        productDetails.variants[0]?.offerPrice ||
+                        0
+                    )}
               </span>
+
+              {/* Discount Percentage */}
+              <span className="text-2xl font-semibold text-yellow-700">
+                {selectedVariant
+                  ? selectedVariant.discountPercentage
+                  : productDetails.discountPercentage ||
+                    productDetails.variants[0]?.discountPercentage ||
+                    0}
+                %
+              </span>
+
+              {/* Original Price with line-through */}
+              <span className="text-2xl font-semibold text-gray-400 line-through">
+                {selectedVariant
+                  ? formatPrice(selectedVariant.price)
+                  : productDetails.price ||
+                    formatPrice(productDetails.variants[0]?.price) ||
+                    0}
+              </span>
+
+              {/* Discount label */}
               {productDetails.discountPercentage > 0 && (
                 <span className="text-lg text-red-500">
                   {productDetails.discountPercentage}% off
                 </span>
               )}
             </div>
+
             <div className="mt-4 text-gray-700">
               <p>
                 <strong>Stock:</strong>{" "}
@@ -136,6 +172,9 @@ function ProductDetails() {
               </p>
               <p>
                 <strong>Seller:</strong> {productDetails.seller}
+              </p>
+              <p>
+                <strong>Brand:</strong> {productDetails.brand}
               </p>
               <p>
                 <strong>Warranty:</strong> {productDetails.warranty}
@@ -162,6 +201,62 @@ function ProductDetails() {
               </div>
             </div>
 
+            <div className="mt-4">
+              {productDetails.variants.map((variant, index) => (
+                <button
+                  key={index}
+                  value={index}
+                  onClick={handleVariantChange}
+                  className="text-black p-2 border border-black m-1 rounded-lg"
+                >
+                  {variant.ram} RAM + {variant.storage} Storage
+                </button>
+              ))}
+            </div>
+
+            <div className="delivery-container p-4 rounded bg-white shadow m-5">
+              <h2 className="text-primary mb-3">Delivery Details</h2>
+              <p className="mb-2 text-black">
+                Estimated delivery time:
+                <strong className="text-success">
+                  {new Date(
+                    new Date().setDate(
+                      new Date().getDate() +
+                        productDetails.delivery.estimatedDays
+                    )
+                  ).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}{" "}
+                  business days
+                </strong>
+              </p>
+              <p className="mb-2 text-black">
+                Delivery cost:
+                <strong
+                  className={`text-${
+                    productDetails.delivery.cost === 0 ? "success" : "danger"
+                  }`}
+                >
+                  {productDetails.delivery.cost === 0
+                    ? "Free"
+                    : `$${productDetails.delivery.cost}`}
+                </strong>
+              </p>
+              <p className="text-muted text-black">
+                For more details, visit our{" "}
+                <a
+                  href="/delivery-info"
+                  className="text-info text-decoration-underline"
+                >
+                  Delivery Information
+                </a>{" "}
+                page.
+              </p>
+            </div>
+
             {/* Actions */}
             <div className="mt-6 flex gap-4">
               <button
@@ -178,6 +273,11 @@ function ProductDetails() {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="description-container p-4 rounded bg-light shadow-sm">
+          <h2 className="text-black mb-3 font-bold">Description</h2>
+          <p className=" text-black">{productDetails.description}</p>
         </div>
 
         {/* Specifications */}

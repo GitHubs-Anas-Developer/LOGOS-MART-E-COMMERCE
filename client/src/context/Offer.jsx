@@ -14,6 +14,8 @@ export const OfferContextProvider = ({ children }) => {
 
       setDiscount30to40(response.data.discount30to40);
       setDiscount40to50(response.data.discount40to50);
+     
+      
     } catch (error) {
       console.log(error);
     }

@@ -3,6 +3,8 @@ const cloudinary = require("../config/cloudinary");
 
 // Create a new product with images uploaded to Cloudinary
 const createProduct = async (req, res) => {
+  console.log(req.body);
+
   try {
     const {
       title,
@@ -11,11 +13,10 @@ const createProduct = async (req, res) => {
       price,
       offerPrice,
       discountPercentage,
+      variants,
       stock,
       subSubcategoryId,
       description,
-      ram,
-      storageSize,
       warranty,
       sizes,
       rating,
@@ -24,33 +25,68 @@ const createProduct = async (req, res) => {
       colors,
     } = req.body;
 
-    const productCardImage = req.files.cardImage[0].path;
+    // Basic validation
+    if (!title || !price || !stock) {
+      return res.status(400).json({
+        success: false,
+        message: "Title, price, and stock are required fields.",
+      });
+    }
 
-    // Convert input values
-    const productPrice = parseInt(price);
+    // Parse variants to ensure it's an array of objects
+    let parsedVariants = variants ? JSON.parse(variants) : [];
+
+    // Correct mapping of variants to be stored in the database
+    parsedVariants = parsedVariants.map((variant) => ({
+      ram: variant.ram,
+      storage: variant.storage,
+      price: parseFloat(variant.price) || 0,
+      offerPrice: parseFloat(variant.offerPrice) || 0,
+      discountPercentage: parseInt(variant.discountPercentage) || 0,
+    }));
+
+    const productCardImage = req.files.cardImage
+      ? req.files.cardImage[0].path
+      : null;
+
+    if (!productCardImage) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Product card image is required." });
+    }
+
+    // Convert input values for pricing, stock, and rating
+    const productPrice = parseFloat(price);
     const productDiscountPercentage = parseInt(discountPercentage);
-    const productOfferPrice = parseInt(offerPrice);
+    const productOfferPrice = parseFloat(offerPrice);
     const productStock = parseInt(stock);
     const productRating = parseFloat(rating);
 
-    // Parse specifications
-    const parsedSpecifications = JSON.parse(specifications || "{}");
+    // Parse specifications if provided
+    const parsedSpecifications = specifications
+      ? JSON.parse(specifications)
+      : {};
 
-    // Upload image to Cloudinary
+    // Upload the product card image to Cloudinary
     const result = await cloudinary.uploader.upload(productCardImage, {
       folder: "product card image",
       use_filename: true,
       unique_filename: false,
     });
 
-    // Structure colors and their images
+    // Structure colors and their images (upload each color's images to Cloudinary)
     const structuredColors = await Promise.all(
       colors.map(async (color, index) => {
-        // Check for images for this specific color in req.files
-        const colorImagesKey = `colors[${index}][images]`; // key format from req.files
+        const colorImagesKey = `colors[${index}][images]`;
         const colorImages = req.files[colorImagesKey] || [];
 
-        // Upload each image for this color to Cloudinary
+        if (colorImages.length === 0) {
+          return res.status(400).json({
+            success: false,
+            message: `No images provided for color ${color.colorName}`,
+          });
+        }
+
         const uploadPromises = colorImages.map((file) =>
           cloudinary.uploader.upload(file.path, {
             folder: "products Details Image",
@@ -59,13 +95,10 @@ const createProduct = async (req, res) => {
           })
         );
 
-        // Wait for all images of this color to upload
         const uploadedImages = await Promise.all(uploadPromises);
 
-        // Collect the secure URLs from the uploaded images for this color
         const imageUrls = uploadedImages.map((result) => result.secure_url);
 
-        // Return structured color object with images
         return {
           colorName: color.colorName,
           hexCode: color.hexCode,
@@ -80,13 +113,12 @@ const createProduct = async (req, res) => {
       brand,
       seller,
       price: productPrice,
-      discountPercentage: productDiscountPercentage,
       offerPrice: productOfferPrice,
+      discountPercentage: productDiscountPercentage,
+      variants: parsedVariants,
       stock: productStock,
       subSubcategoryId,
       description,
-      ram,
-      storageSize,
       warranty,
       sizes,
       rating: productRating,
@@ -96,8 +128,10 @@ const createProduct = async (req, res) => {
         cost: delivery.cost,
       },
       cardImage: result.secure_url,
-      colors: structuredColors, // Use structured colors with images
+      colors: structuredColors,
     });
+
+    console.log("newProduct", newProduct);
 
     await newProduct.save();
 

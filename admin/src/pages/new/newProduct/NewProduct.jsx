@@ -11,12 +11,19 @@ const ProductCreate = () => {
     seller: "",
     price: "",
     offerPrice: "",
+    variants: [
+      {
+        ram: "",
+        storage: "",
+        price: "",
+        offerPrice: "",
+        discountPercentage: "",
+      },
+    ],
     discountPercentage: "",
     stock: "",
     subSubcategoryId: "",
     description: "",
-    ram: "",
-    storageSize: "",
     warranty: "",
     rating: "",
     sizes: [],
@@ -117,6 +124,40 @@ const ProductCreate = () => {
     updatedColors[colorIndex].images = updatedImages;
     setColors(updatedColors);
   };
+  const handleVariantChange = (index, field, value) => {
+    const updatedVariants = [...formData.variants];
+
+    // Update the specific field for the variant at the given index
+    updatedVariants[index][field] = value;
+
+    // Recalculate the offer price for the updated variant if necessary
+    const price = updatedVariants[index].price || 0;
+    const discountPercentage = updatedVariants[index].discountPercentage || 0;
+
+    updatedVariants[index].offerPrice = Math.floor(
+      price -
+      (price * discountPercentage) / 100
+    ).toFixed(2); // Round to 2 decimals
+
+    // Update the state with the modified variants array
+    setFormData({ ...formData, variants: updatedVariants });
+  };
+
+  const removeVariant = (index) => {
+    const updatedVariants = formData.variants.filter((_, i) => i !== index);
+    setFormData({ ...formData, variants: updatedVariants });
+  };
+
+  const addVariant = () => {
+    const newVariant = {
+      ram: "",
+      storage: "",
+      price: "",
+      offerPrice: "",
+      discountPercentage: "",
+    };
+    setFormData({ ...formData, variants: [...formData.variants, newVariant] });
+  };
 
   const addSpecification = () => {
     setFormData({
@@ -131,19 +172,19 @@ const ProductCreate = () => {
     const newSpecifications = { ...formData.specifications };
     const oldKey = Object.keys(newSpecifications)[index];
     const newKey = e.target.value;
-  
+
     if (newKey && newKey !== oldKey) {
       newSpecifications[newKey] = newSpecifications[oldKey];
       delete newSpecifications[oldKey];
       setFormData({ ...formData, specifications: newSpecifications });
     }
   };
-  
+
   const handleSpecificationValueChange = (e, index) => {
     const newSpecifications = { ...formData.specifications };
     const key = Object.keys(newSpecifications)[index];
     newSpecifications[key] = e.target.value;
-  
+
     setFormData({ ...formData, specifications: newSpecifications });
   };
 
@@ -162,6 +203,9 @@ const ProductCreate = () => {
 
     Object.keys(formData).forEach((key) => {
       if (key === "specifications" || key === "sizes") {
+        data.append(key, JSON.stringify(formData[key]));
+      } else if (key === "variants") {
+        // Serialize the processed variants array
         data.append(key, JSON.stringify(formData[key]));
       } else if (key === "delivery") {
         data.append(`${key}[estimatedDays]`, formData.delivery.estimatedDays);
@@ -184,6 +228,7 @@ const ProductCreate = () => {
     });
 
     setAddProduct(data);
+
     addProductData();
   };
 
@@ -335,6 +380,81 @@ const ProductCreate = () => {
           required
           className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
         />
+        <div className="space-y-4">
+          <h4 className="text-lg font-medium text-gray-700">Variants</h4>
+
+          {formData.variants.map((variant, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-3 gap-4 items-center border-b pb-2"
+            >
+              <input
+                type="text"
+                value={variant.ram}
+                onChange={(e) =>
+                  handleVariantChange(index, "ram", e.target.value)
+                }
+                placeholder="RAM (e.g., 4GB)"
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="text"
+                value={variant.storage}
+                onChange={(e) =>
+                  handleVariantChange(index, "storage", e.target.value)
+                }
+                placeholder="Storage (e.g., 128GB)"
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="number"
+                value={variant.price}
+                onChange={(e) =>
+                  handleVariantChange(index, "price", e.target.value)
+                }
+                placeholder="Price"
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="number"
+                value={variant.offerPrice}
+                onChange={(e) =>
+                  handleVariantChange(index, "offerPrice", e.target.value)
+                }
+                placeholder="Offer Price"
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="number"
+                value={variant.discountPercentage}
+                onChange={(e) =>
+                  handleVariantChange(
+                    index,
+                    "discountPercentage",
+                    e.target.value
+                  )
+                }
+                placeholder="Discount (%)"
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <button
+                type="button"
+                onClick={() => removeVariant(index)}
+                className="text-red-500 font-bold"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={addVariant}
+            className="px-4 py-2 bg-purple-500 text-white rounded-md"
+          >
+            Add Variant
+          </button>
+        </div>
 
         <div className="space-y-4">
           <h4 className="text-lg font-medium text-gray-700">Specifications</h4>
@@ -413,18 +533,6 @@ const ProductCreate = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <input
-            name="ram"
-            onChange={handleChange}
-            placeholder="RAM (optional)"
-            className="w-full px-5 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
-          />
-          <input
-            name="storageSize"
-            onChange={handleChange}
-            placeholder="Storage Size (optional)"
-            className="w-full px-5 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
-          />
           <input
             name="warranty"
             onChange={handleChange}

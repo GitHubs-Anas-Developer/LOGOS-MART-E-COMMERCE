@@ -84,7 +84,7 @@ function SubsubcategoryProducts() {
             <Link to={`/productDetails/${product._id}`}>
               {/* Product Image */}
               <img
-                src={product.colors[0].images[0]} // Assuming the first color image
+                src={product.cardImage} // Assuming the first color image
                 alt={product.title}
                 className="w-full h-48 object-contain"
                 loading="lazy"
@@ -96,12 +96,13 @@ function SubsubcategoryProducts() {
               <h3 className="text-sm font-semibold text-gray-800 truncate">
                 {product.title}
               </h3>
-              <p className="text-xs text-gray-500">{product.category}</p>
 
               {/* Price and Discount */}
               <div className="flex items-center space-x-2 mt-2">
-                <span className="text-lg font-bold text-gray-800">
-                  {formatPrice(product.offerPrice)}
+                <span className="text-lg font-bold text-green-600">
+                  {product.offerPrice
+                    ? formatPrice(product.offerPrice)
+                    : formatPrice(product.variants?.[0]?.offerPrice || 0)}
                 </span>
                 {product.discountPercentage && (
                   <span className="text-xs text-green-600">

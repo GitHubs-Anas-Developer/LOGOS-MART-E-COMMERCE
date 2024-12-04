@@ -23,11 +23,13 @@ function Products() {
   }, []);
 
   const formatPrice = (price) => {
+    const flooredPrice = Math.floor(price); // Floor the price to the nearest whole number
+
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 0,
-    }).format(price);
+    }).format(flooredPrice);
   };
 
   if (error) {
@@ -92,7 +94,7 @@ function Products() {
                     {/* Product Image */}
                     <div className="relative">
                       <img
-                        src={product.colors[0].images[0]}
+                        src={product.cardImage}
                         alt={product.title}
                         className="w-full h-32 object-contain"
                         loading="lazy"
@@ -120,13 +122,12 @@ function Products() {
                       {/* Pricing */}
                       <div className="flex items-center">
                         <span className="text-lg font-bold text-green-600">
-                          {formatPrice(product.offerPrice)}
+                          {product.offerPrice
+                            ? formatPrice(product.offerPrice)
+                            : formatPrice(
+                                product.variants?.[0]?.offerPrice || 0
+                              )}
                         </span>
-                        {product.price > product.offerPrice && (
-                          <span className="text-sm line-through text-gray-400 ml-3">
-                            {formatPrice(product.price)}
-                          </span>
-                        )}
                       </div>
 
                       {/* Add to Cart Button */}
