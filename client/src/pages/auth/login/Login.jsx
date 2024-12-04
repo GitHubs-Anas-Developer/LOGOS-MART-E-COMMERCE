@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
 import { AuthContext } from "../../../context/Auth";
 import api from "../../../utils/axiosInstance";
 
@@ -19,13 +18,10 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/user/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await api.post(`/api/v1/auth/user/login`, {
+        email,
+        password,
+      });
 
       console.log(response);
 

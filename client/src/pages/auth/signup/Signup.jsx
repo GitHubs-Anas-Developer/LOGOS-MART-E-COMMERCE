@@ -43,12 +43,14 @@ function Signup() {
       );
       toast.error(serverError);
     } finally {
-      setUserName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setPasswordError("");
-      setServerError("");
+      if (response.status === 201) {
+        setUserName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError("");
+        setServerError("");
+      }
     }
   };
 

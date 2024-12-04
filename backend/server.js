@@ -34,6 +34,8 @@ app.use(
   })
 );
 
+app.use(cors());
+
 // Use express.json() middleware for parsing JSON requests
 app.use(express.json());
 
@@ -59,7 +61,6 @@ app.use("/api/v1/", filterRoutes);
 app.use("/api/v1/", addressRoutes);
 app.use("/api/v1/", orderRoutes);
 app.use("/api/v1/", reviewRoutes);
-
 
 const PORT = process.env.PORT || 8080;
 
