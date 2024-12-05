@@ -18,7 +18,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await api.post(`/api/v1/auth/user/login`, {
+      const response = await api.post(`http://localhost:8050/api/v1/auth/user/login`, {
         email,
         password,
       });

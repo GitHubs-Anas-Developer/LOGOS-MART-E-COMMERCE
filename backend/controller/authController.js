@@ -43,6 +43,9 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log("email, password",email, password);
+   
+
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required!" });
     }
@@ -80,7 +83,7 @@ const logoutUser = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" // Secure in production
+      secure: process.env.NODE_ENV === "production", // Secure in production
     });
 
     res.status(200).json({ message: "Logged out successfully" });
