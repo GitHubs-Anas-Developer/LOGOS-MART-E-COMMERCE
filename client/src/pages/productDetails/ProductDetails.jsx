@@ -242,7 +242,7 @@ function ProductDetails() {
                 >
                   {productDetails.delivery.cost === 0
                     ? "Free"
-                    : `$${productDetails.delivery.cost}`}
+                    : `${productDetails.delivery.cost}`}
                 </strong>
               </p>
               <p className="text-muted text-black">

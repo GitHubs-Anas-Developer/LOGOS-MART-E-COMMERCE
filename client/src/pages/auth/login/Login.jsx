@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
 import { AuthContext } from "../../../context/Auth";
 import api from "../../../utils/axiosInstance";
 
@@ -13,17 +14,22 @@ function Login() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
+  console.log(
+    "import.meta.env.VITE_BACKEND_URL",
+    import.meta.env.VITE_BACKEND_URL
+  );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await api.post(`http://localhost:8050/api/v1/auth/user/login`, {
-        email,
-        password,
-      });
-
-      console.log(response);
+      const response = await api.post(
+        `/api/v1/auth/user/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       if (response.status === 200) {
         toast.success("Logged in successfully");

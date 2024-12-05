@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL, // Use the environment variable
-  withCredentials: true, // Required for sending cookies
+  baseURL: "http://localhost:8050", // Dynamically sets the backend URL
+  withCredentials: true, // Ensures cookies are sent with requests
 });
+
 
 export default api;
