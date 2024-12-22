@@ -6,6 +6,7 @@ const FilterProductsContext = createContext();
 
 export const FilterProductsContextProvider = ({ children }) => {
   const [filterProducts, setFilterProducts] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   const fetchFilterProducts = async (rating, priceRange, sortOption) => {
     try {
@@ -24,9 +25,23 @@ export const FilterProductsContextProvider = ({ children }) => {
     }
   };
 
+  const fetchBrands = async () => {
+    try {
+      // Fetch brands from the API
+      const response = await api.get("/api/v1/brands");
+
+      // Check if the response contains the expected data
+
+      setBrands(response.data.brands); // Update the state with the fetched brands
+    } catch (error) {
+      // Log detailed error information
+      console.error("Error fetching brands:", error.message);
+    }
+  };
+
   return (
     <FilterProductsContext.Provider
-      value={{ fetchFilterProducts, filterProducts }}
+      value={{ fetchFilterProducts, filterProducts, fetchBrands, brands }}
     >
       {children}
     </FilterProductsContext.Provider>

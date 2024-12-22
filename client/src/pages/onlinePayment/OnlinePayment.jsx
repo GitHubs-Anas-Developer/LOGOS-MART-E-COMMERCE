@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import axios from "axios";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/Auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
@@ -15,9 +14,30 @@ const calculateCosts = (basePrice, quantity, deliveryCost, taxRate = 0.1) => {
 };
 
 function OnlinePayment({ address }) {
+  const [product, setProduct] = useState([]);
   const { userId } = useContext(AuthContext);
   const location = useLocation();
-  const product = location.state?.product;
+
+  const { productId, productColorId, productRamStorageId } =
+    location.state || {};
+
+  const fetchPaymentProduct = async () => {
+    try {
+      const response = await api.get("/api/v1/product/payment", {
+        params: { productId, productColorId, productRamStorageId },
+      });
+      setProduct(response.data.paymentProduct); // Update state with product details
+    } catch (error) {
+      console.error("Failed to fetch product details:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (productId) fetchPaymentProduct();
+  }, []);
+
+  console.log("product", product);
+
   const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
@@ -34,9 +54,13 @@ function OnlinePayment({ address }) {
   }
 
   const basePrice = product.offerPrice;
+
   const deliveryCost = product.delivery?.cost || 0;
   const { tax, total } = calculateCosts(basePrice, quantity, deliveryCost);
   const listPrice = product.price;
+
+  console.log("listPrice", listPrice);
+
   const extraDiscountPrice = listPrice - basePrice;
 
   const handlePayment = async () => {
@@ -47,10 +71,12 @@ function OnlinePayment({ address }) {
 
     setIsLoading(true);
 
+    console.log();
+
     try {
       // Create an order on the backend
       const { data } = await api.post(`/api/v1/create-order`, {
-        productId: product._id,
+        productId: productId,
         userId,
         amount: total,
         addressId: address[0]?._id,
@@ -114,7 +140,7 @@ function OnlinePayment({ address }) {
             </h1>
             <div className="flex items-center gap-4">
               <img
-                src={product.cardImage}
+                src={product.image}
                 alt={product.title}
                 className="w-24 h-24 object-contain rounded-md"
               />

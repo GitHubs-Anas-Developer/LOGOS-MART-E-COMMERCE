@@ -3,9 +3,9 @@ const cloudinary = require("../config/cloudinary");
 
 // Create a new product with images uploaded to Cloudinary
 const createProduct = async (req, res) => {
-  console.log(req.body);
-
   try {
+    console.log(req.body);
+
     const {
       title,
       brand,
@@ -16,6 +16,8 @@ const createProduct = async (req, res) => {
       variants,
       stock,
       subSubcategoryId,
+      highlights,
+      about,
       description,
       warranty,
       sizes,
@@ -62,6 +64,7 @@ const createProduct = async (req, res) => {
     const productStock = parseInt(stock);
     const productRating = parseFloat(rating);
 
+    const parsedHighlights = highlights ? JSON.parse(highlights) : {};
     // Parse specifications if provided
     const parsedSpecifications = specifications
       ? JSON.parse(specifications)
@@ -118,6 +121,8 @@ const createProduct = async (req, res) => {
       variants: parsedVariants,
       stock: productStock,
       subSubcategoryId,
+      highlights: parsedHighlights,
+      about,
       description,
       warranty,
       sizes,
@@ -230,7 +235,7 @@ const getRelatedProducts = async (req, res) => {
     // Fetch related products based on the subsubcategoryId
     const relatedProducts = await Product.find({
       subSubcategoryId: subsubcategoryId,
-    }).select("cardImage title price offerPrice discountPercentage rating"); // Select specific fields
+    }); // Select specific fields
 
     // If no products found, return a 404 status
     if (relatedProducts.length === 0) {

@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import FilterProductsContext from "../../context/FilterProducts";
-
+import { CiStar } from "react-icons/ci";
 function Filters() {
-  const brands = ["Nike", "Adidas", "Puma", "Reebok"];
   const initialPriceRange = [0, 200000]; // Dynamic price range
   const [priceRange, setPriceRange] = useState(initialPriceRange);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [rating, setRating] = useState(1);
   const [sortOption, setSortOption] = useState("");
 
-  const { fetchFilterProducts } = useContext(FilterProductsContext);
+  const { fetchFilterProducts, fetchBrands, brands } = useContext(
+    FilterProductsContext
+  );
 
   // Debounced filter fetch
   useEffect(() => {
+    fetchBrands();
     const debounce = setTimeout(() => {
       fetchFilterProducts(rating, priceRange, sortOption, selectedBrand);
     }, 300); // 300ms debounce
@@ -36,7 +38,7 @@ function Filters() {
   };
 
   return (
-    <div className="bg-blue-50 p-6 rounded-lg">
+    <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all">
       <h3 className="text-2xl font-semibold text-gray-800 mb-6">Filters</h3>
 
       {/* Price Range */}
@@ -68,53 +70,60 @@ function Filters() {
 
       {/* Brand */}
       <div className="mb-6">
-        <label className="block text-lg font-medium text-gray-600 mb-2">
-          Brand
+        <label className="block text-lg font-medium text-gray-600 mb-2 underline underline-offset-4 decoration-blue-500 hover:decoration-blue-700">
+          Brands
         </label>
-        <select
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">All Brands</option>
-          {brands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
+
+        <ul class="space-y-2">
+          {brands.map((brand, index) => (
+            <li key={index} class="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="brand"
+                value={brand}
+                id={`brand-${index}`}
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor={`brand-${index}`}
+                class="text-gray-700 hover:text-blue-500 cursor-pointer"
+              >
+                {brand}
+              </label>
+            </li>
           ))}
-        </select>
+        </ul>
       </div>
 
       <div className="mb-6">
-        <label className="block text-lg font-medium text-gray-600 mb-2">
+        <label className="block text-lg font-medium text-gray-600 mb-2 underline underline-offset-4 decoration-blue-500 hover:decoration-blue-700">
           Rating
         </label>
-        <select
-          value={rating}
-          onChange={(e) => setRating(Number(e.target.value))}
-          className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-yellow-400 focus:ring-2 focus:ring-blue-500"
-        >
-          <option value={1} className="text-yellow-400">
-            {"★☆☆☆☆"} & Up
-          </option>
-          <option value={2} className="text-yellow-400">
-            {"★★☆☆☆"} & Up
-          </option>
-          <option value={3} className="text-yellow-400">
-            {"★★★☆☆"} & Up
-          </option>
-          <option value={4} className="text-yellow-400">
-            {"★★★★☆"} & Up
-          </option>
-          <option value={5} className="text-yellow-400">
-            {"★★★★★"}
-          </option>
-        </select>
+        <ul className="space-y-2">
+          {[1, 2, 3, 4, 5].map((rating, index) => (
+            <li key={index} className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                name="rating"
+                value={rating}
+                id={`rating-${index}`}
+                className="h-5 w-5 text-yellow-500 focus:ring-yellow-400 border-gray-300 rounded"
+              />
+              <label
+                htmlFor={`rating-${index}`}
+                className="flex items-center text-gray-800 hover:text-yellow-600 cursor-pointer"
+              >
+                {rating}
+                <CiStar className="ml-1 text-yellow-400" /> & above
+              </label>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Sorting Options */}
       <div className="mb-6">
-        <label className="block text-lg font-medium text-gray-600 mb-2">
+        <label className="block text-lg font-medium text-gray-600 mb-2 underline underline-offset-4 decoration-blue-500 hover:decoration-blue-700">
           Sort By
         </label>
         <select
@@ -129,6 +138,31 @@ function Filters() {
           <option value="title">Alphabetical</option>
         </select>
       </div>
+      <label className="block text-lg font-medium text-gray-600 mb-2 underline underline-offset-4 decoration-blue-500 hover:decoration-blue-700">
+        Discount
+      </label>
+      <ul className="space-y-3">
+        {[20, 30, 40, 50, 60, 70, 80].map((discount, index) => (
+          <li
+            key={index}
+            className="flex items-center gap-4 p-2 rounded-lg border border-gray-300 hover:bg-gray-100 cursor-pointer transition-all"
+          >
+            <input
+              type="checkbox"
+              name="discount"
+              value={discount}
+              id={`discount-${index}`}
+              className="h-5 w-5 text-green-500 focus:ring-green-400 border-gray-300 rounded-sm"
+            />
+            <label
+              htmlFor={`discount-${index}`}
+              className="text-lg font-medium text-gray-800 hover:text-green-500"
+            >
+              {discount}% Off
+            </label>
+          </li>
+        ))}
+      </ul>
 
       {/* Clear Filters Button */}
       <button

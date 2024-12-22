@@ -1,17 +1,33 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 function Carousel() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // URLs for display
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files); // Convert FileList to an array
+  const handleImageUpload = async (event) => {
+    const files = event.target.files;
 
-    const newImages = files.map((file) => URL.createObjectURL(file));
+    const formData = new FormData();
+    Array.from(files).forEach((file) => formData.append("images", file));
+    console.log("formData", formData);
 
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    try {
+      const response = await axios.post(
+        "http://localhost:8050/api/v1/create/carouselBanner",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-    console.log("Uploaded image URLs:", newImages); // Logs the array of URLs for uploaded images
+      const uploadedImages = response.data.images; // Assuming response contains image URLs
+      setImages((prevImages) => [...prevImages, ...uploadedImages]);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    }
   };
 
   const prevSlide = () => {
@@ -48,6 +64,7 @@ function Carousel() {
           <button
             onClick={prevSlide}
             className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-600 bg-opacity-60 text-white p-2 rounded-full hover:bg-opacity-80 focus:outline-none"
+            aria-label="Previous Slide"
           >
             &#10094;
           </button>
@@ -63,11 +80,11 @@ function Carousel() {
           <button
             onClick={nextSlide}
             className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-600 bg-opacity-60 text-white p-2 rounded-full hover:bg-opacity-80 focus:outline-none"
+            aria-label="Next Slide"
           >
             &#10095;
           </button>
 
-          {/* Navigation Dots */}
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {images.map((_, index) => (
               <span

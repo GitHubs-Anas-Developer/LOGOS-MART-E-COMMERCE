@@ -8,6 +8,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { CiSettings } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { FaImages } from "react-icons/fa";
 
 function Sidebar() {
   return (
@@ -56,10 +57,21 @@ function Sidebar() {
             </li>
 
             <li>
-              <div className="menu-item flex items-center gap-4 text-black hover:bg-gray-200 dark:hover:bg-neutral-700 p-3 rounded-lg transition">
-                <FaProductHunt className="h-6 w-6" />
-                <span>Products</span>
-              </div>
+              <Link to={"/products"}>
+                <div className="menu-item flex items-center gap-4 text-black hover:bg-gray-200 dark:hover:bg-neutral-700 p-3 rounded-lg transition">
+                  <FaProductHunt className="h-6 w-6" />
+                  <span>Products</span>
+                </div>
+              </Link>
+            </li>
+
+            <li>
+              <Link to={"/productsImages"}>
+                <div className="menu-item flex items-center gap-4 text-black hover:bg-gray-200 dark:hover:bg-neutral-700 p-3 rounded-lg transition">
+                  <FaImages className="h-6 w-6" />
+                  <span>Products Images</span>
+                </div>
+              </Link>
             </li>
 
             <li>

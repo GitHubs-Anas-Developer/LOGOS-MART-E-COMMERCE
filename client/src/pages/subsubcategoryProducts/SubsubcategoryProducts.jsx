@@ -5,6 +5,8 @@ import CartContext from "../../context/Cart";
 import FavoriteContext from "../../context/Favorite";
 import { FaHeart, FaStar } from "react-icons/fa"; // Icons for wishlist and ratings
 import { FiShoppingCart } from "react-icons/fi"; // Shopping cart icon
+import { FiHeart } from "react-icons/fi";
+import CategoriesBanner from "../home/categoryBanner/CategoriesBanner";
 
 function SubsubcategoryProducts() {
   const { id } = useParams();
@@ -62,78 +64,132 @@ function SubsubcategoryProducts() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-        Products in this Category
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {subSubcategoryProducts.map((product) => (
-          <div
-            key={product._id}
-            className="relative border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-white"
-          >
-            {/* Wishlist Button */}
-            <button
-              onClick={(e) => addToFavoritesHandler(e, product._id)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition duration-300"
+    <>
+      <CategoriesBanner />
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Products in this Category
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {subSubcategoryProducts.map((product) => (
+            <div
+              key={product._id}
+              className="relative border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-white"
             >
-              <FaHeart size={18} />
-            </button>
-
-            {/* Product Link */}
-            <Link to={`/productDetails/${product._id}`}>
-              {/* Product Image */}
-              <img
-                src={product.cardImage} // Assuming the first color image
-                alt={product.title}
-                className="w-full h-48 object-contain"
-                loading="lazy"
-              />
-            </Link>
-
-            {/* Product Info */}
-            <div className="p-4">
-              <h3 className="text-sm font-semibold text-gray-800 truncate">
-                {product.title}
-              </h3>
-
-              {/* Price and Discount */}
-              <div className="flex items-center space-x-2 mt-2">
-                <span className="text-lg font-bold text-green-600">
-                  {product.offerPrice
-                    ? formatPrice(product.offerPrice)
-                    : formatPrice(product.variants?.[0]?.offerPrice || 0)}
-                </span>
-                {product.discountPercentage && (
-                  <span className="text-xs text-green-600">
-                    {product.discountPercentage}% off
-                  </span>
-                )}
-              </div>
-
-              {/* Ratings */}
-              <div className="flex items-center mt-1">
-                {[...Array(Math.floor(product.rating || 0))].map((_, i) => (
-                  <FaStar key={i} className="text-yellow-500" size={12} />
-                ))}
-                <span className="text-xs text-gray-500 ml-2">
-                  {product.rating || "No reviews"}
-                </span>
-              </div>
-
-              {/* Add to Cart */}
+              {/* Wishlist Button */}
               <button
-                onClick={(e) => addToCartHandler(e, product._id)}
-                className="mt-4 w-full flex items-center justify-center bg-blue-500 text-white text-sm py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                onClick={(e) => addToFavoritesHandler(e, product._id)}
+                className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition duration-300"
               >
-                <FiShoppingCart size={16} className="mr-2" />
-                Add to Cart
+                <FaHeart size={18} />
               </button>
+
+              {/* Product Link */}
+              <Link to={`/productDetails/${product._id}`}>
+                {/* Product Image */}
+                <img
+                  src={product.cardImage} // Assuming the first color image
+                  alt={product.title}
+                  className="w-full h-48 object-contain"
+                  loading="lazy"
+                />
+              </Link>
+
+              {/* Product Info */}
+              <div className="p-4">
+                <h3 className="text-sm font-semibold text-gray-800 truncate">
+                  {product.title}
+                </h3>
+
+                {/* Price and Discount */}
+                <div className="p-4">
+                  {/* Title */}
+
+                  {/* Ratings */}
+                  <div className="flex items-center mt-2">
+                    <span className="bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded">
+                      ⭐ {product.rating || "4.0"}
+                    </span>
+                    <span className="ml-2 text-xs text-gray-500">
+                      ({product.reviews.length || 0} reviews)
+                    </span>
+                  </div>
+
+                  {/* Price and Discount */}
+                  <div className="flex items-center justify-between mb-2">
+                    {/* Offer Price */}
+                    <span className="text-xl font-bold text-red-600">
+                      {product.offerPrice
+                        ? formatPrice(product.offerPrice)
+                        : formatPrice(product.variants?.[0]?.offerPrice) || ""}
+                    </span>
+
+                    {/* Discount Percentage */}
+                    {(product.discountPercentage ||
+                      product.variants?.[0]?.discountPercentage) && (
+                      <span className="text-sm font-medium text-green-600">
+                        {product.discountPercentage
+                          ? `${product.discountPercentage}% OFF`
+                          : `${product.variants?.[0]?.discountPercentage}% OFF`}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Original Price */}
+                  <div className="flex justify-between items-center">
+                    {/* Original Price */}
+                    <div className="text-sm text-gray-400 line-through">
+                      {product.price
+                        ? formatPrice(product.price)
+                        : formatPrice(product.variants?.[0]?.price) || ""}
+                    </div>
+
+                    {/* Discount Savings */}
+                    {(product.offerPrice && product.price) ||
+                    (product.variants?.[0]?.offerPrice &&
+                      product.variants?.[0]?.price) ? (
+                      <span className="ml-2 bg-green-100 text-green-600 font-medium text-xs px-2 py-1 rounded-lg shadow-sm">
+                        Save ₹
+                        {product.offerPrice && product.price
+                          ? product.price - product.offerPrice
+                          : product.variants?.[0]?.price -
+                            product.variants?.[0]?.offerPrice}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+
+                {/* Ratings */}
+
+                <div className="flex space-x-2 p-1">
+                  {/* Add to Cart Button */}
+                  <button
+                    className="flex-1 py-2 flex items-center justify-center text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 transition rounded-lg shadow-md"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart(product._id);
+                    }}
+                  >
+                    <FiShoppingCart className="text-lg mr-2" />
+                  </button>
+
+                  {/* Add to Wishlist Button */}
+                  <button
+                    className="flex-1 py-2 flex items-center justify-center text-sm font-medium text-orange-500 border border-orange-500 hover:bg-orange-500 hover:text-white transition rounded-lg shadow-md"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToWishlist(product._id);
+                    }}
+                  >
+                    <FiHeart className="text-lg mr-2" />
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

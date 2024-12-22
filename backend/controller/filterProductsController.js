@@ -47,4 +47,23 @@ const getFilterProducts = async (req, res) => {
   }
 };
 
-module.exports = { getFilterProducts };
+const getBrands = async (req, res) => {
+  try {
+    // Fetch unique brands from the database
+    const brands = await productModels.distinct("brand");
+    const productBrands = brands.map((brand) => brand.toUpperCase());
+
+    console.log(productBrands);
+    // Send the response
+    return res.status(200).json({ success: true, brands: productBrands });
+  } catch (error) {
+    console.error("Error fetching brands:", error.message);
+
+    // Send error response
+    return res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { getFilterProducts, getBrands };

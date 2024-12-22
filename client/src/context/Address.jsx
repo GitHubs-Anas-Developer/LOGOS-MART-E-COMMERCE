@@ -2,12 +2,15 @@ import { createContext, useContext, useState } from "react";
 import { AuthContext } from "./Auth";
 import { Toaster, toast } from "react-hot-toast";
 import api from "../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const AddressContext = createContext();
 
 export const AddressContextProvider = ({ children }) => {
   const { userId } = useContext(AuthContext); // Get userId from AuthContext
   const [address, setAddress] = useState([]);
+
+  const navigate = useNavigate();
 
   const newAddress = async (addressData) => {
     try {
@@ -16,7 +19,7 @@ export const AddressContextProvider = ({ children }) => {
         addressData // Send the data directly
       );
       toast.success("Address submitted successfully!");
-      console.log("Address submitted:", response.data);
+      navigate("/payment");
     } catch (error) {
       toast.error("Failed to submit address. Please try again.");
       console.error("Error submitting address:", error);

@@ -12,7 +12,6 @@ function MyOrderDetails() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  console.log("orderDetails", orderDetails); // Debugging output
 
   // Fetch order details when component mounts
   useEffect(() => {

@@ -3,6 +3,7 @@ import CategoryContext from "../../../context/Category";
 import SubcategoryContext from "../../../context/Subcategory";
 import SubsubcategoryContext from "../../../context/Subsubcategory";
 import { Link } from "react-router-dom";
+import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 
 function CategoriesBanner() {
   const { fetchCategory, categories, loading, error } =
@@ -29,78 +30,97 @@ function CategoriesBanner() {
     fetchSubsubcategories(subcategoryId);
   };
 
-  const handleMouseLeaveCategory = () => {
+  const resetHover = () => {
     setHoveredCategoryId(null);
     setHoveredSubcategoryId(null);
   };
 
-  const handleMouseLeaveSubcategory = () => {
-    setHoveredSubcategoryId(null);
-  };
-
-  if (loading)
-    return <div className="text-center py-4">Loading categories...</div>;
-  if (error)
+  if (loading) {
     return (
-      <div className="text-red-500 text-center py-4">
+      <div className="flex justify-center py-6">Loading categories...</div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-4 text-red-500">
         Error: {error.message}
       </div>
     );
+  }
 
   return (
-    <div className="hidden md:flex items-start bg-gradient-to-r from-purple-500 to-blue-500 p-4 space-x-6 shadow-lg">
-      {categories.map((category) => (
-        <div
-          key={category._id}
-          className="relative group"
-          onMouseLeave={handleMouseLeaveCategory} // Hides category dropdown on mouse out
-        >
-          {/* Category title with hover effect */}
-          <label
-            className="p-3 text-xl font-bold text-white cursor-pointer transition duration-200 transform hover:scale-105 hover:text-yellow-300"
-            onMouseEnter={() => handleCategoryHover(category._id)}
-          >
-            {category.title}
-          </label>
-
-          {/* Dropdown for Subcategories */}
-          {hoveredCategoryId === category._id && (
+    <div className="bg-orange-500 shadow-md">
+      <div className="max-w-screen-xl mx-auto px-4">
+        <div className="hidden md:flex items-center space-x-6 py-4">
+          {categories.map((category) => (
             <div
-              className="absolute flex flex-col bg-white text-gray-800 p-4 mt-2 left-0 w-48 transition-opacity duration-300 ease-out opacity-95 z-10"
-              onMouseLeave={handleMouseLeaveSubcategory} // Hides subcategory dropdown on mouse out
+              key={category._id}
+              className="relative group"
+              onMouseLeave={resetHover}
             >
-              <div className="absolute -top-2 left-4 w-3 h-3 bg-white transform rotate-45"></div>
-              {subCategories.map((subcategory) => (
-                <div key={subcategory._id} className="relative group">
-                  <a
-                    href="#"
-                    className="block text-sm py-2 px-2 hover:bg-gray-100 transition duration-150"
-                    onMouseEnter={() => handleSubcategoryHover(subcategory._id)}
-                  >
-                    {subcategory.title}
-                  </a>
+              {/* Category Tab */}
+              <div
+                className="px-4 py-2 text-sm font-medium text-white  cursor-pointer "
+                onMouseEnter={() => handleCategoryHover(category._id)}
+              >
+                {category.title}
+                <FiChevronDown className="inline ml-2 text-gray-500" />
+              </div>
 
-                  {/* Dropdown for Sub-subcategories */}
-                  {hoveredSubcategoryId === subcategory._id && (
-                    <div className="absolute left-full top-0 ml-4 flex flex-col bg-white p-3 w-48 transition-transform duration-300 ease-out transform translate-y-2">
-                      {subSubcategory.map((subSub) => (
-                        <Link
-                          to={`/subsubcategoryProducts/${subSub._id}`}
-                          key={subSub._id}
-                          href="#"
-                          className="block text-sm py-2 px-2 hover:bg-blue-50 transition duration-200"
-                        >
-                          {subSub.title}
-                        </Link>
-                      ))}
+              {/* Subcategories Dropdown */}
+              {hoveredCategoryId === category._id && (
+                <div
+                  className="absolute left-0  w-48 bg-white  shadow-lg z-20"
+                  onMouseLeave={resetHover}
+                >
+                  {subCategories.length > 0 ? (
+                    subCategories.map((subcategory) => (
+                      <div
+                        key={subcategory._id}
+                        className="relative group"
+                        onMouseEnter={() =>
+                          handleSubcategoryHover(subcategory._id)
+                        }
+                      >
+                        <div className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                          {subcategory.title}
+                          <FiChevronRight className="text-gray-400" />
+                        </div>
+
+                        {/* Sub-subcategories Dropdown */}
+                        {hoveredSubcategoryId === subcategory._id && (
+                          <div className="absolute left-full top-0 mt-0 w-48 bg-white  shadow-lg">
+                            {subSubcategory.length > 0 ? (
+                              subSubcategory.map((subSub) => (
+                                <Link
+                                  key={subSub._id}
+                                  to={`/subsubcategoryProducts/${subSub._id}`}
+                                  className="block px-4 py-2 text-sm hover:bg-blue-50"
+                                >
+                                  {subSub.title}
+                                </Link>
+                              ))
+                            ) : (
+                              <div className="text-sm text-gray-500 px-4 py-2">
+                                No items
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500 px-4 py-2">
+                      No subcategories
                     </div>
                   )}
                 </div>
-              ))}
+              )}
             </div>
-          )}
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }

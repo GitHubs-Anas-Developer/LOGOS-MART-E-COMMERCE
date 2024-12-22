@@ -14,6 +14,8 @@ export const FavoriteContextProvider = ({ children }) => {
 
   // Add product to favorites
   const addToFavorites = async (productId) => {
+    console.log("productId");
+    
     try {
       // Make API call
       const response = await api.post(`/api/v1/add/favorite`, { productId });
@@ -38,9 +40,7 @@ export const FavoriteContextProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/favorites/${userId}`
-      );
+      const response = await api.get(`/api/v1/favorites/${userId}`);
 
       setFavorites(response.data.favorites);
       setFavoritesCount(response.data.favorites.length);
@@ -56,10 +56,9 @@ export const FavoriteContextProvider = ({ children }) => {
   const deleteFavorite = async (productId) => {
     try {
       setLoading(true);
-      await api.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/delete/favorite/${userId}`,
-        { data: { productId } }
-      );
+      await api.delete(`/api/v1/delete/favorite/${userId}`, {
+        data: { productId },
+      });
 
       setFavorites((prev) =>
         prev.filter((favorite) => favorite.productId._id !== productId)
@@ -78,11 +77,7 @@ export const FavoriteContextProvider = ({ children }) => {
   const deleteAllFavorites = async () => {
     try {
       setLoading(true);
-      await api.delete(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/v1/delete/all/favorite/${userId}`
-      );
+      await api.delete(`/api/v1/delete/all/favorite/${userId}`);
 
       setFavorites([]);
       setFavoritesCount(0);

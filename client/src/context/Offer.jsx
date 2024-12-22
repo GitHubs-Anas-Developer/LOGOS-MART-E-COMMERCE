@@ -7,6 +7,7 @@ const OfferContext = createContext();
 export const OfferContextProvider = ({ children }) => {
   const [discount30to40, setDiscount30to40] = useState([]);
   const [discount40to50, setDiscount40to50] = useState([]);
+  const [specialOffer, setSpecialOffer] = useState([]);
 
   const fetchDiscountedProducts = async () => {
     try {
@@ -14,8 +15,7 @@ export const OfferContextProvider = ({ children }) => {
 
       setDiscount30to40(response.data.discount30to40);
       setDiscount40to50(response.data.discount40to50);
-     
-      
+      setSpecialOffer(response.data.specialOffer);
     } catch (error) {
       console.log(error);
     }
@@ -23,7 +23,12 @@ export const OfferContextProvider = ({ children }) => {
 
   return (
     <OfferContext.Provider
-      value={{ fetchDiscountedProducts, discount30to40, discount40to50 }}
+      value={{
+        fetchDiscountedProducts,
+        discount30to40,
+        discount40to50,
+        specialOffer,
+      }}
     >
       {children}
     </OfferContext.Provider>

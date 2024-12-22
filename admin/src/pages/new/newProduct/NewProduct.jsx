@@ -20,10 +20,12 @@ const ProductCreate = () => {
         discountPercentage: "",
       },
     ],
+    highlights: {},
     discountPercentage: "",
     stock: "",
     subSubcategoryId: "",
     description: "",
+    about: [],
     warranty: "",
     rating: "",
     sizes: [],
@@ -51,6 +53,41 @@ const ProductCreate = () => {
     SubsubcategoryContext
   );
   const { setAddProduct, addProductData } = useContext(ProductContext);
+
+  const [aboutList, setAboutList] = useState([]);
+
+  const handleAddAbout = (e) => {
+    e.preventDefault()
+    if (!aboutList.trim()) return; // Prevent adding empty values
+
+    setFormData((prevData) => ({
+      ...prevData,
+      about: [...(prevData.about || []), aboutList], // Add aboutList to the about array
+    }));
+
+    setAboutList(""); // Clear the input field
+  };
+  console.log(formData.about);
+  
+
+  const [highlightsKey, setHighlightsKey] = useState("");
+  const [highlightsValue, setHighlightsValue] = useState("");
+
+  const AddHighlights = (e) => {
+    e.preventDefault(); // Prevent form submission
+    if (!highlightsKey || !highlightsValue) {
+      alert("Both key and value are required to add a highlight.");
+      return;
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      highlights: { ...prevData.highlights, [highlightsKey]: highlightsValue },
+    }));
+
+    setHighlightsKey(""); // Clear input after addition
+    setHighlightsValue("");
+  };
 
   const subcategoryMatch = subcategories.filter((subcategory) => {
     return subcategory.parentCategory === selectedCategory ? subcategory : null;
@@ -109,7 +146,6 @@ const ProductCreate = () => {
   const addColor = () => {
     setColors([...colors, { colorName: "", hexCode: "", images: [] }]);
   };
-  console.log("colors,", colors);
 
   const removeColor = (index) => {
     const updatedColors = colors.filter((_, i) => i !== index);
@@ -135,8 +171,7 @@ const ProductCreate = () => {
     const discountPercentage = updatedVariants[index].discountPercentage || 0;
 
     updatedVariants[index].offerPrice = Math.floor(
-      price -
-      (price * discountPercentage) / 100
+      price - (price * discountPercentage) / 100
     ).toFixed(2); // Round to 2 decimals
 
     // Update the state with the modified variants array
@@ -203,6 +238,8 @@ const ProductCreate = () => {
 
     Object.keys(formData).forEach((key) => {
       if (key === "specifications" || key === "sizes") {
+        data.append(key, JSON.stringify(formData[key]));
+      } else if (key === "highlights") {
         data.append(key, JSON.stringify(formData[key]));
       } else if (key === "variants") {
         // Serialize the processed variants array
@@ -330,7 +367,7 @@ const ProductCreate = () => {
             onChange={handleChange}
             placeholder="Product Price"
             type="number"
-            required
+         
             className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
           />
         </div>
@@ -373,13 +410,67 @@ const ProductCreate = () => {
           />
         </div>
 
+        <div className="space-y-4">
+          <h4 className="text-lg font-medium text-gray-700">
+            Product Highlights
+          </h4>
+          <div className="flex gap-4">
+            <input
+              type="text"
+              placeholder="Highlights Key"
+              value={highlightsKey}
+              onChange={(e) => setHighlightsKey(e.target.value)}
+              className="w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm"
+            />
+            <input
+              type="text"
+              placeholder="Highlights Value"
+              value={highlightsValue}
+              onChange={(e) => setHighlightsValue(e.target.value)}
+              className="w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm"
+            />
+          </div>
+          <button
+            onClick={AddHighlights}
+            className="px-5 py-2 mt-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 shadow-md"
+          >
+            Add Highlight
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <h4 className="text-lg font-medium text-gray-700">About</h4>
+          <input
+            type="text"
+            className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
+            placeholder="Enter about details"
+            value={aboutList} // Bind input value to state
+            onChange={(e) => setAboutList(e.target.value)} // Update state on input change
+          />
+          <button
+            onClick={handleAddAbout} // Pass function reference
+            className="px-5 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 shadow-md"
+          >
+            Add About
+          </button>
+          {/* Display the about list */}
+          <ul className="mt-4">
+            {formData.about.map((item, index) => (
+              <li key={index} className="text-gray-800 ">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <textarea
           name="description"
           onChange={handleChange}
           placeholder="Product Description"
-          required
+         
           className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
         />
+
         <div className="space-y-4">
           <h4 className="text-lg font-medium text-gray-700">Variants</h4>
 

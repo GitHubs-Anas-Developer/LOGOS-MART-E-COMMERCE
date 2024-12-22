@@ -17,6 +17,7 @@ import { AddressContextProvider } from "./context/Address.jsx";
 import { OrderContextProvider } from "./context/Orders.jsx";
 import { RelatedProductsProvider } from "./context/RelatedProducts.jsx";
 import ProductReviewsProvider from "./context/ProductReviews.jsx";
+import { ProductImagesContextProvider } from "./context/productImages.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -35,7 +36,9 @@ createRoot(document.getElementById("root")).render(
                             <OrderContextProvider>
                               <RelatedProductsProvider>
                                 <ProductReviewsProvider>
-                                  <App />
+                                  <ProductImagesContextProvider>
+                                    <App />
+                                  </ProductImagesContextProvider>
                                 </ProductReviewsProvider>
                               </RelatedProductsProvider>
                             </OrderContextProvider>

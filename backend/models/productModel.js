@@ -56,27 +56,40 @@ const reviewSchema = new mongoose.Schema({
 
 const productSchema = new mongoose.Schema(
   {
-    title: { type: String },
-    brand: { type: String },
-    seller: { type: String },
-    price: { type: Number },
-    offerPrice: { type: Number },
-    discountPercentage: { type: Number },
-    variants: [
-      {
-        ram: { type: String }, // e.g., "8GB", "12GB"
-        storage: { type: String }, // e.g., "128GB", "256GB"
-        price: { type: Number ,}, // Price for this configuration
-        offerPrice: { type: Number }, // Discounted price, if any
-        discountPercentage: { type: Number }, // Discount percentage
-      },
-    ],
     subSubcategoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "SubSubcategory",
       required: true,
     },
+    title: { type: String },
+    brand: { type: String },
+    seller: { type: String },
+    price: { type: Number, default: 0 },
+    offerPrice: { type: Number, default: 0 },
+    discountPercentage: { type: Number, default: 0 },
+    variants: [
+      {
+        ram: { type: String }, // e.g., "8GB", "12GB"
+        storage: { type: String }, // e.g., "128GB", "256GB"
+        price: { type: Number, default: 0 }, // Price for this configuration
+        offerPrice: { type: Number, default: 0 }, // Discounted price, if any
+        discountPercentage: { type: Number, default: 0 }, // Discount percentage
+      },
+    ],
+    highlights: [
+      {
+        type: Map,
+        of: String,
+      },
+    ],
+
+    about: {
+      type: [String], // This will create an array of strings
+      default: [], // Default to an empty array if no value is provided
+    },
+
     description: { type: String },
+
     specifications: [
       {
         type: Map,

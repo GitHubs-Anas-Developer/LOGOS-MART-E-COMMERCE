@@ -1,6 +1,54 @@
 const crypto = require("crypto");
 const razorpayInstance = require("../config/razorpay");
 const Order = require("../models/orderModel");
+const product = require("../models/productModel");
+
+const fetchPaymentProduct = async (req, res) => {
+  try {
+    const { productId, productColorId, productRamStorageId } = req.query;
+
+    // Validate that required parameters are provided
+    if (!productId) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+
+    const productDetails = await product.findById(productId);
+
+    const colors = productDetails.colors || [];
+    const ramStorage = productDetails.variants || [];
+
+    // Find the selected color variant (or null if not found)
+    const selectedColorVariant = productColorId
+      ? colors.find((color) => color._id.toString() === productColorId)
+      : null;
+
+    // Find the selected RAM and storage variant (or null if not found)
+    const selectedRamStorageVariant = productRamStorageId
+      ? ramStorage.find(
+          (variant) => variant._id.toString() === productRamStorageId
+        )
+      : null;
+
+    // Construct response data
+    const responseData = {
+      title: productDetails.title,
+
+      // Use selectedColorVariant image if it exists, otherwise fallback to cardImage
+      image: selectedColorVariant?.images?.[0] || productDetails.cardImage,
+
+      price: selectedRamStorageVariant?.price || productDetails.price,
+
+      // Use selectedRamStorageVariant offerPrice if available, otherwise fallback
+      offerPrice:
+        selectedRamStorageVariant?.offerPrice || productDetails.offerPrice,
+    };
+
+    res.status(200).json({ paymentProduct: responseData });
+  } catch (error) {
+    console.error("Error fetching product details:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 const createOrder = async (req, res, next) => {
   const {
@@ -125,7 +173,6 @@ const getOrderDetails = async (req, res) => {
       .populate("productId", "title price cardImage") // Customize what to populate
       .populate("addressId");
 
-
     // Handle case where the order is not found
     if (!orderDetails) {
       return res.status(404).json({ message: "Order not found." });
@@ -144,4 +191,10 @@ const getOrderDetails = async (req, res) => {
     });
   }
 };
-module.exports = { createOrder, verifyPayment, getOrdersList, getOrderDetails };
+module.exports = {
+  createOrder,
+  verifyPayment,
+  getOrdersList,
+  getOrderDetails,
+  fetchPaymentProduct,
+};

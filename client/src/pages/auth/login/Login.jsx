@@ -14,10 +14,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
-  console.log(
-    "import.meta.env.VITE_BACKEND_URL",
-    import.meta.env.VITE_BACKEND_URL
-  );
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();

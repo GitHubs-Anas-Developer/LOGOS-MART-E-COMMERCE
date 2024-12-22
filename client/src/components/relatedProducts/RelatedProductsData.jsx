@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import RelatedProducts from "../../context/RelatedProducts";
 import { Link } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
 
 function RelatedProductsData() {
   const { relatedProducts, loadingRelatedProducts, error } =
-    useContext(RelatedProducts); // Access related products from context
+    useContext(RelatedProducts);
 
   if (loadingRelatedProducts) {
     return (
@@ -15,67 +16,91 @@ function RelatedProductsData() {
   }
 
   if (error) {
-    if (error) {
-      return <p className="text-red-500 text-center"> {error}</p>;
-    }
+    return <p className="text-red-500 text-center">{error}</p>;
   }
+
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 0,
+    }).format(price);
+
   return (
     <div className="my-12 px-6">
       <h2 className="text-3xl font-semibold text-gray-900 mb-6">
         Related Products
       </h2>
 
-      {/* Grid container for products */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
+      <div className="flex overflow-x-auto space-x-4 scrollbar-hide scroll-smooth">
         {relatedProducts.length > 0 ? (
           relatedProducts.map((product) => (
             <Link
-              to={`/productDetails/${product._id}`}
               key={product._id}
-              className="relative bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+              to={`/productDetails/${product._id}`}
+              className="flex-none"
             >
-              {/* Product Image */}
-              <div className="w-full overflow-hidden group mt-10">
+              <div
+                className="relative bg-white rounded-lg border shadow-md overflow-hidden w-44 group hover:shadow-lg transition-transform"
+                aria-label={
+                  product.variants?.[0]?.discountPercentage > 0
+                    ? `Discounted product: ${product.title}`
+                    : `Product: ${product.title}`
+                }
+              >
                 <img
-                  src={product.cardImage}
-                  alt={product.title}
-                  className="w-full h-40 object-contain group-hover:scale-110 transition-all duration-300"
+                  src={product.cardImage || "/images/fallback.jpg"}
+                  alt={`${product.name || "Product"} image`}
+                  className="w-full h-36 object-contain transition-transform duration-300 transform group-hover:scale-110"
+                  loading="lazy"
                 />
-              </div>
 
-              {/* Product Details */}
-              <div className="p-4 space-y-3">
-                {/* Product Title */}
-                <h3 className="text-sm font-medium text-gray-800 line-clamp-2 truncate">
-                  {product.title}
-                </h3>
-
-                {/* Product Price */}
-                <p className="text-lg font-semibold text-green-600 float-left">
-                  ₹{product.offerPrice || product.price}
-                </p>
-
-                {/* Product Rating */}
-                {product.rating && (
-                  <div className="flex items-center text-sm text-yellow-400 mt-1 float-right">
-                    <span className="mr-1 ">★</span>
-                    <span>{product.rating}</span>
+                {product.variants?.[0]?.discountPercentage > 0 && (
+                  <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                    {product.variants[0].discountPercentage}% OFF
                   </div>
                 )}
 
-                {/* Discount Badge */}
-                {product.discountPercentage && (
-                  <div className="absolute top-0 left-2 bg-red-500 text-white text-xs py-1 px-2 rounded-full">
-                    {product.discountPercentage}% OFF
+                <div className="p-4 text-center">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-2 truncate">
+                    {product.title}
+                  </h3>
+
+                  <div className="flex justify-center items-center mb-3">
+                    <FaStar className="text-yellow-500 mr-1" />
+                    <span className="text-gray-600 text-sm">
+                      {product.rating || "No Rating"}
+                    </span>
                   </div>
-                )}
+
+                  <div className="flex justify-center items-center space-x-2">
+                    {product.offerPrice || product.variants?.[0]?.offerPrice ? (
+                      <span className="text-lg font-semibold text-green-600">
+                        {formatPrice(
+                          product.offerPrice ||
+                            product.variants?.[0]?.offerPrice
+                        )}
+                      </span>
+                    ) : null}
+                    {(product.price || product.variants?.[0]?.price) && (
+                      <span className="text-sm text-gray-500 line-through">
+                        {formatPrice(
+                          product.price || product.variants?.[0]?.price
+                        )}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             </Link>
           ))
         ) : (
-          <p className="text-center text-gray-500 col-span-6">
-            No related products available
-          </p>
+          <div className="text-center text-gray-500 col-span-6">
+            <p>No related products available. Explore more products!</p>
+            <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+              Browse Products
+            </button>
+          </div>
         )}
       </div>
     </div>

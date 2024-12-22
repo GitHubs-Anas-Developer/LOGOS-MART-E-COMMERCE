@@ -27,7 +27,6 @@ function Payment() {
     if (selectedOption === "online") {
       setProceedToPayment(true); // Trigger OnlinePayment component
     } else if (selectedOption === "cod") {
-      console.log("Order placed with Cash on Delivery.");
     }
   };
 

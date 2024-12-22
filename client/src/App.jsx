@@ -21,6 +21,7 @@ import MyOrder from "./pages/myOrders/MyOrder";
 import MyOrderDetails from "./pages/myOrderDetails/MyOrderDetails";
 import BottomNavigation from "./components/bottomNavigation/BottomNavigation";
 import Categories from "./pages/categories/Categories";
+import CashOnDelivery from "./pages/cashOnDelivery/CashOnDelivery";
 
 function App() {
   return (
@@ -132,6 +133,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <OnlinePayment />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/cashOnDelivery"
+            element={
+              <ProtectedRoute>
+                <CashOnDelivery />
               </ProtectedRoute>
             }
           />

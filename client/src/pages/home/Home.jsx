@@ -5,10 +5,15 @@ import OfferContext from "../../context/Offer";
 import OfferProducts from "../../components/offer/OfferProducts";
 import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
 import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
+import Subcategories from "../../components/subcategories/Subcategories";
 
 function Home() {
-  const { fetchDiscountedProducts, discount30to40, discount40to50 } =
-    useContext(OfferContext);
+  const {
+    fetchDiscountedProducts,
+    discount30to40,
+    discount40to50,
+    specialOffer,
+  } = useContext(OfferContext);
 
   useEffect(() => {
     fetchDiscountedProducts();
@@ -18,6 +23,8 @@ function Home() {
     <div className="bg-gray-200">
       <CategoriesBanner />
       <CarouselBanner />
+      <Subcategories />
+      <OfferProducts discount={specialOffer} title="SPECIAL OFFERS" />
       <OfferProducts
         discount={discount30to40}
         title="Top Deals: 30% - 40% Off"

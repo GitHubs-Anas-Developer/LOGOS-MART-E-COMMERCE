@@ -6,8 +6,8 @@ const ProductContext = createContext();
 
 export const ProductContextProvider = ({ children }) => {
   const [addProduct, setAddProduct] = useState({});
-  console.log("addProduct",addProduct);
-  
+  const [products, setProducts] = useState([]);
+
   const addProductData = async () => {
     try {
       const response = await axios.post(
@@ -28,8 +28,23 @@ export const ProductContextProvider = ({ children }) => {
     }
   };
 
+  // Function to fetch all products
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:8050/api/v1/products");
+      if (response.status === 200) {
+        setProducts(response.data.products);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      toast.error("Failed to fetch products. Please try again.");
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ setAddProduct, addProductData }}>
+    <ProductContext.Provider
+      value={{ setAddProduct, addProductData, fetchProducts, products }}
+    >
       {children}
       <Toaster />
     </ProductContext.Provider>

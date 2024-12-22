@@ -7,9 +7,9 @@ const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
-  const [token, setToken] = useState(Cookies.get("token") || null);
-  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(Cookies.get("token") );
 
+  const [userId, setUserId] = useState(null);
   useEffect(() => {
     // Sync the token with the cookie
     if (token) {

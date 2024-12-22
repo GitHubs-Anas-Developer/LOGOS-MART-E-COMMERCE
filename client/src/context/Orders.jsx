@@ -19,7 +19,7 @@ export const OrderContextProvider = ({ children }) => {
     setError(null); // Reset error before fetching
     try {
       const response = await api.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/orders/list/${userId}`
+        `/api/v1/orders/list/${userId}`
       );
       setOrderList(response.data.orders);
     } catch (err) {

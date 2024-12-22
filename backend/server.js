@@ -19,6 +19,8 @@ const filterRoutes = require("./routes/filterRoutes");
 const addressRoutes = require("./routes/addressRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const reviewRoutes = require("./routes/ReviewRoutes");
+const carouselBannerRoutes = require("./routes/carouselBannerRoutes");
+const productImages = require("./routes/productImagesRoutes");
 
 dotenv.config();
 
@@ -33,8 +35,6 @@ app.use(
     credentials: true, // Allow cookies
   })
 );
-
-
 
 // Use express.json() middleware for parsing JSON requests
 app.use(express.json());
@@ -61,6 +61,8 @@ app.use("/api/v1/", filterRoutes);
 app.use("/api/v1/", addressRoutes);
 app.use("/api/v1/", orderRoutes);
 app.use("/api/v1/", reviewRoutes);
+app.use("/api/v1/", carouselBannerRoutes);
+app.use("/api/v1/", productImages);
 
 const PORT = process.env.PORT || 8080;
 
