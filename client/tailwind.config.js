@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
+import flowbitePlugin from "flowbite/plugin";
+import rippleui from "rippleui";
+import prelinePlugin from "preline/plugin";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
   plugins: [
-    require("flowbite/plugin"),
-    require("rippleui"),
-    require("preline/plugin"),
+    flowbitePlugin,
+    rippleui,
+    prelinePlugin,
   ],
 };
