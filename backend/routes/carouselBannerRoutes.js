@@ -2,7 +2,7 @@ const express = require("express");
 const {
   createCarouselBanner,
   getAllCarouselBanners,
-} = require("../controller/CarouselBanner");
+} = require("../controller/carouselBanner");
 
 const router = express.Router();
 
