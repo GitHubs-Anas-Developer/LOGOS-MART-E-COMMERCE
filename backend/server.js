@@ -31,12 +31,8 @@ connectDB();
 // Use the cors middleware correctly by calling it as a function
 app.use(
   cors({
-    origin: "https://logos-mart-server.onrender.com", // Frontend URL
-    credentials: true, // Allow cookies and credentials
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-    preflightContinue: false, // Prevents next middleware from being called for preflight requests
-    optionsSuccessStatus: 204, // Ensures successful preflight responses for older browsers
+    origin: "https://logos-mart.onrender.com", // Frontend URL
+    credentials: true, // Allow cookies
   })
 );
 
