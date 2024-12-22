@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../../context/Auth";
+import api from "../../../utils/axiosInstance";
 
 function Signup() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post(`/api/v1/auth/create/user`, {
+      const response = await api.post(`/api/v1/auth/create/user`, {
         userName,
         email,
         password,
