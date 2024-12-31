@@ -12,6 +12,10 @@ function Payment() {
     useContext(AddressContext);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchAddress().finally(() => setIsLoading(false));
   }, []);
 

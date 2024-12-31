@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function OrderSuccess() {
   const location = useLocation();
   const paymentId = location.state; // Access the payment ID from state
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
       <div className="p-8 bg-white shadow-lg rounded-lg text-center">

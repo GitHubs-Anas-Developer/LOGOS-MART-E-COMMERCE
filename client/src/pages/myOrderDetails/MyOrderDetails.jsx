@@ -15,6 +15,10 @@ function MyOrderDetails() {
 
   // Fetch order details when component mounts
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchOrderDetails(id); // Fetch order details based on the ID
   }, [id]);
 

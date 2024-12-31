@@ -13,6 +13,10 @@ function Categories() {
 
   // Fetch subcategories on component mount
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     const loadInitialData = async () => {
       await fetchSubcategoriesAll();
     };
@@ -50,9 +54,6 @@ function Categories() {
     <div className="flex p-1 bg-gray-50 min-h-screen">
       {/* Left Sidebar for Categories */}
       <div className="w-24 sm:w-40 md:w-40 lg:w-40 xl:w-40 border-r border-gray-300 bg-white shadow-lg overflow-y-auto h-screen">
-        <h1 className="font-semibold mb-6 text-center text-gray-800 border-b">
-          Categories
-        </h1>
         <ul className="space-y-4 p-2">
           {subcategoriesAll && subcategoriesAll.length > 0 ? (
             subcategoriesAll.map((subcategory) => (
@@ -107,7 +108,6 @@ function Categories() {
         {/* Display Subcategories or Products */}
         {subSubcategory && subSubcategory.length > 0 && (
           <div>
-            <h2 className="font-semibold text-gray-800 border-b">Sub-subcategories</h2>
             <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
               {subSubcategory.map((subSub) => (
                 <Link
@@ -120,7 +120,7 @@ function Categories() {
                     alt={subSub.title}
                     className="w-full h-auto object-contain rounded-md"
                   />
-                  <span className="block text-center text-gray-800">
+                  <span className="block text-center text-xs text-gray-800">
                     {subSub.title}
                   </span>
                 </Link>

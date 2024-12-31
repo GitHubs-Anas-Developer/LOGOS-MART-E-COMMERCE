@@ -54,7 +54,7 @@ function Login() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-md animate-fade-in">
       <Toaster />
-      <div className="bg-white p-10 rounded-lg shadow-xl max-w-sm w-full transition-transform transform  m-6">
+      <div className="bg-white p-10 rounded-lg shadow-xl max-w-sm w-full transition-transform transform  m-1">
         <div className="text-center mb-1">
           <h1 className="text-2xl font-semibold text-gray-900 mb-2 ">
             Welcome Back!

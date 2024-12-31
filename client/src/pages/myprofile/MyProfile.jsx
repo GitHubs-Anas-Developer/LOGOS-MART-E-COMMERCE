@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/User";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -8,23 +8,30 @@ function MyProfile() {
   const { user } = useContext(UserContext);
   const { logout } = useContext(AuthContext);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-10">
+    <div className="p-6 max-w-3xl mx-auto space-y-8">
       {/* Profile Header */}
-      <div className="flex flex-col items-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-2xl shadow-2xl p-8">
-        <FaRegUserCircle className="w-28 h-28 text-white border-4 border-white rounded-full mb-4" />
+      <div className="flex flex-col items-center bg-white text-gray-800 p-6 border rounded-md shadow-sm">
+        <FaRegUserCircle className="w-24 h-24 text-gray-600 border-2 border-gray-300 rounded-full mb-4" />
         {user ? (
           <div className="text-center">
-            <h1 className="text-4xl font-bold">{user.userName}</h1>
-            <p className="text-gray-200 mt-2">{user.email}</p>
+            <h1 className="text-2xl font-semibold">{user.userName}</h1>
+            <p className="text-gray-500 mt-2">{user.email}</p>
           </div>
         ) : (
-          <p className="text-gray-200">Loading profile...</p>
+          <p className="text-gray-500">Loading profile...</p>
         )}
       </div>
 
       {/* Profile Options */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <ProfileCard
           title="My Orders"
           description="Track and manage your orders."
@@ -54,7 +61,7 @@ function MyProfile() {
       {/* Logout Button */}
       <div className="text-center">
         <button
-          className="py-3 px-6 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition duration-300"
+          className="py-3 px-6 bg-red-500 text-white rounded-lg shadow-sm transition-all duration-300 transform hover:bg-red-600 hover:scale-105"
           onClick={() => logout()}
           aria-label="Log out"
         >
@@ -67,14 +74,12 @@ function MyProfile() {
 
 function ProfileCard({ title, description, buttonText, to }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 hover:shadow-xl hover:-translate-y-1 transition-transform duration-300">
-      <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">
-        {title}
-      </h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
+    <div className="bg-white border rounded-md shadow-sm p-6">
+      <h3 className="text-xl font-medium text-gray-800 mb-2">{title}</h3>
+      <p className="text-gray-600 mb-4">{description}</p>
       <Link
         to={to}
-        className="inline-block px-5 py-2 bg-blue-500 dark:bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300"
+        className="inline-block px-5 py-2 bg-blue-500 text-white rounded-md shadow-sm transition-all duration-300 hover:bg-blue-600 hover:scale-105"
         aria-label={buttonText}
       >
         {buttonText}

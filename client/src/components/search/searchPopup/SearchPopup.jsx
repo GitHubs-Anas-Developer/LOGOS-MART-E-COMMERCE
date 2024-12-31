@@ -55,7 +55,7 @@ function SearchPopup() {
         onClick={togglePopup}
         className="text-white hover:text-gray-300 mt-1"
       >
-        <CiSearch className="text-2xl text-blue-500" />
+        <CiSearch className="text-2xl text-blue-400" />
       </button>
 
       {/* Popup */}

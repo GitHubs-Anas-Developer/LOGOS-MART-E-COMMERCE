@@ -6,6 +6,12 @@ function AddressForm() {
   // Get newAddress function from AddressContext
   const { newAddress } = useContext(AddressContext);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   const [address, setAddress] = useState({
     name: "",
     street: "",

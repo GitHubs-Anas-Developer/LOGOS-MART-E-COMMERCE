@@ -10,6 +10,7 @@ import UserContext from "../../context/User";
 function BottomNavigation() {
   const location = useLocation();
   const { user } = useContext(UserContext);
+  console.log("user", user);
 
   const navItems = [
     {

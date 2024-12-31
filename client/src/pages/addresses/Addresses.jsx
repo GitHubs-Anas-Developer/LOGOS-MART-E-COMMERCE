@@ -28,6 +28,10 @@ function Addresses() {
   });
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchAddress(); // Fetch the addresses on component load
   }, [fetchAddress]);
 

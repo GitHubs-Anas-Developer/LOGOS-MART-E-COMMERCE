@@ -24,6 +24,10 @@ function Products() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchProducts();
   }, []);
 
@@ -45,8 +49,8 @@ function Products() {
       <div className="min-h-screen  text-gray-800">
         <div className="container mx-auto ">
           {/* Page Header */}
-          <div className="flex justify-between items-center mb-6 ">
-            <h2 className="md:hidden text-xl font-extrabold text-gray-800 ml-3 border-b">
+          <div className="flex justify-between items-center  ">
+            <h2 className="md:hidden text-xl font-extrabold text-gray-800 ml-3 ">
               Products
             </h2>
             <button

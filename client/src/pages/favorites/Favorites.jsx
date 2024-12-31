@@ -1,10 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import FavoriteContext from "../../context/Favorite";
 import { FaHeartBroken, FaTrashAlt, FaArrowLeft } from "react-icons/fa";
 
 function Favorites() {
   const { favorites, deleteFavorite, deleteAllFavorites } =
     useContext(FavoriteContext);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   if (favorites.length === 0) {
     return (

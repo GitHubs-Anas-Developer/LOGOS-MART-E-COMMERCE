@@ -6,6 +6,10 @@ function MyOrder() {
     useContext(OrderContext);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchOrderList(); // Fetch orders when the component mounts
   }, []);
 

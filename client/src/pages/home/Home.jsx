@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CategoriesBanner from "./categoryBanner/CategoriesBanner";
 import CarouselBanner from "./carouselBanner/CarouselBanner";
 import OfferContext from "../../context/Offer";
@@ -15,31 +15,61 @@ function Home() {
     discount30to40,
     discount40to50,
     specialOffer,
+    loading,
+    error,
   } = useContext(OfferContext);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchDiscountedProducts();
   }, []);
 
   return (
-    <div className="">
+    <div>
+      {/* Static components */}
       <CategoriesBanner />
       <CarouselBanner />
       <Subcategories />
-      <OfferProducts discount={specialOffer} title="SPECIAL OFFERS" />
-
       {/* <Categories /> */}
-      <OfferProducts
-        discount={discount30to40}
-        title="Top Deals: 30% - 40% Off"
-      />
-      <OfferProducts
-        discount={discount40to50}
-        title="Top Deals: 40% - 50% Off"
-      />
-      <Brands />
       <WhatsAppButton />
       <BackToTopButton />
+
+      {/* Offer-related components, displayed based on loading and error */}
+      <div className="py-10">
+        {loading && (
+          <div className="text-center text-blue-500">Loading offers...</div>
+        )}
+
+        {error && (
+          <div className="text-center text-red-500">
+            {error || "Failed to load offers. Please try again later."}
+          </div>
+        )}
+
+        {!loading && !error && (
+          <>
+            <OfferProducts
+              discount={specialOffer}
+              title="SPECIAL OFFERS"
+              isLoading={loading}
+            />
+            <OfferProducts
+              discount={discount30to40}
+              title="Top Deals: 30% - 40% Off"
+              isLoading={loading}
+            />
+            <OfferProducts
+              discount={discount40to50}
+              title="Top Deals: 40% - 50% Off"
+              isLoading={loading}
+            />
+          </>
+        )}
+      </div>
+      <Brands />
     </div>
   );
 }

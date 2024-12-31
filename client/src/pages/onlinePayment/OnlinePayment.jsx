@@ -33,6 +33,10 @@ function OnlinePayment({ address }) {
   };
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     if (productId) fetchPaymentProduct();
   }, []);
 

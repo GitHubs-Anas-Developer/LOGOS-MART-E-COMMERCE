@@ -42,6 +42,10 @@ function ProductDetails() {
   const [selectColorVariantId, setColorVariantId] = useState("");
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchSingleProductDetails(id);
 
     fetchRelatedProducts(productDetails.subSubcategoryId);

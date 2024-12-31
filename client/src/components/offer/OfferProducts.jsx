@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi"; // Helper function to format the price in INR
-import { IoIosMore } from "react-icons/io";
+import CartContext from "../../context/Cart";
 
 function OfferProducts({ discount, title, isLoading }) {
+  const { addToCart } = useContext(CartContext);
+
+  // Function to handle adding to the cart
+  const handleAddToCart = (e, productId) => {
+    e.preventDefault(); // Prevent the default link behavior
+    addToCart(productId); // Add to cart using the productId
+  };
+
+  // Function to format the price in INR
   const formatPrice = (price) => {
     const flooredPrice = Math.floor(price);
     return new Intl.NumberFormat("en-IN", {
@@ -15,17 +24,14 @@ function OfferProducts({ discount, title, isLoading }) {
   };
 
   return (
-    <div className="w-full  mx-auto px-1 py-1 ">
+    <div className="w-full mx-auto px-1 py-1">
       {/* Section Title */}
-
-      <div className="flex items-center justify-between p-1 ">
+      <div className="flex items-center justify-between p-1">
         <h2 className="text-xl font-semibold text-gray-900 transform transition duration-300 border-b">
           {title}
         </h2>
 
-        <button className=" text-black border-b border-blue-600 ">
-          More
-        </button>
+        <button className="text-black border-b border-blue-600">More</button>
       </div>
 
       {/* Loading State */}
@@ -45,13 +51,9 @@ function OfferProducts({ discount, title, isLoading }) {
       ) : discount && discount.length > 0 ? (
         <div className="flex overflow-x-auto space-x-1 scrollbar-hide">
           {discount.map((product, index) => (
-            <Link
-              key={index}
-              to={`/productDetails/${product._id}`}
-              className="flex-none"
-            >
+            <Link key={index} to={`/productDetails/${product._id}`} className="flex-none">
               <div
-                className="relative bg-white  shadow-md overflow-hidden w-44 group hover:shadow-lg transition-transform "
+                className="relative bg-white shadow-md overflow-hidden w-44 group hover:shadow-lg transition-transform"
                 aria-label={`Discounted product: ${product.name}`}
               >
                 {/* Product Image */}
@@ -88,10 +90,9 @@ function OfferProducts({ discount, title, isLoading }) {
                   {/* Price Section */}
                   <div className="flex justify-center items-center space-x-2">
                     {product.offerPrice || product.variants?.[0]?.offerPrice ? (
-                      <span className="text-lg  text-green-600 font-extrabold">
+                      <span className="text-lg text-green-600 font-extrabold">
                         {formatPrice(
-                          product.offerPrice ||
-                            product.variants?.[0]?.offerPrice
+                          product.offerPrice || product.variants?.[0]?.offerPrice
                         )}
                       </span>
                     ) : null}
@@ -103,7 +104,10 @@ function OfferProducts({ discount, title, isLoading }) {
                       </span>
                     )}
                   </div>
-                  <button className="flex items-center justify-center text-sm font-semibold py-2 px-5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-xl transform transition-all duration-200 ease-in-out hover:scale-110 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                  <button
+                    className="flex items-center justify-center text-sm font-semibold py-2 px-5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-xl transform transition-all duration-200 ease-in-out hover:scale-110 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    onClick={(e) => handleAddToCart(e, product._id)} // Correct event handling
+                  >
                     <FiShoppingCart size={18} className="mr-2 text-white" />
                     Add to Cart
                   </button>

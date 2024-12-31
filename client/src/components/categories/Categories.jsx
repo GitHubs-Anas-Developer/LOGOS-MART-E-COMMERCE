@@ -7,11 +7,14 @@ function Categories() {
 
   // Fetch categories when the component is mounted
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchCategory();
   }, []);
 
-  console.log("categories",categories);
-  
+  console.log("categories", categories);
 
   if (loading) {
     return <div className="text-center text-lg">Loading...</div>;

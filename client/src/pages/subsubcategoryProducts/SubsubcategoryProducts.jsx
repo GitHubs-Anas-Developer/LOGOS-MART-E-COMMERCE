@@ -20,6 +20,10 @@ function SubsubcategoryProducts() {
   const { addToFavorites } = useContext(FavoriteContext);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchSubsubcategoryProducts(id);
   }, [id]);
 
