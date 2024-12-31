@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import AddressContext from "../../context/Address";
+import { useNavigate } from "react-router-dom";
 
 function AddressForm() {
   // Get newAddress function from AddressContext
@@ -56,6 +57,8 @@ function AddressForm() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const navigate = useNavigate();
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,8 +67,7 @@ function AddressForm() {
       // Pass the validated address to the newAddress function in context
       newAddress(address);
       setIsSubmitted(true); // Set submission status
-      console.log("Address submitted:", address);
-
+      navigate("/payment");
       // Optionally reset the form after successful submission
       // setAddress({
       //   name: "",

@@ -76,5 +76,90 @@ const getAddress = async (req, res) => {
       .json({ error: "Server error while fetching addresses" });
   }
 };
+const updateAddress = async (req, res) => {
+  console.log(req.body);
 
-module.exports = { createAddress, getAddress };
+  try {
+    const userId = req.user.id; // Assume authentication middleware sets `req.user`
+    console.log("userId", userId);
+
+    const {
+      name,
+      street,
+      city,
+      state,
+      postalCode,
+      country,
+      phoneNumber,
+      apartment,
+      landmark,
+    } = req.body;
+
+    // Validate the input
+    if (!name || !street || !city || !state || !postalCode || !country) {
+      return res
+        .status(400)
+        .json({ error: "All required fields must be provided." });
+    }
+
+    // Find and update the address in the database
+    const updatedAddress = await addressModel.findOneAndUpdate(
+      { userId }, // Find address by ID and user ID
+      {
+        name,
+        street,
+        city,
+        state,
+        postalCode,
+        country,
+        phoneNumber,
+        apartment,
+        landmark,
+      }, // Fields to update
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedAddress) {
+      return res
+        .status(404)
+        .json({ error: "Address not found or unauthorized." });
+    }
+
+    // Respond with the updated address
+    res.status(200).json(updatedAddress);
+  } catch (error) {
+    console.error("Error while updating address:", error);
+    res.status(500).json({ error: "Server error while updating the address." });
+  }
+};
+
+const deleteAddress = async (req, res) => {
+  try {
+    const userId = req.user.id; // Ensure user ID is extracted from the request
+    const { addressId } = req.body; // Assuming the address ID is sent in the request bodyd);
+
+    // Validate payload
+    if (!addressId) {
+      return res.status(400).json({ error: "Address ID is required." });
+    }
+
+    // Find and delete the address
+    const deletedAddress = await addressModel.findOneAndDelete({
+      _id: addressId,
+      userId, // Ensure the user owns the address
+    });
+
+    if (!deletedAddress) {
+      return res
+        .status(404)
+        .json({ error: "Address not found or unauthorized." });
+    }
+
+    res.status(200).json({ message: "Address deleted successfully." });
+  } catch (error) {
+    console.error("Error while deleting address:", error);
+    res.status(500).json({ error: "Server error while deleting the address." });
+  }
+};
+
+module.exports = { createAddress, getAddress, updateAddress, deleteAddress };

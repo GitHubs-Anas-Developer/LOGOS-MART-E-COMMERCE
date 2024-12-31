@@ -50,9 +50,11 @@ const createCarouselBanner = async (req, res) => {
 const getAllCarouselBanners = async (req, res) => {
   try {
     const banners = await CarouselBannerModel.find();
+    console.log("banners", banners);
+
     res.status(200).json({
       message: "Carousel banners fetched successfully",
-      banners: banners,
+      banners: banners[0],
     });
   } catch (error) {
     console.error("Error fetching carousel banners:", error);

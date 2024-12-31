@@ -22,6 +22,7 @@ import MyOrderDetails from "./pages/myOrderDetails/MyOrderDetails";
 import BottomNavigation from "./components/bottomNavigation/BottomNavigation";
 import Categories from "./pages/categories/Categories";
 import CashOnDelivery from "./pages/cashOnDelivery/CashOnDelivery";
+import Addresses from "./pages/addresses/Addresses";
 
 function App() {
   return (
@@ -32,14 +33,7 @@ function App() {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<Home />} />
 
           <Route
             path="/myprofile"
@@ -59,22 +53,8 @@ function App() {
             }
           />
 
-          <Route
-            path="/products"
-            element={
-              <ProtectedRoute>
-                <Products />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/productDetails/:id"
-            element={
-              <ProtectedRoute>
-                <ProductDetails />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/products" element={<Products />} />
+          <Route path="/productDetails/:id" element={<ProductDetails />} />
 
           <Route
             path="/cart"
@@ -93,28 +73,25 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/categories"
-            element={
-              <ProtectedRoute>
-                <Categories />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/categories" element={<Categories />} />
 
           <Route
             path="/subsubcategoryProducts/:id"
-            element={
-              <ProtectedRoute>
-                <SubsubcategoryProducts />
-              </ProtectedRoute>
-            }
+            element={<SubsubcategoryProducts />}
           />
           <Route
             path="/shippingAddress"
             element={
               <ProtectedRoute>
                 <AddressForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addresses"
+            element={
+              <ProtectedRoute>
+                <Addresses />
               </ProtectedRoute>
             }
           />

@@ -6,6 +6,8 @@ import OfferProducts from "../../components/offer/OfferProducts";
 import WhatsAppButton from "../../components/icons/whatsApp/WhatsAppButton";
 import BackToTopButton from "../../components/icons/backToTopButton/BackToTopButton";
 import Subcategories from "../../components/subcategories/Subcategories";
+import Categories from "../../components/categories/Categories";
+import Brands from "../../components/brands/Brands";
 
 function Home() {
   const {
@@ -20,11 +22,13 @@ function Home() {
   }, []);
 
   return (
-    <div className="bg-gray-200">
+    <div className="">
       <CategoriesBanner />
       <CarouselBanner />
       <Subcategories />
       <OfferProducts discount={specialOffer} title="SPECIAL OFFERS" />
+
+      {/* <Categories /> */}
       <OfferProducts
         discount={discount30to40}
         title="Top Deals: 30% - 40% Off"
@@ -33,6 +37,7 @@ function Home() {
         discount={discount40to50}
         title="Top Deals: 40% - 50% Off"
       />
+      <Brands />
       <WhatsAppButton />
       <BackToTopButton />
     </div>

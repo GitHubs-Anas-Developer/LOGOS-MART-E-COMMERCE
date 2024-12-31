@@ -39,9 +39,9 @@ function SubcategoriesCarousel() {
   }
 
   return (
-    <div className="bg-gray-100 py-12">
-      <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">
-        Explore Popular Categories
+    <div className="md:hidden">
+      <h1 className="text-2xl font-bold text-center text-white bg-gray-800 py-4 px-2  mb-1">
+        Explore Popular Subcategories
       </h1>
 
       {/* Horizontal Scrolling Container */}

@@ -8,7 +8,8 @@ import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 function CategoriesBanner() {
   const { fetchCategory, categories, loading, error } =
     useContext(CategoryContext);
-  const { fetchSubcategories, subCategories } = useContext(SubcategoryContext);
+  const { fetchSubcategories, subCategories, subcategoryLoading } =
+    useContext(SubcategoryContext);
   const { fetchSubsubcategories, subSubcategory } = useContext(
     SubsubcategoryContext
   );
@@ -35,6 +36,7 @@ function CategoriesBanner() {
     setHoveredSubcategoryId(null);
   };
 
+  // Loading and error handling
   if (loading) {
     return (
       <div className="flex justify-center py-6">Loading categories...</div>
@@ -50,9 +52,9 @@ function CategoriesBanner() {
   }
 
   return (
-    <div className="bg-orange-500 shadow-md">
+    <div className="bg-white  border-b">
       <div className="max-w-screen-xl mx-auto px-4">
-        <div className="hidden md:flex items-center space-x-6 py-4">
+        <div className="hidden md:flex items-center space-x-6 py-4  ">
           {categories.map((category) => (
             <div
               key={category._id}
@@ -61,11 +63,11 @@ function CategoriesBanner() {
             >
               {/* Category Tab */}
               <div
-                className="px-4 py-2 text-sm font-medium text-white  cursor-pointer "
+                className="px-4 py-2 text-sm  text-gray-900 font-bold  cursor-pointer  "
                 onMouseEnter={() => handleCategoryHover(category._id)}
               >
                 {category.title}
-                <FiChevronDown className="inline ml-2 text-gray-500" />
+                <FiChevronDown className="inline ml-2 text-gray-900  " />
               </div>
 
               {/* Subcategories Dropdown */}

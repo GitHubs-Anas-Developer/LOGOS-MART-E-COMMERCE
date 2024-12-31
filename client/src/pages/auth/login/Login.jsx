@@ -1,32 +1,43 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
 import { AuthContext } from "../../../context/Auth";
 import api from "../../../utils/axiosInstance";
+import { FaGoogle, FaFacebook } from "react-icons/fa"; // Import icons
+import { Icon } from "react-icons-kit";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
+import { FaUserAlt } from "react-icons/fa";
 
 function Login() {
   const navigate = useNavigate();
-
   const { login } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
-  
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(eyeOff);
+
+  const handleToggle = () => {
+    if (type === "password") {
+      setIcon(eye);
+      setType("text");
+    } else {
+      setIcon(eyeOff);
+      setType("password");
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await api.post(
-        `/api/v1/auth/user/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await api.post(`/api/v1/auth/user/login`, {
+        email,
+        password,
+      });
 
       if (response.status === 200) {
         toast.success("Logged in successfully");
@@ -41,55 +52,70 @@ function Login() {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-100"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-md animate-fade-in">
       <Toaster />
-      <div className="">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-semibold text-indigo-600">
-            Login to Your Account
+      <div className="bg-white p-10 rounded-lg shadow-xl max-w-sm w-full transition-transform transform  m-6">
+        <div className="text-center mb-1">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2 ">
+            Welcome Back!
           </h1>
-          <p className="text-gray-500">
-            Welcome back! Please login to your account.
-          </p>
-          {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
         </div>
-        <form onSubmit={handleSubmit} className="w-full px-6 md:px-0">
-          <div>
-            <label className="block text-gray-200 text-sm font-medium mb-1">
+
+        <form onSubmit={handleSubmit} className="w-full p-3">
+          <div className="mb-5">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 text-sm font-medium mb-2"
+            >
               Email Address
             </label>
             <input
+              id="email"
               type="email"
               placeholder="Your email"
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 text-slate-800"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              aria-label="Email Address"
             />
           </div>
-          <div>
-            <label className="block text-gray-200 text-sm font-medium mb-1">
+
+          <div className="mb-5">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 text-sm font-medium mb-2"
+            >
               Password
             </label>
-            <input
-              type="password"
-              placeholder="Your password"
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 text-slate-800"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div>
+              <div>
+                <div class="mb-4 flex">
+                  <input
+                    type={type}
+                    name="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <span
+                    class="flex justify-around items-center"
+                    onClick={handleToggle}
+                  >
+                    <Icon class="absolute mr-10" icon={icon} size={15} />
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-between">
-            <label className="flex items-center text-sm text-gray-200">
+
+          <div className="flex items-center justify-between mb-6">
+            <label className="flex items-center text-sm text-gray-600">
               <input
                 type="checkbox"
-                className="mr-2 rounded text-blue-500 focus:ring-blue-400"
+                className="mr-2 rounded focus:ring-indigo-400"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
@@ -97,24 +123,53 @@ function Login() {
             </label>
             <Link
               to="/forgot-password"
-              className="text-blue-500 hover:underline text-sm"
+              className="text-indigo-500 hover:underline text-sm"
             >
               Forgot password?
             </Link>
           </div>
+
           <button
             type="submit"
-            className="w-full py-3 mt-4 bg-indigo-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition duration-150"
+            className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md font-medium transition-all"
           >
             Login
           </button>
-          <p className="text-center text-sm text-gray-200 mt-4">
+
+          <div className="flex justify-between items-center my-5">
+            <hr className="w-full border-gray-300" />
+            <span className="mx-2 text-gray-500 text-sm">or</span>
+            <hr className="w-full border-gray-300" />
+          </div>
+
+          {/* Social Login Buttons */}
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={() => {
+                /* Handle Google login */
+              }}
+              className="flex justify-center items-center p-4 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-md w-12 h-12 transition-all"
+            >
+              <FaGoogle size={24} />
+            </button>
+            <button
+              onClick={() => {
+                /* Handle Facebook login */
+              }}
+              className="flex justify-center items-center p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md w-12 h-12 transition-all"
+            >
+              <FaFacebook size={24} />
+            </button>
+          </div>
+
+          <p className="text-center text-sm text-gray-600 mt-6">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-blue-500 hover:underline">
+            <Link to="/signup" className="text-indigo-500 hover:underline">
               Sign up
             </Link>
           </p>
         </form>
+        <div></div>
       </div>
     </div>
   );

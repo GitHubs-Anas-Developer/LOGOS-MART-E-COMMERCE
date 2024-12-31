@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import api from "./../../../utils/axiosInstance"; // Ensure this is your API utility file
 
 function CarouselBanner() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // Initialize images as an array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -12,7 +12,7 @@ function CarouselBanner() {
   const fetchCarouselBanner = async () => {
     try {
       const response = await api.get("/api/v1/carouselBanners");
-      setImages(response.data.banners); // Assuming `banners` is an array of objects with `src` and `alt`
+      setImages(response.data.banners.images); // Ensure this is an array of images
     } catch (err) {
       console.error("Error fetching carousel banners:", err);
       setError(true);
@@ -20,6 +20,8 @@ function CarouselBanner() {
       setLoading(false);
     }
   };
+
+  console.log("images", images);
 
   useEffect(() => {
     fetchCarouselBanner();
@@ -50,7 +52,8 @@ function CarouselBanner() {
       >
         {images.map((image, index) => (
           <div key={index}>
-            <img src={image.images[0]} />
+            <img src={image} alt={image.alt} className="h-auto" />{" "}
+            {/* Ensure `src` and `alt` exist */}
           </div>
         ))}
       </Carousel>

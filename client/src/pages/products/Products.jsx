@@ -14,10 +14,12 @@ import { FiShoppingCart } from "react-icons/fi"; // Shopping cart icon
 import { FiHeart } from "react-icons/fi";
 
 function Products() {
-  const { fetchProducts, loadingProducts, error } = useContext(ProductsContext);
+  const { fetchProducts } = useContext(ProductsContext);
   const { addToCart } = useContext(CartContext);
   const { addToFavorites } = useContext(FavoriteContext);
-  const { filterProducts } = useContext(FilterProductsContext);
+  const { filterProducts, loadingProducts, error } = useContext(
+    FilterProductsContext
+  );
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -40,13 +42,13 @@ function Products() {
   return (
     <>
       <CategoriesBanner />
-      <div className="min-h-screen   text-gray-800">
+      <div className="min-h-screen  text-gray-800">
         <div className="container mx-auto ">
           {/* Page Header */}
-          <div className="flex justify-between items-center mb-6">
-            {/* <h2 className="text-1xl font-extrabold text-gray-800">
-              All Products
-            </h2> */}
+          <div className="flex justify-between items-center mb-6 ">
+            <h2 className="md:hidden text-xl font-extrabold text-gray-800 ml-3 border-b">
+              Products
+            </h2>
             <button
               className="lg:hidden bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300 ml-auto m-2"
               onClick={() => setIsFilterOpen(true)}
@@ -56,9 +58,9 @@ function Products() {
           </div>
 
           {/* Filters and Products */}
-          <div className="flex flex-col lg:flex-row">
+          <div className="flex flex-col lg:flex-row ">
             {/* Filters Sidebar */}
-            <aside className="hidden lg:block lg:w-1/5 p-3 border rounded-r-lg ml-1">
+            <aside className="hidden lg:block lg:w-1/5  border  ml-1">
               <Filters />
             </aside>
 
@@ -89,14 +91,14 @@ function Products() {
             )}
 
             {/* Product Grid */}
-            <main className="flex-1">
+            <main className="flex-1 border p-2">
               {loadingProducts ? (
                 <div className="flex justify-center items-center min-h-[60vh]">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
                 </div>
               ) : filterProducts.length === 0 ? (
                 <div className="text-center font-medium">
-                  No products found.
+                  "No products found."
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">

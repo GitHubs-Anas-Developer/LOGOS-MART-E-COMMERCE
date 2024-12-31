@@ -2,26 +2,50 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../../../context/Auth";
 import api from "../../../utils/axiosInstance";
+import { FaGoogle, FaFacebook } from "react-icons/fa"; // Import icons
+import { Icon } from "react-icons-kit";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
+import { FaUserAlt } from "react-icons/fa";
 
 function Signup() {
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const [serverError, setServerError] = useState("");
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(eyeOff);
+
+  // Handle input changes
+  const handleChange = (setter) => (e) => {
+    setter(e.target.value);
+  };
+
+  const handleToggle = () => {
+    if (type === "password") {
+      setIcon(eye);
+      setType("text");
+    } else {
+      setIcon(eyeOff);
+      setType("password");
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Password validation
     if (password !== confirmPassword) {
-      return setPasswordError("Passwords do not match!");
+      toast.error("Passwords do not match!");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
     }
 
     try {
@@ -33,144 +57,121 @@ function Signup() {
 
       if (response.status === 201) {
         toast.success("User registered successfully");
-        setIsModalOpen(false);
         navigate("/");
       }
     } catch (error) {
+      toast.error("An error occurred during registration");
       console.error(error);
-      setServerError(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
-      toast.error(serverError);
     } finally {
-      if (response.status === 201) {
+      if (response?.status === 201) {
         setUserName("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        setPasswordError("");
-        setServerError("");
       }
     }
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-100"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-md ">
       <Toaster />
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <form onSubmit={handleSubmit} className="w-full px-6 md:px-0">
-            <div className="">
-              <div className="text-center mb-6">
-                <h1 className="text-2xl font-semibold text-indigo-600">
-                  Create Your Account
-                </h1>
-                <p className="text-gray-500">Sign up to get started</p>
-                {passwordError && (
-                  <p className="text-red-600 text-sm mt-2">{passwordError}</p>
-                )}
-                {serverError && (
-                  <p className="text-red-600 text-sm mt-2">{serverError}</p>
-                )}
+      <div className="bg-white rounded-lg shadow-xl max-w-sm w-full transition-transform transform m-6 p-6">
+        <form onSubmit={handleSubmit} className="w-full px-6 md:px-0">
+          <div>
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+                Create Your Account
+              </h1>
+            </div>
+            <div className="space-y-4">
+              <div className="form-field">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Username
+                </label>
+                <input
+                  placeholder="Your username"
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                  value={userName}
+                  onChange={handleChange(setUserName)}
+                />
               </div>
-              <div className="space-y-4">
-                <div className="form-field">
-                  <label className="block text-gray-200 text-sm font-medium mb-1">
-                    Username
-                  </label>
+              <div className="form-field">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Email Address
+                </label>
+                <input
+                  placeholder="Your email"
+                  type="email"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                  value={email}
+                  onChange={handleChange(setEmail)}
+                />
+              </div>
+              <div className="form-field relative">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Password
+                </label>
+                <div className=" flex">
                   <input
-                    placeholder="Your username"
-                    type="text"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 text-slate-800"
-                    required
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                  />
-                </div>
-                <div className="form-field">
-                  <label className="block text-gray-200 text-sm font-medium mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    placeholder="Your email"
-                    type="email"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 text-slate-800"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="form-field">
-                  <label className="block text-gray-200 text-sm font-medium mb-1">
-                    Password
-                  </label>
-                  <input
-                    placeholder="Your password"
-                    type="password"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 text-slate-800"
-                    required
+                    type={type}
+                    name="password"
+                    placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer"
+                    onClick={handleToggle}
+                  >
+                    <Icon icon={icon} size={15} className="mt-6" />
+                  </span>
                 </div>
-                <div className="form-field">
-                  <label className="block text-gray-200 text-sm font-medium mb-1">
-                    Confirm Password
-                  </label>
+              </div>
+              <div className="form-field relative">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Confirm Password
+                </label>
+                <div className="mb-4 flex">
                   <input
+                    type={type}
+                    name="confirmPassword"
                     placeholder="Confirm your password"
-                    type="password"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 text-slate-800"
-                    required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    autoComplete="current-password"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
-                </div>
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center text-sm text-gray-200">
-                    <input
-                      type="checkbox"
-                      className="mr-2 rounded text-indigo-500 focus:ring-indigo-400"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                    Remember me
-                  </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-indigo-500 hover:underline text-sm"
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer"
+                    onClick={handleToggle}
                   >
-                    Forgot your password?
-                  </Link>
+                    <Icon icon={icon} size={15} className="mt-6" />
+                  </span>
                 </div>
-                <button
-                  type="submit"
-                  className="w-full py-3 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-lg transition duration-150"
-                >
-                  Sign Up
-                </button>
-                <p className="text-center text-sm text-gray-200 mt-4">
-                  Already have an account?{" "}
-                  <Link to="/login" className="text-indigo-500 hover:underline">
-                    Log in
-                  </Link>
-                </p>
               </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-lg transition duration-150"
+              >
+                Sign Up
+              </button>
+
+              <p className="text-center text-sm text-gray-600 mt-6">
+                Already have an account?{" "}
+                <Link to="/login" className="text-indigo-500 hover:underline">
+                  Log in
+                </Link>
+              </p>
             </div>
-          </form>
-        </div>
-      )}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
