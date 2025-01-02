@@ -35,7 +35,6 @@ app.use(
     credentials: true, // Allow cookies
   })
 );
-
 // Use express.json() middleware for parsing JSON requests
 app.use(express.json());
 

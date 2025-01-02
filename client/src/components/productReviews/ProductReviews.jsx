@@ -48,12 +48,12 @@ function ProductReviews({ productId }) {
   }
 
   return (
-    <div className="max-w-5xl mx-auto  border ">
-      <h2 className="text-3xl font-bold text-gray-800 text-center mb-2 border-b">
+    <div className=" mx-auto border  ">
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-2   p-3">
         Customer Reviews
       </h2>
 
-      <div className="text-center p-3">
+      <div className="text-center p-3 border">
         <h3 className="text-3xl font-semibold text-indigo-600 mb-2">
           Overall Rating:{" "}
           <span className="text-4xl font-extrabold">{overAllRating}</span>
@@ -108,11 +108,11 @@ function ProductReviews({ productId }) {
       </div>
 
       {reviews?.length > 0 ? (
-        <div className="relative border-l border-gray-300">
+        <div className="relative border">
           {reviews.map((review, index) => (
             <div key={index} className=" ">
               {/* Timeline Dot */}
-              <div className="absolute w-3 h-3 bg-indigo-500 rounded-full -left-1.5 top-4"></div>
+              <div className="absolute w-3 h-3  rounded-full -left-1.5 top-4"></div>
 
               {/* Review Card */}
               <div className="p-6  border border-gray-200  transition-all duration-300">

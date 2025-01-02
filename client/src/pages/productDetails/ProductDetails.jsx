@@ -46,10 +46,6 @@ function ProductDetails() {
     useState("");
   const [selectColorVariantId, setColorVariantId] = useState("");
 
-
-
-
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -95,7 +91,7 @@ function ProductDetails() {
 
   if (loadingProductDetails) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen ">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
       </div>
     );
@@ -125,18 +121,18 @@ function ProductDetails() {
   return (
     <>
       <CategoriesBanner />
-      <div className="bg-gray-50 min-h-screen">
-        <div className="container mx-auto bg-white rounded-lg p-6">
+      <div className="bg-gray-50 min-h-screen p-2">
+        <div className="container mx-auto bg-white rounded-lg ">
           {/* Main Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left: Product Images */}
-            <div className="md:col-span-4 flex flex-col items-center gap-4 border p-2">
+            <div className="md:col-span-4 flex flex-col items-center gap-4  p-2">
               {/* Main Image Section */}
               <div className="relative w-full h-96 flex justify-center items-center">
                 <img
                   src={selectedImage || productDetails.cardImage}
                   alt={productDetails.title}
-                  className="w-full h-full object-contain rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105"
+                  className="w-full h-full object-contain rounded-lg  transition-transform duration-500 ease-in-out transform "
                 />
               </div>
 
@@ -192,7 +188,7 @@ function ProductDetails() {
                 </div>
               </div>
 
-              <div className="mt-6 w-full max-w-sm bg-gray-50 border border-gray-300 rounded-lg p-5 shadow-sm">
+              <div className="mt-6 w-full max-w-sm bg-gray-50  border-gray-300 rounded-lg p-5 shadow-sm">
                 {/* Price Section */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex flex-col">
@@ -317,7 +313,7 @@ function ProductDetails() {
                 {/* Product Details */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                   {/* Stock Section */}
-                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                  <div className="flex flex-col items-center justify-center border-b p-4">
                     <FaWarehouse className="text-2xl text-gray-800 mb-2" />
                     <p className="text-lg font-semibold text-gray-800">Stock</p>
                     <p
@@ -332,7 +328,7 @@ function ProductDetails() {
                   </div>
 
                   {/* Seller Section */}
-                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                  <div className="flex flex-col items-center justify-center border-b   p-4">
                     <FaUserAlt className="text-2xl text-gray-800 mb-2" />
                     <p className="text-lg font-semibold text-gray-800">
                       Seller
@@ -343,7 +339,7 @@ function ProductDetails() {
                   </div>
 
                   {/* Brand Section */}
-                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                  <div className="flex flex-col items-center justify- border-b   p-4">
                     <FaRegHandshake className="text-2xl text-gray-800 mb-2" />
                     <p className="text-lg font-semibold text-gray-800">Brand</p>
                     <p className="text-sm font-medium text-gray-600">
@@ -352,7 +348,7 @@ function ProductDetails() {
                   </div>
 
                   {/* Warranty Section */}
-                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                  <div className="flex flex-col items-center justify-center   p-4">
                     <FaTools className="text-2xl text-gray-800 mb-2" />
                     <p className="text-lg font-semibold text-gray-800">
                       Warranty
@@ -374,7 +370,7 @@ function ProductDetails() {
 
                 {/* Estimated Delivery Time */}
                 <div className="mb-4">
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="">
                     Estimated delivery time:{" "}
                     <strong className="text-green-600">
                       {new Date(
@@ -394,7 +390,7 @@ function ProductDetails() {
 
                 {/* Delivery Cost */}
                 <div className="mb-4">
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="">
                     Delivery cost:{" "}
                     <strong
                       className={`${
@@ -479,7 +475,7 @@ function ProductDetails() {
               <div className="mt-6 flex flex-col sm:flex-row gap-4">
                 {/* Add to Cart */}
                 <button
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold py-3 rounded-md shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
+                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold py-3 rounded-md shadow-md transition-transform duration-300"
                   onClick={(e) => addtoCart(e, productDetails._id)}
                 >
                   {/* Shopping Cart Icon */}
@@ -496,7 +492,7 @@ function ProductDetails() {
 
                 {/* Buy Now */}
                 <button
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold py-3 rounded-md shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
+                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold py-3 rounded-md shadow-md  transition-transform duration-300"
                   onClick={buyHandler}
                 >
                   {/* Lightning Icon */}

@@ -95,7 +95,7 @@ function Products() {
             )}
 
             {/* Product Grid */}
-            <main className="flex-1 border p-2">
+            <main className="flex-1 border p-1">
               {loadingProducts ? (
                 <div className="flex justify-center items-center min-h-[60vh]">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
@@ -105,7 +105,7 @@ function Products() {
                   "No products found."
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1">
                   {filterProducts.map((product) => (
                     <Link
                       to={`/productDetails/${product._id}`}
@@ -117,7 +117,7 @@ function Products() {
                         <img
                           src={product.cardImage}
                           alt={product.title}
-                          className="object-contain h-56 w-auto"
+                          className="object-contain h-48 w-auto"
                           loading="lazy"
                         />
                       </div>

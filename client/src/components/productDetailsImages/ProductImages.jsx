@@ -16,22 +16,28 @@ function ProductImages({ productId }) {
       {loading && <p>Loading images...</p>}
 
       {/* Display images */}
-      <div className="images-container">
-        {productImages.length === 0 ? (
-          ""
-        ) : (
-          <div className="images-grid">
-            {productImages.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Product Image ${index + 1}`}
-                className="product-image ml-auto mr-auto"
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <div className="images-container p-4 bg-white rounded-lg shadow-lg">
+  <h1 className="text-lg font-semibold border-b pb-2 mb-4 text-gray-700">
+    Product Images
+  </h1>
+
+  {productImages.length === 0 ? (
+    <p className="text-gray-500 text-center">No images available</p>
+  ) : (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {productImages.map((image, index) => (
+        <div key={index} className="w-full">
+          <img
+            src={image}
+            alt={`Product Image ${index + 1}`}
+            className="w-full h-auto rounded-lg object-cover border shadow-sm hover:shadow-md transition-shadow duration-300"
+          />
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
     </div>
   );
 }

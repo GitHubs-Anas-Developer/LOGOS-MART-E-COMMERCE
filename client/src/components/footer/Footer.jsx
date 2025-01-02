@@ -1,24 +1,29 @@
 import React from "react";
 
+function Footer() {
+  const dt = new Date().getFullYear();
 
-function FooterDuplicate() {
   return (
-    <footer className="bg-gradient-to-r from-gray-900 to-gray-600 text-white shadow-md">
-      <div className="w-full mx-auto max-w-screen-xl p-6 flex flex-col md:flex-row md:justify-between md:items-center">
-        {/* Footer Brand & Copyright */}
-        <span className="text-sm text-center md:text-left">
-          © 2023{" "}
+    <footer className="bg-gray-900 text-white py-4">
+      <div className="w-full max-w-screen-xl mx-auto flex flex-col md:flex-row md:justify-between items-center px-6">
+        {/* Footer Text */}
+        <span className="text-sm text-center md:text-left mb-4 md:mb-0">
+          ©  {dt} {""}
           <a
             href="https://logosmart.com/"
             className="font-bold hover:underline"
           >
             LogosMart™
           </a>
-          . Excellence in Every Design.
+          . All rights reserved. Developed by{" "}
+          <a href="#" className="font-bold hover:underline">
+            Anas
+          </a>
+          .
         </span>
 
         {/* Footer Links */}
-        <ul className="flex flex-wrap items-center justify-center mt-4 md:mt-0 text-sm font-medium space-x-6">
+        <ul className="flex space-x-4 text-sm">
           <li>
             <a href="#" className="hover:underline">
               Home
@@ -45,4 +50,4 @@ function FooterDuplicate() {
   );
 }
 
-export default FooterDuplicate;
+export default Footer;
