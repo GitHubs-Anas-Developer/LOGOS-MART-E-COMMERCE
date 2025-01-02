@@ -45,6 +45,13 @@ const reviewSchema = new mongoose.Schema({
       ref: "User", // Array of user IDs who disliked the review
     },
   ],
+
+  attributeRatings: {
+  
+    valueforMoney: { type: Number, default: 0 },
+    quality: { type: Number, default: 0 },
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

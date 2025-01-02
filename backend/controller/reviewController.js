@@ -59,10 +59,41 @@ const getReviews = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    const product = await Product.findById(productId).populate(
-      "reviews.user",
-      "userName "
-    );
+    const product = await Product.findById(productId)
+      .select("reviews")
+      .populate("reviews.user", "userName ");
+
+    const ratings = product.reviews.map((product) => product.rating);
+
+    const reviewlength = product.reviews.length;
+    const ratingLength = ratings.length;
+
+    const ratingDistribution = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+    };
+
+    ratings.forEach((rating) => {
+      if (rating >= 1 && rating < 2) {
+        ratingDistribution["1"]++;
+      } else if (rating >= 2 && rating < 3) {
+        ratingDistribution["2"]++;
+      } else if (rating >= 3 && rating < 4) {
+        ratingDistribution["3"]++;
+      } else if (rating >= 4 && rating < 5) {
+        ratingDistribution["4"]++;
+      } else if (rating >= 5) {
+        ratingDistribution["5"]++;
+      }
+    });
+
+    const totalRatingPoints = ratings.reduce((sum, rating) => sum + rating, 0);
+    const overallRating = (totalRatingPoints / ratingLength).toFixed(1);
+
+    console.log("overallRating", overallRating);
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -71,6 +102,10 @@ const getReviews = async (req, res) => {
     res.status(200).json({
       message: "Reviews fetched successfully",
       reviews: product.reviews,
+      ratingLength,
+      ratingDistribution,
+      overallRating,
+      reviewlength,
     });
   } catch (error) {
     console.error("Error fetching reviews:", error);
