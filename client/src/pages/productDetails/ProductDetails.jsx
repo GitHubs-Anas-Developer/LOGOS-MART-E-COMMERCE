@@ -12,11 +12,16 @@ import RelatedProducts from "../../context/RelatedProducts";
 import { ProductImagesContext } from "../../context/productImages";
 import ProductImages from "../../components/productDetailsImages/ProductImages";
 import CategoriesBanner from "../home/categoryBanner/CategoriesBanner";
+import {
+  FaWarehouse,
+  FaUserAlt,
+  FaRegHandshake,
+  FaTools,
+} from "react-icons/fa";
 
 function ProductDetails() {
-  const { id } = useParams();
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const {
     fetchSingleProductDetails,
     productDetails,
@@ -41,19 +46,21 @@ function ProductDetails() {
     useState("");
   const [selectColorVariantId, setColorVariantId] = useState("");
 
+
+
+
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-    fetchSingleProductDetails(id);
 
+    fetchSingleProductDetails(id);
     fetchRelatedProducts(productDetails.subSubcategoryId);
     fetchProductReviews(id);
-    fetchProductImages(id);
-
     fetchAddress();
-  }, [id, productDetails.subSubcategoryId]);
+  }, [productDetails._id, productDetails.subSubcategoryId]);
 
   const handleColorChange = (index) => setSelectedColorIndex(index);
   const formatPrice = (price) =>
@@ -111,7 +118,6 @@ function ProductDetails() {
     typeof productDetails.about[0] === "string"
   ) {
     var productAbout = productDetails.about[0].split(",");
-    console.log("productAbout:", productAbout);
   } else {
     console.log("Invalid about field format");
   }
@@ -119,57 +125,78 @@ function ProductDetails() {
   return (
     <>
       <CategoriesBanner />
-      <div className="bg-gray-50 min-h-screen py-8">
-        <div className="container mx-auto bg-white rounded-lg shadow-lg p-6">
+      <div className="bg-gray-50 min-h-screen">
+        <div className="container mx-auto bg-white rounded-lg p-6">
           {/* Main Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left: Product Images */}
-            <div className="md:col-span-5">
-              <div className="relative">
+            <div className="md:col-span-4 flex flex-col items-center gap-4 border p-2">
+              {/* Main Image Section */}
+              <div className="relative w-full h-96 flex justify-center items-center">
                 <img
                   src={selectedImage || productDetails.cardImage}
                   alt={productDetails.title}
-                  className="w-full h-96 object-contain rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105"
+                  className="w-full h-full object-contain rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105"
                 />
               </div>
-              <div className="mt-4 flex gap-4 overflow-x-auto scrollbar-hide">
+
+              {/* Thumbnail Gallery Section */}
+              <div className="w-full flex gap-2 overflow-x-auto scrollbar-hide p-2">
                 {productImages.map((image, index) => (
-                  <img
+                  <div
                     key={index}
-                    src={image}
-                    alt={`Image ${index + 1}`}
-                    className={`h-20 w-20 rounded-lg border-2 p-1 cursor-pointer transition-all duration-300 ease-in-out ${
+                    className={`relative h-16 w-16 flex-shrink-0 rounded-md border cursor-pointer transition-all duration-300 ease-in-out ${
                       selectedImage === image
-                        ? "border-blue-500 scale-105"
+                        ? "border-blue-500 bg-blue-50 shadow-sm scale-105"
                         : "border-gray-300 hover:border-blue-400"
                     }`}
                     onClick={() => setSelectedImage(image)}
-                  />
+                  >
+                    <img
+                      src={image}
+                      alt={`Thumbnail ${index + 1}`}
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Right: Product Details */}
-            <div className="md:col-span-7">
-              <div className="border-b border-gray-300 pb-4 mb-5">
+            <div className="md:col-span-7 border p-2 overflow-y-auto">
+              <div className="border-b border-gray-300 pb-4 mb-5 ">
                 <h1 className="text-2xl font-extrabold text-gray-900 leading-snug">
                   {productDetails.title}
                 </h1>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <FaStar className="text-yellow-500 text-lg" />
-                <span className="text-gray-700 text-lg font-medium">
-                  {productDetails.rating}{" "}
-                  <span className="text-gray-500 text-sm">/ 5</span>
-                </span>
+              <div className="flex items-center space-x-3">
+                {/* Star Icon */}
+                <FaStar className="text-green-500 text-lg" />
+
+                {/* Rating and Reviews */}
+                <div className="flex items-center text-lg font-medium text-gray-700">
+                  {/* Rating */}
+                  <span>{productDetails.rating}</span>
+
+                  {/* Separator */}
+                  <span className="mx-1 text-gray-500">|</span>
+
+                  {/* Ratings Text */}
+                  <span className="text-sm text-gray-500">Ratings</span>
+
+                  {/* Reviews Count */}
+                  <span className="ml-2 text-sm text-gray-500">
+                    {productDetails.reviews.length} Reviews
+                  </span>
+                </div>
               </div>
 
-              <div className="mt-6 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-md p-6">
+              <div className="mt-6 w-full max-w-sm bg-gray-50 border border-gray-300 rounded-lg p-5 shadow-sm">
                 {/* Price Section */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex flex-col">
-                    <span className="block text-3xl font-bold text-gray-800">
+                    <span className="text-2xl font-bold text-gray-800">
                       {selectedVariant
                         ? formatPrice(selectedVariant.offerPrice)
                         : formatPrice(
@@ -181,7 +208,7 @@ function ProductDetails() {
                   </div>
 
                   {/* Discount Badge */}
-                  <div className="bg-yellow-400 text-white text-sm font-semibold px-4 py-1 rounded-full shadow-md">
+                  <div className="bg-green-500 text-white text-xs font-medium px-3 py-1 rounded">
                     {selectedVariant
                       ? `${selectedVariant.discountPercentage}% OFF`
                       : `${
@@ -193,8 +220,8 @@ function ProductDetails() {
                 </div>
 
                 {/* Original Price */}
-                <div className="flex items-center justify-between border-t pt-4">
-                  <span className="text-xl font-medium text-gray-400 line-through">
+                <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  <span className="text-lg font-medium text-gray-500 line-through">
                     {selectedVariant
                       ? formatPrice(selectedVariant.price)
                       : formatPrice(
@@ -203,111 +230,13 @@ function ProductDetails() {
                             0
                         )}
                   </span>
-                  <span className="text-sm text-gray-600">Original Price</span>
-                </div>
-              </div>
-
-              <div className="mt-1 bg-gray-50 p-6 rounded-lg ">
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
-                  {/* Stock */}
-                  <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-green-100 text-green-600 flex items-center justify-center rounded-md">
-                        {/* Icon */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M16 5H4a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2zM4 13V7h12v6H4z" />
-                        </svg>
-                      </div>
-                      <p className="ml-3 text-gray-600 font-medium">Stock</p>
-                    </div>
-                    <p
-                      className={`text-sm font-semibold ${
-                        productDetails.stock > 0
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {productDetails.stock > 0 ? "In Stock" : "Out of Stock"}
-                    </p>
-                  </div>
-
-                  {/* Seller */}
-                  <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-blue-100 text-blue-600 flex items-center justify-center rounded-md">
-                        {/* Icon */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 2a4 4 0 00-4 4v2a4 4 0 004 4 4 4 0 004-4V6a4 4 0 00-4-4zM5 8V6a5 5 0 0110 0v2a5 5 0 01-10 0v-2zm5 6a6 6 0 00-5.917 5H5a1 1 0 000-2h10a1 1 0 000 2h.917A6 6 0 0010 14z" />
-                        </svg>
-                      </div>
-                      <p className="ml-3 text-gray-600 font-medium">Seller</p>
-                    </div>
-                    <p className="text-sm font-semibold text-gray-800">
-                      {productDetails.seller}
-                    </p>
-                  </div>
-
-                  {/* Brand */}
-                  <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-yellow-100 text-yellow-600 flex items-center justify-center rounded-md">
-                        {/* Icon */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 2a4 4 0 00-4 4v2a4 4 0 004 4 4 4 0 004-4V6a4 4 0 00-4-4zm-5 8a5 5 0 0110 0v2a5 5 0 01-10 0v-2zm-2 4a1 1 0 000 2h14a1 1 0 000-2H3z" />
-                        </svg>
-                      </div>
-                      <p className="ml-3 text-gray-600 font-medium">Brand</p>
-                    </div>
-                    <p className="text-sm font-semibold text-gray-800">
-                      {productDetails.brand}
-                    </p>
-                  </div>
-
-                  {/* Warranty */}
-                  <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-purple-100 text-purple-600 flex items-center justify-center rounded-md">
-                        {/* Icon */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M2 5a3 3 0 013-3h10a3 3 0 013 3v10a3 3 0 01-3 3H5a3 3 0 01-3-3V5zm5 0a1 1 0 100 2h6a1 1 0 100-2H7z" />
-                        </svg>
-                      </div>
-                      <p className="ml-3 text-gray-600 font-medium">
-                        Warranty{" "}
-                      </p>
-                      {""}
-                    </div>
-                    <p className="text-sm font-semibold text-gray-800 ml-2">
-                      {productDetails.warranty}
-                    </p>
-                  </div>
+                  <span className="text-sm text-gray-500">Original Price</span>
                 </div>
               </div>
 
               {/* Color Options */}
               <div className="mt-6">
-                <h3 className="text-lg font-semibold text-black">
+                <h3 className="text-lg font-semibold text-gray-800">
                   Choose Color
                 </h3>
                 <div className="flex gap-4 mt-3">
@@ -315,11 +244,17 @@ function ProductDetails() {
                     <button
                       key={color._id}
                       onClick={() => handleColorChange(index)}
-                      className={`py-2 px-4 border rounded-lg text-black ${
+                      className={`py-3 px-1 rounded-lg text-lg font-semibold transition-colors duration-300 ease-in-out ${
                         selectedColorIndex === index
-                          ? "border-blue-500"
-                          : "border-gray-300"
+                          ? "bg-blue-300 text-black border border-blue-700"
+                          : "bg-gray-200 hover:bg-gray-300 text-gray-700"
                       }`}
+                      style={{
+                        backgroundColor:
+                          selectedColorIndex === index
+                            ? color.hexCode
+                            : "transparent",
+                      }}
                       onClickCapture={() => setColorVariantId(color._id)}
                     >
                       {color.colorName}
@@ -378,26 +313,67 @@ function ProductDetails() {
                   </p>
                 )}
               </div>
+              <div className="mt-4 bg-white p-4 rounded-lg border">
+                {/* Product Details */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  {/* Stock Section */}
+                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                    <FaWarehouse className="text-2xl text-gray-800 mb-2" />
+                    <p className="text-lg font-semibold text-gray-800">Stock</p>
+                    <p
+                      className={`text-sm font-medium ${
+                        productDetails.stock > 0
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {productDetails.stock > 0 ? "In Stock" : "Out of Stock"}
+                    </p>
+                  </div>
 
-              <div className="p-6 rounded-lg bg-white dark:bg-gray-800 shadow-md m-5">
+                  {/* Seller Section */}
+                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                    <FaUserAlt className="text-2xl text-gray-800 mb-2" />
+                    <p className="text-lg font-semibold text-gray-800">
+                      Seller
+                    </p>
+                    <p className="text-sm font-medium text-gray-600">
+                      {productDetails.seller}
+                    </p>
+                  </div>
+
+                  {/* Brand Section */}
+                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                    <FaRegHandshake className="text-2xl text-gray-800 mb-2" />
+                    <p className="text-lg font-semibold text-gray-800">Brand</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      {productDetails.brand}
+                    </p>
+                  </div>
+
+                  {/* Warranty Section */}
+                  <div className="flex flex-col items-center justify-center border rounded-lg p-4">
+                    <FaTools className="text-2xl text-gray-800 mb-2" />
+                    <p className="text-lg font-semibold text-gray-800">
+                      Warranty
+                    </p>
+                    <p className="text-sm font-medium text-gray-600">
+                      {productDetails.warranty.length > 50
+                        ? productDetails.warranty.slice(0, 48) + "..."
+                        : productDetails.warranty}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-lg bg-white dark:bg-gray-800 shadow-sm m-5">
                 {/* Section Title */}
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                   Delivery Details
                 </h2>
 
                 {/* Estimated Delivery Time */}
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full mr-3">
-                    {/* Calendar Icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M6 2a1 1 0 100 2h8a1 1 0 100-2H6zM4 5a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2H4zM2 9h16v8H2V9z" />
-                    </svg>
-                  </div>
+                <div className="mb-4">
                   <p className="text-gray-700 dark:text-gray-300">
                     Estimated delivery time:{" "}
                     <strong className="text-green-600">
@@ -417,18 +393,7 @@ function ProductDetails() {
                 </div>
 
                 {/* Delivery Cost */}
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full mr-3">
-                    {/* Dollar Icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M10 2a8 8 0 110 16A8 8 0 0110 2zm0 12a4 4 0 100-8 4 4 0 000 8z" />
-                    </svg>
-                  </div>
+                <div className="mb-4">
                   <p className="text-gray-700 dark:text-gray-300">
                     Delivery cost:{" "}
                     <strong
@@ -438,26 +403,16 @@ function ProductDetails() {
                           : "text-red-500"
                       }`}
                     >
-                      {productDetails.delivery.cost === 0
+                      {productDetails.delivery.cost === null ||
+                      productDetails.delivery.cost === 0
                         ? "Free"
-                        : `$${productDetails.delivery.cost}`}
+                        : `${formatPrice(productDetails.delivery.cost)}`}
                     </strong>
                   </p>
                 </div>
 
                 {/* Delivery Information Link */}
-                <div className="flex items-center">
-                  <div className="w-8 h-8 flex items-center justify-center bg-yellow-100 text-yellow-600 rounded-full mr-3">
-                    {/* Info Icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M10 2a8 8 0 110 16A8 8 0 0110 2zm0 11a1 1 0 100 2 1 1 0 000-2zm-1-6a1 1 0 012 0v4a1 1 0 01-2 0V7z" />
-                    </svg>
-                  </div>
+                <div>
                   <p className="text-gray-600 dark:text-gray-400">
                     For more details, visit our{" "}
                     <a
@@ -644,11 +599,21 @@ function ProductDetails() {
             </div>
           </div>
 
-          <ProductImages />
-          {/* Related Products and Reviews */}
-          <RelatedProductsData />
-          <ProductReviews />
-          <AddReview productId={productDetails._id} />
+          <ProductImages productId={productDetails._id} />
+          {/* Related Products Section */}
+          <div className="space-y-4 border ">
+            <RelatedProductsData />
+          </div>
+
+          {/* Product Reviews Section */}
+          <div className="space-y-4 border ">
+            <ProductReviews />
+          </div>
+
+          {/* Add Review Section */}
+          {/* <div className="space-y-4 border">
+            <AddReview productId={productDetails._id} />
+          </div> */}
         </div>
       </div>
     </>

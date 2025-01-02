@@ -9,7 +9,7 @@ function Filters() {
   const [rating, setRating] = useState([]);
   const [sortOption, setSortOption] = useState("");
 
-  const { fetchFilterProducts, fetchBrands, brands} = useContext(
+  const { fetchFilterProducts, fetchBrands, brands } = useContext(
     FilterProductsContext
   );
 
@@ -81,7 +81,7 @@ function Filters() {
       </div>
 
       {/* Brand */}
-      <div className="bg-white p-5 rounded-md border border-gray-200">
+      <div className="bg-white p-5  border border-gray-200">
         <label className="block text-md font-medium text-gray-800 mb-4">
           Brands
         </label>
@@ -112,7 +112,7 @@ function Filters() {
       </div>
 
       {/* Rating */}
-      <div className="bg-white p-5 rounded-md border border-gray-200">
+      <div className="bg-white p-5  border border-gray-200">
         <label className="block text-md font-medium text-gray-800 mb-4">
           Rating
         </label>
@@ -143,7 +143,7 @@ function Filters() {
       </div>
 
       {/* Sorting Options */}
-      <div className="bg-white p-5 rounded-md border border-gray-200">
+      <div className="bg-white p-5  border border-gray-200">
         <label className="block text-md font-medium text-gray-800 mb-4">
           Sort By
         </label>
@@ -163,7 +163,7 @@ function Filters() {
       {/* Clear Filters Button */}
       <button
         onClick={clearFilters}
-        className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300"
+        className="w-full bg-red-500 text-white py-2  hover:bg-red-600 transition duration-300"
       >
         Clear Filters
       </button>

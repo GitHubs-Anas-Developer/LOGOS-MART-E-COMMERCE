@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa";
+
 
 function FooterDuplicate() {
   return (
@@ -13,7 +8,10 @@ function FooterDuplicate() {
         {/* Footer Brand & Copyright */}
         <span className="text-sm text-center md:text-left">
           © 2023{" "}
-          <a href="https://logosmart.com/" className="font-bold hover:underline">
+          <a
+            href="https://logosmart.com/"
+            className="font-bold hover:underline"
+          >
             LogosMart™
           </a>
           . Excellence in Every Design.
@@ -42,34 +40,6 @@ function FooterDuplicate() {
             </a>
           </li>
         </ul>
-
-        {/* Social Media Links */}
-        <div className="flex justify-center mt-4 md:mt-0 space-x-4">
-          <a
-            href="#"
-            className="p-2 bg-white text-gray-700 rounded-full hover:bg-gray-800 hover:text-white transition"
-          >
-            <FaFacebookF />
-          </a>
-          <a
-            href="#"
-            className="p-2 bg-white text-gray-700 rounded-full hover:bg-gray-800 hover:text-white transition"
-          >
-            <FaTwitter />
-          </a>
-          <a
-            href="#"
-            className="p-2 bg-white text-gray-700 rounded-full hover:bg-gray-800 hover:text-white transition"
-          >
-            <FaInstagram />
-          </a>
-          <a
-            href="#"
-            className="p-2 bg-white text-gray-700 rounded-full hover:bg-gray-800 hover:text-white transition"
-          >
-            <FaLinkedinIn />
-          </a>
-        </div>
       </div>
     </footer>
   );

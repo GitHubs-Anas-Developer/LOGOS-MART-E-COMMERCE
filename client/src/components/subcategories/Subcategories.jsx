@@ -11,19 +11,6 @@ function SubcategoriesCarousel() {
     fetchSubcategoriesAll();
   }, [fetchSubcategoriesAll]);
 
-  const scroll = (direction) => {
-    if (carouselRef.current) {
-      const scrollAmount =
-        direction === "left"
-          ? -carouselRef.current.offsetWidth / 2
-          : carouselRef.current.offsetWidth / 2;
-      carouselRef.current.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
   if (loading) {
     return (
       <div className="md:hidden text-center text-blue-500 text-lg py-10">
@@ -48,31 +35,22 @@ function SubcategoriesCarousel() {
 
       {/* Horizontal Scrolling Container */}
       <div className="relative">
-        {/* Left Scroll Button */}
-        <button
-          onClick={() => scroll("left")}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg z-10 hover:scale-110 transition"
-          aria-label="Scroll left"
-        >
-          <AiOutlineLeft size={20} className="text-gray-700" />
-        </button>
-
         {/* Scrollable Content */}
         <div
           ref={carouselRef}
-          className="flex gap-4 overflow-x-auto scroll-smooth px-6 py-4 scrollbar-hide"
+          className="flex overflow-x-auto scroll-smooth  scrollbar-hide"
         >
           {subcategoriesAll.map((subcategory) => (
             <div
               key={subcategory.id}
-              className="flex-shrink-0 w-28 bg-white rounded-lg shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
+              className="flex-shrink-0 w-28 bg-white "
             >
               {/* Subcategory Image */}
               <div className="relative h-20">
                 <img
                   src={subcategory.image || "/placeholder-image.png"}
                   alt={subcategory.title || "Subcategory"}
-                  className="w-full h-full object-contain rounded-t-lg"
+                  className="w-full h-full object-contain "
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-t-lg"></div>
               </div>
@@ -86,15 +64,6 @@ function SubcategoriesCarousel() {
             </div>
           ))}
         </div>
-
-        {/* Right Scroll Button */}
-        <button
-          onClick={() => scroll("right")}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg z-10 hover:scale-110 transition"
-          aria-label="Scroll right"
-        >
-          <AiOutlineRight size={20} className="text-gray-700" />
-        </button>
       </div>
     </div>
   );

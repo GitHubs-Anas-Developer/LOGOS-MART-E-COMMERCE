@@ -33,75 +33,69 @@ function RelatedProductsData() {
       </h2>
 
       <div className="flex overflow-x-auto space-x-4 scrollbar-hide scroll-smooth">
-        {relatedProducts.length > 0 ? (
-          relatedProducts.map((product) => (
-            <Link
-              key={product._id}
-              to={`/productDetails/${product._id}`}
-              className="flex-none"
-            >
-              <div
-                className="relative bg-white rounded-lg border shadow-md overflow-hidden w-44 group hover:shadow-lg transition-transform"
-                aria-label={
-                  product.variants?.[0]?.discountPercentage > 0
-                    ? `Discounted product: ${product.title}`
-                    : `Product: ${product.title}`
-                }
+        {relatedProducts.length > 0
+          ? relatedProducts.map((product) => (
+              <Link
+                key={product._id}
+                to={`/productDetails/${product._id}`}
+                className="flex-none"
               >
-                <img
-                  src={product.cardImage || "/images/fallback.jpg"}
-                  alt={`${product.name || "Product"} image`}
-                  className="w-full h-36 object-contain transition-transform duration-300 transform group-hover:scale-110"
-                  loading="lazy"
-                />
+                <div
+                  className="relative bg-white rounded-lg border shadow-md overflow-hidden w-44 group hover:shadow-lg transition-transform"
+                  aria-label={
+                    product.variants?.[0]?.discountPercentage > 0
+                      ? `Discounted product: ${product.title}`
+                      : `Product: ${product.title}`
+                  }
+                >
+                  <img
+                    src={product.cardImage || "/images/fallback.jpg"}
+                    alt={`${product.name || "Product"} image`}
+                    className="w-full h-36 object-contain transition-transform duration-300 transform group-hover:scale-110"
+                    loading="lazy"
+                  />
 
-                {product.variants?.[0]?.discountPercentage > 0 && (
-                  <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                    {product.variants[0].discountPercentage}% OFF
-                  </div>
-                )}
+                  {product.variants?.[0]?.discountPercentage > 0 && (
+                    <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      {product.variants[0].discountPercentage}% OFF
+                    </div>
+                  )}
 
-                <div className="p-4 text-center">
-                  <h3 className="text-sm font-semibold text-gray-800 mb-2 truncate">
-                    {product.title}
-                  </h3>
+                  <div className="p-4 text-center">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-2 truncate">
+                      {product.title}
+                    </h3>
 
-                  <div className="flex justify-center items-center mb-3">
-                    <FaStar className="text-yellow-500 mr-1" />
-                    <span className="text-gray-600 text-sm">
-                      {product.rating || "No Rating"}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-center items-center space-x-2">
-                    {product.offerPrice || product.variants?.[0]?.offerPrice ? (
-                      <span className="text-lg font-semibold text-green-600">
-                        {formatPrice(
-                          product.offerPrice ||
-                            product.variants?.[0]?.offerPrice
-                        )}
+                    <div className="flex justify-center items-center mb-3">
+                      <FaStar className="text-yellow-500 mr-1" />
+                      <span className="text-gray-600 text-sm">
+                        {product.rating || "No Rating"}
                       </span>
-                    ) : null}
-                    {(product.price || product.variants?.[0]?.price) && (
-                      <span className="text-sm text-gray-500 line-through">
-                        {formatPrice(
-                          product.price || product.variants?.[0]?.price
-                        )}
-                      </span>
-                    )}
+                    </div>
+
+                    <div className="flex justify-center items-center space-x-2">
+                      {product.offerPrice ||
+                      product.variants?.[0]?.offerPrice ? (
+                        <span className="text-lg font-semibold text-green-600">
+                          {formatPrice(
+                            product.offerPrice ||
+                              product.variants?.[0]?.offerPrice
+                          )}
+                        </span>
+                      ) : null}
+                      {(product.price || product.variants?.[0]?.price) && (
+                        <span className="text-sm text-gray-500 line-through">
+                          {formatPrice(
+                            product.price || product.variants?.[0]?.price
+                          )}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <div className="text-center text-gray-500 col-span-6">
-            <p>No related products available. Explore more products!</p>
-            <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-              Browse Products
-            </button>
-          </div>
-        )}
+              </Link>
+            ))
+          : ""}
       </div>
     </div>
   );

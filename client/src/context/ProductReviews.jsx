@@ -7,6 +7,10 @@ export const ProductReviewsContext = createContext();
 
 const ProductReviewsProvider = ({ children }) => {
   const [reviews, setReviews] = useState([]); // Local state to store product reviews
+  const [ratingLength, setRatingLength] = useState("");
+  const [reviewlength, setReviewlength] = useState("");
+  const [overAllRating, setOverAllRating] = useState("");
+  const [ratingDistribution, setRatingDistribution] = useState("");
   const [error, setError] = useState(null); // Error state for fetch operations
   const [isLoading, setIsLoading] = useState(false); // Loading state
 
@@ -42,6 +46,10 @@ const ProductReviewsProvider = ({ children }) => {
     try {
       const response = await api.get(`/api/v1/reviews/${productId}`);
       setReviews(response.data.reviews || []);
+      setRatingLength(response.data.ratingLength);
+      setRatingDistribution(response.data.ratingDistribution);
+      setOverAllRating(response.data.overallRating);
+      setReviewlength(response.data.reviewlength);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Failed to fetch product reviews.";
@@ -97,6 +105,10 @@ const ProductReviewsProvider = ({ children }) => {
     <ProductReviewsContext.Provider
       value={{
         reviews,
+        ratingLength,
+        reviewlength,
+        overAllRating,
+        ratingDistribution,
         addProductReviews,
         fetchProductReviews,
         handleLike,

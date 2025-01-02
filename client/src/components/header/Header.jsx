@@ -30,7 +30,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white  shadow-lg border-b">
+    <header className="bg-white   border-b">
       <div className="hidden md:flex bg-red-500 p-1 justify-center items-center overflow-hidden">
         <h1 className="text-2xl font-bold text-white animate-text-loop">
           Exclusive Deals Just for You! Enjoy amazing discounts on all your
@@ -46,12 +46,13 @@ const Header = () => {
           </Link>
 
           {/* Search Bar */}
-          <div className="hidden md:block flex-1 mx-4">
-            <Search />
-          </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:block flex-1 mx-4 text-white">
+              <Search />
+            </div>
+
             <Link to="/products" className="text-white hover:text-gray-400">
               <RiProductHuntLine className="text-3xl text-blue-400" />
             </Link>

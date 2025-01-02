@@ -1,9 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { ProductReviewsContext } from "../../context/ProductReviews";
+import { IoStarOutline } from "react-icons/io5";
+import { SlDislike, SlLike } from "react-icons/sl";
+import { Link } from "react-router-dom";
 
 function ProductReviews({ productId }) {
   const {
     reviews,
+    ratingLength,
+    reviewlength,
+    overAllRating,
+    ratingDistribution,
     fetchProductReviews,
     handleLike,
     handleDislike,
@@ -41,23 +48,77 @@ function ProductReviews({ productId }) {
   }
 
   return (
-    <div className="max-w-5xl mx-auto py-10">
-      <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
+    <div className="max-w-5xl mx-auto  border ">
+      <h2 className="text-3xl font-bold text-gray-800 text-center mb-2 border-b">
         Customer Reviews
       </h2>
+
+      <div className="text-center p-3">
+        <h3 className="text-3xl font-semibold text-indigo-600 mb-2">
+          Overall Rating:{" "}
+          <span className="text-4xl font-extrabold">{overAllRating}</span>
+        </h3>
+        <p className="text-gray-600">
+          ({ratingLength}) Ratings & Reviews ({reviewlength})
+        </p>
+        <div className="mt-4">
+          {Object.entries(ratingDistribution).map(([range, count]) => {
+            // Determine the color based on the rating range
+            let barColor = "bg-gray-200"; // Default gray color for the background
+            if (range === "5" || range === "4") {
+              barColor = "bg-green-500"; // High ratings in green
+            } else if (range === "3") {
+              barColor = "bg-orange-400"; // Mid-range ratings in orange
+            } else if (range === "2" || range === "1") {
+              barColor = "bg-red-500"; // Low ratings in red
+            }
+
+            return (
+              <div
+                key={range}
+                className="flex items-center justify-center mb-4"
+              >
+                <span
+                  className={`text-sm font-semibold ${
+                    range >= 4
+                      ? "text-green-600"
+                      : range === 3
+                      ? "text-orange-400"
+                      : "text-red-600"
+                  }`}
+                >
+                  {range} Star{range > 1 ? "s" : ""}
+                </span>
+
+                <div className="flex items-center w-2/3 bg-gray-200 rounded-full h-3 mx-2">
+                  <div
+                    className={`h-3 rounded-full transition-all duration-500 ${barColor}`}
+                    style={{
+                      width: `${(count / ratingLength) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+                <span className="text-sm text-gray-600 font-semibold">
+                  {count}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {reviews?.length > 0 ? (
         <div className="relative border-l border-gray-300">
           {reviews.map((review, index) => (
-            <div key={index} className="mb-10 ml-6">
+            <div key={index} className=" ">
               {/* Timeline Dot */}
               <div className="absolute w-3 h-3 bg-indigo-500 rounded-full -left-1.5 top-4"></div>
 
               {/* Review Card */}
-              <div className="p-6 bg-white shadow-md rounded-lg border border-gray-200">
+              <div className="p-6  border border-gray-200  transition-all duration-300">
                 {/* User Information */}
                 <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-10 h-10 bg-indigo-500 text-white flex items-center justify-center rounded-full font-semibold uppercase">
+                  <div className="w-12 h-12 bg-indigo-500 text-white flex items-center justify-center rounded-full font-semibold uppercase">
                     {review.user?.userName?.charAt(0) || "A"}
                   </div>
                   <div>
@@ -74,25 +135,13 @@ function ProductReviews({ productId }) {
                 <h4 className="text-md font-semibold text-gray-700 mb-2">
                   {review.title || "No Title Provided"}
                 </h4>
-                <p className="text-sm text-gray-600 mb-4">
-                  {review.comment}
-                </p>
+                <p className="text-sm text-gray-600 mb-4">{review.comment}</p>
 
                 {/* Rating */}
-                <div className="flex items-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill={i < review.rating ? "gold" : "gray"}
-                      viewBox="0 0 24 24"
-                      className="w-5 h-5"
-                    >
-                      <path d="M12 17.75l-5.15 3.05 1.05-6.15-4.5-4.5 6.3-.45L12 2l2.3 5.75 6.3.45-4.5 4.5 1.05 6.15L12 17.75z" />
-                    </svg>
-                  ))}
-                  <span className="ml-2 text-sm text-gray-500">
-                    {review.rating} / 5
+                <div className="flex items-center  w-fit p-1 bg-green-500 rounded-md ">
+                  <span className="text-sm font-bold text-white flex items-center">
+                    {review.rating}
+                    <IoStarOutline className="ml-1 text-white" size={15} />
                   </span>
                 </div>
 
@@ -115,15 +164,17 @@ function ProductReviews({ productId }) {
                 <div className="mt-4 flex items-center space-x-4">
                   <button
                     onClick={() => handleLike(review._id)}
-                    className="text-indigo-500 font-medium hover:text-indigo-600 flex items-center"
+                    className="text-indigo-500 font-medium hover:text-indigo-600 flex items-center transition-all duration-200"
                   >
-                    👍 Like <span className="ml-1">({review.likes})</span>
+                    <SlLike />
+                    <span className="ml-1">({review.likes})</span>
                   </button>
                   <button
                     onClick={() => handleDislike(review._id)}
-                    className="text-red-500 font-medium hover:text-red-600 flex items-center"
+                    className="text-red-500 font-medium hover:text-red-600 flex items-center transition-all duration-200"
                   >
-                    👎 Dislike <span className="ml-1">({review.dislikes})</span>
+                    <SlDislike />
+                    <span className="ml-1">({review.dislikes})</span>
                   </button>
                 </div>
               </div>
@@ -131,10 +182,17 @@ function ProductReviews({ productId }) {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">
-          No reviews available for this product.
-        </p>
+        <p className="text-center text-gray-500">No reviews yet.</p>
       )}
+
+      <div className="border shadow-md bg-white p-4 flex justify-end">
+        <Link
+          to="/reviews"
+          className="text-blue-500 hover:text-blue-700 font-semibold underline transition duration-200"
+        >
+          View All {reviewlength} Reviews
+        </Link>
+      </div>
     </div>
   );
 }

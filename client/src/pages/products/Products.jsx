@@ -189,7 +189,7 @@ function Products() {
                       <div className="flex space-x-2 p-1">
                         {/* Add to Cart Button */}
                         <button
-                          className="flex-1 py-2 flex items-center justify-center text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 transition rounded-lg shadow-md"
+                          className="flex-1 py-2 flex items-center justify-center text-sm font-medium text-white bg-green-500 hover:bg-green-500 transition rounded-lg shadow-md"
                           onClick={(e) => {
                             e.preventDefault();
                             addToCart(product._id);
@@ -200,7 +200,7 @@ function Products() {
 
                         {/* Add to Wishlist Button */}
                         <button
-                          className="flex-1 py-2 flex items-center justify-center text-sm font-medium text-orange-500 border border-orange-500 hover:bg-orange-500 hover:text-white transition rounded-lg shadow-md"
+                          className="flex-1 py-2 flex items-center justify-center text-sm font-medium text-red-500 border border-red-600 hover:bg-red-600 hover:text-white transition rounded-lg shadow-md"
                           onClick={(e) => {
                             e.preventDefault();
                             addToWishlist(product._id);

@@ -40,7 +40,9 @@ function Home() {
       {/* Offer-related components, displayed based on loading and error */}
       <div className="py-10">
         {loading && (
-          <div className="text-center text-blue-500">Loading offers...</div>
+          <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+          </div>
         )}
 
         {error && (

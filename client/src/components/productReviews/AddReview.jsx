@@ -49,8 +49,8 @@ const AddReview = ({ productId }) => {
       formData.append("images", image); // Add all images under the 'images' field
     });
 
-    console.log("Submitting formData:", formData);
 
+    
     // Pass the formData to your addProductReviews function
     await addProductReviews(productId, formData); // Pass productId and formData correctly
   };
@@ -61,19 +61,22 @@ const AddReview = ({ productId }) => {
         Add a Review
       </h2>
 
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-sm space-y-6"
+      >
         {/* Rating Selection with Star Rating */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-700 mb-2">
             Rating
           </label>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-2">
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
                 onClick={() => handleRatingChange(star)}
                 xmlns="http://www.w3.org/2000/svg"
-                fill={rating >= star ? "gold" : "gray"}
+                fill={rating >= star ? "#FFD700" : "#D1D5DB"} // Gold for selected, Gray for unselected
                 className="w-6 h-6 cursor-pointer"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -86,39 +89,37 @@ const AddReview = ({ productId }) => {
         </div>
 
         {/* Title */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-700 mb-2">
             Title <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none text-gray-800"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none text-gray-700"
             value={title}
             onChange={handleTitleChange}
             placeholder="Enter a short title for your review"
             maxLength={100}
-            required
           />
         </div>
 
         {/* Comment Section */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-700 mb-2">
             Comment
           </label>
           <textarea
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none text-gray-800"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none text-gray-700"
             value={comment}
             onChange={handleCommentChange}
             rows="4"
             placeholder="Write your review here..."
-            required
           />
         </div>
 
         {/* Image Upload Section */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-700 mb-2">
             Upload Images (optional)
           </label>
           <input
@@ -126,21 +127,21 @@ const AddReview = ({ productId }) => {
             accept="image/*"
             multiple
             onChange={handleImageChange}
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none text-gray-800"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700"
           />
         </div>
 
         {/* Image Previews with Remove Button */}
         {images.length > 0 && (
-          <div className="mb-6">
-            <p className="text-sm text-gray-700 mb-2">Selected Images:</p>
+          <div className="mb-4">
+            <p className="text-sm text-gray-500 mb-2">Selected Images:</p>
             <div className="grid grid-cols-3 gap-4">
               {images.map((image, index) => (
                 <div key={index} className="relative">
                   <img
                     src={URL.createObjectURL(image)}
                     alt={`Preview ${index + 1}`}
-                    className="max-w-full h-auto object-cover rounded-lg shadow-md"
+                    className="w-full h-auto object-cover rounded-lg"
                   />
                   <button
                     type="button"
