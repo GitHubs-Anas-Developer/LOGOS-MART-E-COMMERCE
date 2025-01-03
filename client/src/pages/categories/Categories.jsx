@@ -64,7 +64,7 @@ function Categories() {
               >
                 {/* Category Card */}
                 <div className="relative">
-                  <div className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-full p-3">
+                  <div className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out  p-3 ">
                     <img
                       src={subcategory.image} // Assuming each subcategory has an image URL
                       alt={subcategory.title}
@@ -74,7 +74,7 @@ function Categories() {
 
                   {/* Hover effect to show the sub-subcategories */}
                   {activeSubcategoryId === subcategory._id && (
-                    <div className="absolute inset-0 bg-black opacity-40 flex items-center justify-center text-white text-[13px] rounded-full p-3">
+                    <div className="absolute inset-0 bg-black opacity-40 flex items-center justify-center text-white text-[13px]  border-l-8 border-blue-500 p-4 rounded-sm">
                       <span className="">Explore {subcategory.title}</span>
                     </div>
                   )}

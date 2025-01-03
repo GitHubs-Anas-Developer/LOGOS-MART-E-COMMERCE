@@ -118,6 +118,8 @@ function ProductDetails() {
     console.log("Invalid about field format");
   }
 
+  console.log("selectedImage", selectedImage);
+
   return (
     <>
       <CategoriesBanner />
@@ -130,7 +132,7 @@ function ProductDetails() {
               {/* Main Image Section */}
               <div className="relative w-full h-96 flex justify-center items-center">
                 <img
-                  src={selectedImage || productDetails.cardImage}
+                  src={selectedImage == "" ? productImages[0] : selectedImage}
                   alt={productDetails.title}
                   className="w-full h-full object-contain rounded-lg  transition-transform duration-500 ease-in-out transform "
                 />
@@ -240,9 +242,9 @@ function ProductDetails() {
                     <button
                       key={color._id}
                       onClick={() => handleColorChange(index)}
-                      className={`py-3 px-1 rounded-lg text-lg font-semibold transition-colors duration-300 ease-in-out ${
+                      className={`py-1 px-1 rounded-lg text-lg font-semibold transition-colors duration-300 ease-in-out ${
                         selectedColorIndex === index
-                          ? "bg-blue-300 text-black border border-blue-700"
+                          ? "bg-blue-300 text-black border border-blue-200"
                           : "bg-gray-200 hover:bg-gray-300 text-gray-700"
                       }`}
                       style={{
@@ -253,25 +255,40 @@ function ProductDetails() {
                       }}
                       onClickCapture={() => setColorVariantId(color._id)}
                     >
-                      {color.colorName}
+                      <div className="flex flex-col items-center p-1 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-white">
+                        {/* Image Container */}
+                        <div className="h-10 w-10 rounded-full border border-blue-400 overflow-hidden flex items-center justify-center bg-gray-50">
+                          <img
+                            src={color.images[0]}
+                            alt={`${color.colorName} swatch`}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+
+                        {/* Color Name */}
+                        <span className="mt-1 text-gray-700 font-light text-xs">
+                          {color.colorName}
+                        </span>
+                      </div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-4">
-                {productDetails.variants &&
-                productDetails.variants.length > 0 ? (
+              {productDetails.variants[0].offerPrice === 0 ? (
+                ""
+              ) : (
+                <div className="mt-4">
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                     {productDetails.variants.map((variant, index) => (
                       <button
                         key={index}
                         value={index}
                         onClick={handleVariantChange}
-                        className={`p-4 rounded-xl shadow-sm border transition-all duration-300
+                        className={`p-1 rounded-xl  border 
             flex flex-col items-center justify-center text-gray-700 font-medium 
-            hover:shadow-md hover:border-purple-500 hover:text-purple-500
-            focus:outline-none focus:ring-2 focus:ring-purple-500 
+       
+  
             ${
               selectedVariant === index
                 ? "bg-purple-500 text-white border-purple-500 shadow-md"
@@ -280,7 +297,7 @@ function ProductDetails() {
                       >
                         {/* Variant Title */}
                         <span
-                          className="text-lg font-semibold"
+                          className="text-sm font-semibold"
                           onClick={() =>
                             setSelectRamStorageVariantId(variant._id)
                           }
@@ -303,12 +320,9 @@ function ProductDetails() {
                       </button>
                     ))}
                   </div>
-                ) : (
-                  <p className="text-gray-500 text-center">
-                    No variants available
-                  </p>
-                )}
-              </div>
+                </div>
+              )}
+
               <div className="mt-4 bg-white p-4 rounded-lg border">
                 {/* Product Details */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -353,11 +367,9 @@ function ProductDetails() {
                     <p className="text-lg font-semibold text-gray-800">
                       Warranty
                     </p>
-                    <p className="text-sm font-medium text-gray-600">
-                      {productDetails.warranty.length > 50
-                        ? productDetails.warranty.slice(0, 48) + "..."
-                        : productDetails.warranty}
-                    </p>
+                    {/* <p className="text-sm font-medium text-gray-600">
+                      {productDetails.warranty}
+                    </p> */}
                   </div>
                 </div>
               </div>

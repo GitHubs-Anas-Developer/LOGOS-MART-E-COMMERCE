@@ -57,7 +57,7 @@ const ProductCreate = () => {
   const [aboutList, setAboutList] = useState([]);
 
   const handleAddAbout = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!aboutList.trim()) return; // Prevent adding empty values
 
     setFormData((prevData) => ({
@@ -68,7 +68,6 @@ const ProductCreate = () => {
     setAboutList(""); // Clear the input field
   };
   console.log(formData.about);
-  
 
   const [highlightsKey, setHighlightsKey] = useState("");
   const [highlightsValue, setHighlightsValue] = useState("");
@@ -367,7 +366,6 @@ const ProductCreate = () => {
             onChange={handleChange}
             placeholder="Product Price"
             type="number"
-         
             className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
           />
         </div>
@@ -467,7 +465,6 @@ const ProductCreate = () => {
           name="description"
           onChange={handleChange}
           placeholder="Product Description"
-         
           className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
         />
 

@@ -60,7 +60,7 @@ const createProduct = async (req, res) => {
     // Convert input values for pricing, stock, and rating
     const productPrice = parseFloat(price);
     const productDiscountPercentage = parseInt(discountPercentage);
-    const productOfferPrice = parseFloat(offerPrice);
+    const productOfferPrice = parseFloat(offerPrice) + parseFloat(delivery.cost) ;
     const productStock = parseInt(stock);
     const productRating = parseFloat(rating);
 

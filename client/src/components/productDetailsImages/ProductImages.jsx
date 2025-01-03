@@ -24,7 +24,7 @@ function ProductImages({ productId }) {
   {productImages.length === 0 ? (
     <p className="text-gray-500 text-center">No images available</p>
   ) : (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {productImages.map((image, index) => (
         <div key={index} className="w-full">
           <img
