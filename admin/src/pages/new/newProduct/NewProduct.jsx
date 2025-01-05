@@ -351,7 +351,7 @@ const ProductCreate = () => {
             name="brand"
             onChange={handleChange}
             placeholder="Brand Name"
-            required
+          
             className="w-full px-5 py-4 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white shadow-sm text-black"
           />
           <input

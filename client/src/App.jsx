@@ -23,6 +23,7 @@ import BottomNavigation from "./components/bottomNavigation/BottomNavigation";
 import Categories from "./pages/categories/Categories";
 import CashOnDelivery from "./pages/cashOnDelivery/CashOnDelivery";
 import Addresses from "./pages/addresses/Addresses";
+import PriceUnderProducts from "./pages/priceUnderProducts/PriceUnderProducts";
 
 function App() {
   return (
@@ -55,6 +56,8 @@ function App() {
 
           <Route path="/products" element={<Products />} />
           <Route path="/productDetails/:id" element={<ProductDetails />} />
+          <Route path="/priceUnderProducts/:price" element={<PriceUnderProducts />} />
+
 
           <Route
             path="/cart"

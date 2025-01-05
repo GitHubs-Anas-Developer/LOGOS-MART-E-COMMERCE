@@ -8,10 +8,10 @@ function OfferProducts({ discount, title, isLoading }) {
   const { addToCart } = useContext(CartContext);
 
   // Function to handle adding to the cart
-  const handleAddToCart = (e, productId) => {
-    e.preventDefault(); // Prevent the default link behavior
-    addToCart(productId); // Add to cart using the productId
-  };
+  // const handleAddToCart = (e, productId) => {
+  //   e.preventDefault(); // Prevent the default link behavior
+  //   addToCart(productId); // Add to cart using the productId
+  // };
 
   // Function to format the price in INR
   const formatPrice = (price) => {
@@ -26,13 +26,18 @@ function OfferProducts({ discount, title, isLoading }) {
   return (
     <div className="w-full mx-auto px-1 py-1">
       {/* Section Title */}
-      <div className="flex items-center justify-between p-1">
-        <h2 className="text-xl font-semibold text-gray-900 transform transition duration-300 border-b">
-          {title}
-        </h2>
+      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200  shadow-md">
+    {/* Title */}
+    <h2 className="text-xl font-bold text-gray-800 tracking-tight border-b-4 border-purple-600 pb-1">
+        {title}
+    </h2>
 
-        <button className="text-black border-b border-blue-600">More</button>
-      </div>
+    {/* "More" Button */}
+    <button className="text-lg font-semibold text-purple-600 hover:text-purple-800 border-b-2 border-transparent hover:border-purple-600 transition-all duration-300">
+        More
+    </button>
+</div>
+
 
       {/* Loading State */}
       {isLoading ? (
@@ -104,13 +109,13 @@ function OfferProducts({ discount, title, isLoading }) {
                       </span>
                     )}
                   </div>
-                  <button
+                  {/* <button
                     className="flex items-center justify-center text-sm font-semibold py-2 px-5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-xl transform transition-all duration-200 ease-in-out hover:scale-110 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     onClick={(e) => handleAddToCart(e, product._id)} // Correct event handling
                   >
                     <FiShoppingCart size={18} className="mr-2 text-white" />
                     Add to Cart
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </Link>

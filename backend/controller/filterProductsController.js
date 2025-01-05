@@ -121,7 +121,6 @@ const searchItems = async (req, res) => {
       });
     }
 
-
     // Build the search query
     const searchQuery = {
       $or: [
@@ -149,4 +148,58 @@ const searchItems = async (req, res) => {
     });
   }
 };
-module.exports = { getFilterProducts, getBrands, searchItems };
+
+fetchUnderPriceProducts = async (req, res) => {
+  try {
+    const { price } = req.params;
+
+    console.log("price", price);
+
+    // Validate price input
+    if (!price || isNaN(price)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid price parameter",
+      });
+    }
+
+    const maxPrice = parseInt(price);  // Maximum price from URL parameter
+    const minPrice = 1; // Default minimum price
+
+    // Fetch products under the specified price range
+    const products = await productModels
+      .find({
+        offerPrice: { $gte: minPrice, $lte: maxPrice },  // Price filter
+      })
+      .select("title price offerPrice discountPercentage cardImage rating variants reviews");
+
+    // Check if products exist
+    if (products.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No products found under this price",
+      });
+    }
+
+    // Respond with fetched products
+    return res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+
+module.exports = {
+  getFilterProducts,
+  getBrands,
+  searchItems,
+  fetchUnderPriceProducts,
+};

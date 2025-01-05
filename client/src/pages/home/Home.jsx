@@ -8,6 +8,8 @@ import BackToTopButton from "../../components/icons/backToTopButton/BackToTopBut
 import Subcategories from "../../components/subcategories/Subcategories";
 import Categories from "../../components/categories/Categories";
 import Brands from "../../components/brands/Brands";
+import BigDeals from "../../components/bigDeals/BigDeals";
+import PriceUnder from "../../components/priceUnder/PriceUnder";
 
 function Home() {
   const {
@@ -15,6 +17,8 @@ function Home() {
     discount30to40,
     discount40to50,
     specialOffer,
+    fetchBigDeals,
+    bigDeals,
     loading,
     error,
   } = useContext(OfferContext);
@@ -24,6 +28,7 @@ function Home() {
       top: 0,
       behavior: "smooth",
     });
+    fetchBigDeals()
     fetchDiscountedProducts();
   }, []);
 
@@ -38,7 +43,7 @@ function Home() {
       <BackToTopButton />
 
       {/* Offer-related components, displayed based on loading and error */}
-      <div className="py-10">
+      <div className="py-10 bg-green-100">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
@@ -53,6 +58,7 @@ function Home() {
 
         {!loading && !error && (
           <>
+            <BigDeals />
             <OfferProducts
               discount={specialOffer}
               title="SPECIAL OFFERS"
@@ -68,9 +74,11 @@ function Home() {
               title="Top Deals: 40% - 50% Off"
               isLoading={loading}
             />
+         
           </>
         )}
       </div>
+      <PriceUnder />
       <Brands />
     </div>
   );

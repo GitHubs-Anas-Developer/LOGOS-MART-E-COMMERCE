@@ -242,7 +242,7 @@ function ProductDetails() {
                     <button
                       key={color._id}
                       onClick={() => handleColorChange(index)}
-                      className={`py-1 px-1 rounded-lg text-lg font-semibold transition-colors duration-300 ease-in-out ${
+                      className={` rounded-lg text-lg font-semibold transition-colors duration-300 ease-in-out ${
                         selectedColorIndex === index
                           ? "bg-blue-300 text-black border border-blue-200"
                           : "bg-gray-200 hover:bg-gray-300 text-gray-700"
@@ -421,7 +421,7 @@ function ProductDetails() {
 
                 {/* Delivery Information Link */}
                 <div>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-gray-600 ">
                     For more details, visit our{" "}
                     <a
                       href="/delivery-info"
@@ -434,7 +434,7 @@ function ProductDetails() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+              <div className="bg-white  p-6 rounded-lg shadow-lg">
                 {/* Section Title */}
                 <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                   Highlights
@@ -448,13 +448,11 @@ function ProductDetails() {
                         <tr
                           key={index}
                           className={`${
-                            index % 2 === 0
-                              ? "bg-gray-50 dark:bg-gray-700"
-                              : "bg-white dark:bg-gray-800"
+                            index % 2 === 0 ? "bg-gray-50 " : "bg-white "
                           } hover:bg-yellow-50 dark:hover:bg-yellow-700 transition duration-300`}
                         >
                           {/* Key */}
-                          <td className="py-3 px-4 text-gray-700 dark:text-gray-300 font-medium uppercase border-b">
+                          <td className="py-3 px-4  dark:text-gray-300 font-medium uppercase border-b">
                             {key.replace(/_/g, " ")}
                           </td>
                           {/* Value */}

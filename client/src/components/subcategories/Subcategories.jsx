@@ -29,7 +29,7 @@ function SubcategoriesCarousel() {
 
   return (
     <div className="md:hidden">
-      <h1 className="text-2xl font-bold text-center text-white bg-gray-800 py-4 px-2 mb-1">
+      <h1 className="text-lg font-bold text-center text-white bg-gray-800 py-4 px-2 mb-1">
         Explore Popular Subcategories
       </h1>
 
@@ -41,10 +41,7 @@ function SubcategoriesCarousel() {
           className="flex overflow-x-auto scroll-smooth  scrollbar-hide"
         >
           {subcategoriesAll.map((subcategory) => (
-            <div
-              key={subcategory.id}
-              className="flex-shrink-0 w-28 bg-white "
-            >
+            <div key={subcategory.id} className="flex-shrink-0 w-28 bg-white ">
               {/* Subcategory Image */}
               <div className="relative h-20">
                 <img
