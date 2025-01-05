@@ -43,7 +43,7 @@ function Home() {
       <BackToTopButton />
 
       {/* Offer-related components, displayed based on loading and error */}
-      <div className="py-10 bg-green-100">
+      <div className="py-4 bg-green-100">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
@@ -74,7 +74,7 @@ function Home() {
               title="Top Deals: 40% - 50% Off"
               isLoading={loading}
             />
-         
+
           </>
         )}
       </div>

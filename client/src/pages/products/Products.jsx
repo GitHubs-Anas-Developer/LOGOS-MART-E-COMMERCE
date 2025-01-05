@@ -54,7 +54,7 @@ function Products() {
               Products
             </h2>
             <button
-              className="lg:hidden bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300 ml-auto m-2"
+              className="lg:hidden bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transition-all duration-300 ml-auto m-2"
               onClick={() => setIsFilterOpen(true)}
             >
               <IoFilterSharp size={20} />
@@ -110,14 +110,14 @@ function Products() {
                     <Link
                       to={`/productDetails/${product._id}`}
                       key={product._id}
-                      className=" transition-transform transform hover:-translate-y-1 overflow-hidden"
+                      className=" transition-transform transform hover:-translate-y-1 overflow-hidden border"
                     >
                       {/* Product Image */}
-                      <div className="relative h-48 flex justify-center items-center pt-5">
+                      <div className="relative h-36 flex justify-center items-center pt-5">
                         <img
                           src={product.cardImage}
                           alt={product.title}
-                          className="object-contain h-48 w-auto"
+                          className="object-contain h-40 w-auto"
                           loading="lazy"
                         />
                       </div>
@@ -146,19 +146,19 @@ function Products() {
                             {product.offerPrice
                               ? formatPrice(product.offerPrice)
                               : formatPrice(
-                                  product.variants?.[0]?.offerPrice
-                                ) || ""}
+                                product.variants?.[0]?.offerPrice
+                              ) || ""}
                           </span>
 
                           {/* Discount Percentage */}
                           {(product.discountPercentage ||
                             product.variants?.[0]?.discountPercentage) && (
-                            <span className="text-sm font-medium text-green-600">
-                              {product.discountPercentage
-                                ? `${product.discountPercentage}% OFF`
-                                : `${product.variants?.[0]?.discountPercentage}% OFF`}
-                            </span>
-                          )}
+                              <span className="text-sm font-medium text-green-600">
+                                {product.discountPercentage
+                                  ? `${product.discountPercentage}% OFF`
+                                  : `${product.variants?.[0]?.discountPercentage}% OFF`}
+                              </span>
+                            )}
                         </div>
 
                         {/* Original Price */}
@@ -172,14 +172,14 @@ function Products() {
 
                           {/* Discount Savings */}
                           {(product.offerPrice && product.price) ||
-                          (product.variants?.[0]?.offerPrice &&
-                            product.variants?.[0]?.price) ? (
-                            <span className="ml-2 bg-green-100 text-green-600 font-medium text-xs px-2 py-1 rounded-lg shadow-sm">
+                            (product.variants?.[0]?.offerPrice &&
+                              product.variants?.[0]?.price) ? (
+                            <span className="ml-1 bg-green-100 text-green-600 font-medium text-xs px-2 py-1 rounded-lg shadow-sm">
                               Save ₹
                               {product.offerPrice && product.price
                                 ? product.price - product.offerPrice
                                 : product.variants?.[0]?.price -
-                                  product.variants?.[0]?.offerPrice}
+                                product.variants?.[0]?.offerPrice}
                             </span>
                           ) : null}
                         </div>

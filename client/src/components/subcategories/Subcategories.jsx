@@ -53,9 +53,9 @@ function SubcategoriesCarousel() {
               </div>
 
               {/* Subcategory Details */}
-              <div className="p-1 text-center">
+              <div className="p-1 text-center bg-green-100">
                 <h2 className="text-sm font-semibold text-gray-800 truncate">
-                  {subcategory.title || "Untitled"}
+                  {subcategory.title }
                 </h2>
               </div>
             </div>

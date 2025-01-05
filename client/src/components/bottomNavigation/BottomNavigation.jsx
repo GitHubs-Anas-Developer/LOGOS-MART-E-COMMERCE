@@ -10,7 +10,6 @@ import UserContext from "../../context/User";
 function BottomNavigation() {
   const location = useLocation();
   const { user } = useContext(UserContext);
-  console.log("user", user);
 
   const navItems = [
     {
@@ -45,11 +44,10 @@ function BottomNavigation() {
           <Link
             to={item.to}
             key={item.label}
-            className={`flex flex-col items-center text-sm transition-all transform duration-200 ease-in-out ml-3 mr-3 ${
-              location.pathname === item.to
+            className={`flex flex-col items-center text-sm transition-all transform duration-200 ease-in-out ml-3 mr-3 ${location.pathname === item.to
                 ? "text-blue-500 scale-110 font-semibold"
                 : "text-gray-500 hover:text-blue-400 hover:scale-105"
-            }`}
+              }`}
             aria-label={item.label}
           >
             <span className="text-2xl">{item.icon}</span>

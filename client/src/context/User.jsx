@@ -9,6 +9,9 @@ export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const { userId } = useContext(AuthContext);
 
+  console.log("userId....",userId);
+  
+
   const fetchUser = async () => {
     if (!userId) return; // Return if userId is not available
 

@@ -31,7 +31,8 @@ connectDB();
 // Use the cors middleware correctly by calling it as a function
 app.use(
   cors({
-    origin: "https://logos-mart-e-commerce-1.onrender.com", // Frontend URL
+    origin:
+      "http://localhost:5173", // Frontend URL
     credentials: true, // Allow cookies
   })
 );

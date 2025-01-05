@@ -12,7 +12,7 @@ function BigDeals() {
 
     return (
         <div className="p-1  rounded-lg ">
-            <div className="flex items-center justify-between mb-8 space-x-1">
+            <div className="flex items-center justify-between mb-6 space-x-1">
                 {/* Left: Big Deals Title */}
                 <h2 className="text-2xl font-extrabold text-purple-800 tracking-tight">
                     Big Deals 🎉
@@ -22,7 +22,7 @@ function BigDeals() {
                 <div className='pr-2'>
                     <Link
                         to="/more-deals"  // Replace with the correct link
-                        className="px-6 py-3 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-700 text-white text-lg font-semibold rounded-full shadow-md hover:scale-105 transform transition-all duration-300"
+                        className="px-5 py-3 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-700 text-white text-lg font-semibold rounded-md shadow-md hover:scale-105 transform transition-all duration-300"
                     >
                         More
                     </Link>
@@ -34,12 +34,12 @@ function BigDeals() {
             {error && <p className="text-center text-red-500">{error}</p>}
 
             {!loading && bigDeals.length > 0 ? (
-                <div className="flex overflow-x-auto space-x-4 scrollbar-hide bg-gradient-to-r from-pink-300 via-yellow-200 to-yellow-500 p-5">
+                <div className="flex overflow-x-auto space-x-2 scrollbar-hide bg-gradient-to-r from-pink-300 via-yellow-200 to-yellow-500 p-2">
                     {bigDeals.map((product, index) => (
                         <Link
                             key={index}
                             to={`/productDetails/${product._id}`}
-                            className="flex-none w-44 transform hover:scale-105 transition-transform duration-300"
+                            className="flex-none w-40 transform hover:scale-105 transition-transform duration-300"
                         >
                             <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
                                 {/* Product Image */}

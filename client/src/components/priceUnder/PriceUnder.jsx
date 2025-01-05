@@ -14,13 +14,12 @@ function PriceUnder() {
     const images = [image1, image2, image3, image4, image5, image6, image7, image8];
 
     return (
-        <div className="bg-gradient-to-r from-green-100 to-green-200 py-12">
+        <div className="bg-gradient-to-r from-green-100 to-green-200 ">
             <div className="text-center mb-8">
-                <h2 className="text-4xl font-extrabold text-purple-800 mb-4">Top Deals for You</h2>
-                <p className="text-lg text-gray-600">Browse amazing deals under various price ranges</p>
+                <h2 className="text-4xl font-extrabold text-purple-800 mb-3">Top Deals for You</h2>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 px-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 px-3">
                 {prices.map((price, index) => (
                     <Link
                         to={`/priceUnderProducts/${price}`}

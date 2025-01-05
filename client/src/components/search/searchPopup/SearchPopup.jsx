@@ -92,7 +92,7 @@ function SearchPopup() {
             {error && <p className="text-red-500 text-center py-3">{error}</p>}
 
             {/* Search Results */}
-            <div className="max-h-80 overflow-y-auto p-4">
+            <div className="max-h-[500px] overflow-y-auto p-4">
               {items.length > 0 ? (
                 <ul className="space-y-4">
                   {items.map((item) => (
@@ -111,7 +111,7 @@ function SearchPopup() {
                           className="w-16 h-16 object-cover rounded-md"
                         />
                         <span className="text-gray-700 font-medium truncate max-w-[250px]">
-                          {item.brand}
+                          {item.title}
                         </span>
                       </Link>
                     </li>
@@ -123,35 +123,35 @@ function SearchPopup() {
                 )
               )}
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mt-3 p-2">
+            {/* <h3 className="text-lg font-semibold text-gray-900 mt-3 p-2">
               Browse Categories
-            </h3>
+            </h3> */}
             {/* Subcategory Section */}
-            <div className="h-auto overflow-x-auto p-4 mb-8">
+            {/* <div className="h-auto overflow-x-auto p-4 mb-8">
               {subcategoriesAll?.length > 0 ? (
-                <div className="flex space-x-4">
-                  {subcategoriesAll.map((subcategory, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center p-4 border rounded-lg shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer"
-                    >
-                      <img
-                        src={subcategory.image}
-                        alt={subcategory.title}
-                        className="w-16 h-16 object-contain rounded-md mb-2"
-                      />
-                      <h5 className="text-gray-800 text-center text-sm font-semibold">
-                        {subcategory.title}
-                      </h5>
-                    </div>
-                  ))}
-                </div>
+             <div className="flex space-x-6 overflow-x-auto py-4">
+             {subcategoriesAll.map((subcategory, index) => (
+             <div
+             key={index}
+             className="flex flex-col items-center p-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-100 border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer w-full sm:w-48 md:w-60"
+           >
+             <img
+               src={subcategory.image}
+               alt={subcategory.title}
+               className="w-24 h-24 object-cover rounded-full mb-4 border-4 border-white shadow-md transition-all duration-200 transform hover:scale-110"
+             />
+             <h5 className="text-gray-800 text-center text-lg font-semibold">{subcategory.title}</h5>
+           </div>
+           
+             ))}
+           </div>
+           
               ) : (
                 <p className="text-center text-gray-600">
                   No subcategories found
                 </p>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       )}
