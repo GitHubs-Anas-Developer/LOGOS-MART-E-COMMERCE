@@ -32,7 +32,7 @@ connectDB();
 app.use(
   cors({
     origin:
-      "http://localhost:5173", // Frontend URL
+      "https://logos-mart-e-commerce-1.onrender.com", // Frontend URL
     credentials: true, // Allow cookies
   })
 );

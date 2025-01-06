@@ -62,7 +62,7 @@ const getUserCart = async (req, res) => {
     // Find the cart and populate product details
     const cart = await cartModel
       .findOne({ userId })
-      .populate("items.productId", "title price cardImage");
+      .populate("items.productId", "title price discountPercentage offerPrice cardImage rating reviews variants delivery");
 
     if (!cart) {
       return res.status(404).json({ message: "Cart not found for this user" });

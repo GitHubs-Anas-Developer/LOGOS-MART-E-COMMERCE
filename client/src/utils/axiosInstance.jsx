@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:8050", // Use environment variable with a fallback
+  baseURL: import.meta.env.VITE_BACKEND_URL || "https://logos-mart-e-commerce.onrender.com", // Use environment variable with a fallback
   withCredentials: true, // Include credentials such as cookies in requests
 });
 
