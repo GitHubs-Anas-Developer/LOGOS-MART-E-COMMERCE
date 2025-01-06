@@ -124,7 +124,7 @@ function Addresses() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white rounded-lg w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-4 sm:mx-6 flex flex-col">
+        <div className="bg-white rounded-lg w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-1 sm:mx-6 flex flex-col">
           {/* Header */}
           <div className="p-6 sm:p-8 border-b border-gray-200">
             <h3 className="text-lg sm:text-xl font-bold text-center">
